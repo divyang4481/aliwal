@@ -1,0 +1,59 @@
+html,body{margin:0;padding:0; background: #EEE;}
+body{font: 76% arial,sans-serif}
+p{margin:0 10px 10px}
+a{display:block;color: #006;padding:10px}
+div#content p{line-height:1.4}
+div#footer p{margin:0;padding:5px 10px}
+div#footer a{display:inline;padding:0;}
+
+.error_msg{ 
+	font-color : #F00;
+	font-weight: bold;
+}
+
+ul.horizontal-plain li{ list-style-type: none; padding-left: 1em; margin-left: 0; display:inline; }
+
+.tagset_filter{
+	width: 180px;
+}
+
+#messagebox{ 
+	width:95%;
+	height: 69px;
+}
+
+#map{
+ border: solid 2px #C33;
+ margin: 13px;
+}
+
+.cb_hideshow_option, label{
+ font-weight: bold;
+ font-size: 17;
+ color: #C33;
+ display: inline;
+}
+
+.label_sub{
+ font-weight: bold;
+ font-size: 13;
+ color: #C33;
+ display: inline;
+}
+
+h1{
+ color: #C33;
+}
+#ul_popup_selector{
+ list-style-type: none;
+ padding-left: 2em; 
+ margin-left: 0;
+}
+
+#sel_change_pin_label{
+ width: 200px;
+}
+
+.tagset_filter{
+ width: 200px;
+}

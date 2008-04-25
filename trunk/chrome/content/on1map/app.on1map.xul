@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://on1map/locale/on1map.dtd">
+
+<window
+  id     = "on1map"
+  title  = "Your data, on a map."
+  width  = "800"
+  height = "600"
+  xmlns  = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  
+<!-- External libs -->
+	<script src="jquery-1.2.3.js" 		/>  
+	<script src="io.js" 				/>  
+	<script src="xmlsax.js" 				/>  
+	
+<!-- On1Map libs -->
+	<script src="lib.CacheManager.js" 	/>
+	<script src="lib.SaxEvent.js" 		/>
+	<script src="lib.DataManager.js" 	/>
+	<script src="app.on1map.js" 		/>
+ 
+ 	<command id="cmd_new" 		oncommand="fileNew();"/>
+	<command id="cmd_open" 		oncommand="fileOpen();"/>
+	<command id="cmd_save" 		oncommand="fileSave();"/>
+	<command id="cmd_saveas" 	oncommand="fileSaveAs();"/>
+	<command id="cmd_close" 	oncommand="fileClose();"/>
+	<command id="cmd_viewdebug" oncommand="goDebug();"/>
+	<command id="cmd_viewtests" oncommand="goTests();"/>
+	<command id="cmd_reload" 	oncommand="reload();"/>
+	
+	<menubar id="on1map-menubar">
+	  <menu id="file-menu" label="File">
+	    <menupopup id="file-popup">
+	      <menuitem label="Open" 	accesskey="o" 	command="cmd_open" 	/>
+<!--      <menuitem label="Save" 	accesskey="s" 	command="cmd_save"	/> 		-->
+<!--      <menuitem label="Save As"  				command="cmd_saveas" /> 	-->
+	      <menuitem label="Close"  					command="cmd_close" />
+	    </menupopup>
+	  </menu>
+	  
+	  <menu id="view-menu" label="View">
+	    <menupopup id="view-popup">
+<!--      <menuitem label="Data" 	accesskey="u" 	command="cmd_viewdata" 	/> 	-->
+<!--      <menuitem label="Map" 	accesskey="m" 	command="cmd_viewmap" 	/> 	-->
+	      <menuitem label="Debug" 	accesskey="d" 	command="cmd_viewdebug" />  
+	      <menuitem label="Unit Tests" 	accesskey="t" 	command="cmd_viewtests" />  
+	      <menuitem label="Reload" 	accesskey="r" 	command="cmd_reload" 	/>
+		</menupopup>	      
+	  </menu>
+	  
+	</menubar>
+<!--  
+  <hbox>
+    <button id="back" label="&on1map.back;" oncommand="back();" disabled="true"/>
+    <button id="forward" label="&on1map.forward;" oncommand="forward();" disabled="true"/>
+    <button id="reload" label="&on1map.reload;" oncommand="reload();"/>
+    <button id="stop" label="&on1map.stop;" oncommand="stop();" disabled="true"/>
+    <textbox id="urlbar" value="" flex="1" onchange="go();"/>
+    <button id="go" label="&on1map.go;" oncommand="go();"/>
+  </hbox>
+-->
+  <browser flex="1" id="browser" src="" type="content-primary"/>
+  <statusbar>
+    <statusbarpanel id="status" label="" crop="end" flex="1"/>
+    <progressmeter id="progress" mode="determined" value="0%" style="display: none"/>
+    <statusbarpanel id="security" label="" style="display: none"/>
+  </statusbar>
+ 
+  
+</window>

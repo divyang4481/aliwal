@@ -1,0 +1,44 @@
+/* Layout #24
+   Thanks http://blog.html.it/layoutgala/ 
+   Only contains layout of the page. Styling goes in on1map.css
+*/
+
+
+div#header{
+ position: relative
+}
+div#header a{
+ position:absolute;
+ right:0;
+ top:23px
+}
+div#wrapper{
+ float:right;
+ width:100%;
+ margin-left:-220px
+}
+div#content{
+ min-height: 400px;
+ min-width:  600px;
+ margin-left:220px;
+}
+div#navigation{
+ float:left;
+ width:200px;
+ margin:10px;
+}
+div#extra{
+ float:left;
+ clear:left;
+ width:220px;
+}
+div#footer{
+ padding: 13px;
+ clear: both;
+ width: 100%;
+}
+
+#map{
+ height: 88%;
+ width : 90%;
+}

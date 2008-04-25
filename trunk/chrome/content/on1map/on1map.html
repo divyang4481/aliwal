@@ -1,0 +1,100 @@
+<html>
+<head>
+	<script type="text/javascript" src="jquery-1.2.3.js"></script>
+		
+	<script type="text/javascript" src="xscope.jsm"></script>	
+	<script type="text/javascript" src="lib.CacheManager.js"></script>		
+	<script type="text/javascript" src="on1map.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="on1struct.css" />
+	<link rel="stylesheet" type="text/css" href="on1map.css" />
+
+	<!-- This is last because it's not local -->	
+	<script type="text/javascript" src="http://api.maps.yahoo.com/ajaxymap?v=3.8&appid=TQBZw2PV34GYymqj0eHGSn32aSw7fyGL7wdA3Cs5QufCQY4Zy9qn1ZHzSepRxh2XKg--"></script>
+	
+</head>
+
+<body>
+<div id="container">
+	<div id="header">
+	</div><!-- header -->
+	<div id="wrapper">
+		<div id="content">
+			<div id="map">
+			</div>
+		</div><!-- content -->
+	</div><!-- wrapper -->
+	<div id="navigation">
+	<h1>Map Controls</h1>
+	<hr>
+		<label>Pin Label</label>
+		<div id="pin_label_selector">
+			<blink>Loading...</blink>
+		</div>
+		<hr>
+		<div id="hsdiv_filters">
+			<input class="cb_hideshow_option" id="cb_filters_hideshow" type="checkbox" checked="checked" value="filters">
+				<label>Tags</label>
+			</input>
+			<div id="div_filters">
+				<blink>Loading...</blink>
+			</div><!-- div_ddlb_filters -->
+		</div>
+		<hr>
+		<div id="hsdiv_details">
+			<input class="cb_hideshow_option" id="cb_popup_hideshow" type="checkbox" checked="checked" value="filters">
+				<label>Popup Details</label>
+			</input>
+			<div id="pin_popup_switches">
+				<blink>Loading...</blink>
+			</div>
+		</div>
+	</div><!-- navigation -->
+	<div id="extra">
+	</div><!-- extra -->
+	<div id="footer">
+ 	
+
+
+<!-- 
+<script type="text/javascript">
+function debug(){
+	eval( $('#code').val() );
+	return false;
+}
+
+function llog(v){
+	$('#results').prepend( v + '<BR>');
+}
+</script>
+<a href="#" onclick="debug();">Run</a>
+<br>
+<textarea id="code" cols="130" rows="10">
+//$('#content').show();
+domMgr.log('uneval(xscopeNS.loadingData):\n'+ uneval(xscopeNS.loadingData));
+domMgr.log('(xscopeNS.markers.length):\n'+ xscopeNS.markers.length );
+</textarea>
+-->
+<div id="results">
+	No results.
+</div>	
+	
+		<div id="hsdiv_messages>">
+			<input class="cb_hideshow_option" id="cb_messages_hideshow" type="checkbox" checked="checked" value="messagebox">
+				<label>Messages</label>
+			</input>		
+			<div id="messagebox" >&nbsp;
+			</div>
+		</div>
+	</div><!-- footer -->
+</div><!-- container -->
+
+
+
+</body>
+</html>
+
+
+
+
+
