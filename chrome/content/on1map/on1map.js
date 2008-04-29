@@ -111,7 +111,13 @@ DomManager.prototype.drawLabelSelector = function( pDivId, pLabels ){
 		sel += '<OPTION>'+val+'</OPTION>\n';
 	});
 	sel += '</SELECT>';
-	dd.append(sel);
+	if( pLabels.length > 0){
+		dd.append( sel );
+	} else {
+		dd.append('<div class="warn">No data</div>');
+		this.log('No pin labels found in data', 'INFO');
+	}
+	
 }
 DomManager.prototype.drawPopupSelector= function( pDivId, pLabels){
 	/* Args: The string id of the div and and an array of label options */
@@ -123,7 +129,11 @@ DomManager.prototype.drawPopupSelector= function( pDivId, pLabels){
 		html += '<LI><input class="cb_popup_selector"  type="checkbox" checked="checked" value="'+val+'">'+val+'</LI>';
 		html += '</UL> \n';
 	});
-	dd.append(html);
+	if( pLabels.length > 0){
+		dd.append( html );
+	} else {
+		dd.append('<div class="warn">No data</div>');
+	}
 }
 DomManager.prototype.getPopupDetails = function( ){
 	/* returns an array of members that should be shown in popups */
@@ -272,7 +282,9 @@ MarkerManager.prototype.setPinLabel = function( pObj, pLabelAttrib ){
 	/* Takes an enriched marker and sets its autoexpand / label to the
 	 * on1data value named pLabelAttrib
 	 */
-	 pObj.addAutoExpand( pObj.on1data.ExtendedData[ pLabelAttrib ] );
+	 if( typeof( pObj.on1data.ExtendedData[ pLabelAttrib ]) !== 'undefined'){
+	 	pObj.addAutoExpand( pObj.on1data.ExtendedData[ pLabelAttrib ] );
+	 }
 }
 MarkerManager.prototype.setPinLabels = function( pArr, pLabelAttrib ){
 	/* Takes an array of enriched markers and sets their autoexpand / label to the
