@@ -5,6 +5,15 @@ function DataManager(){
 	this._tmpList = new Array();
 
 }
+DataManager.prototype.reloadMarkers = function(pMarkers, pDestList){
+	// When markers are created, the pinList is emptied to reduce memory consumption.
+	// This moves the data from markers back to pinList, so that new markers can be recreated on a new map
+	while ( pMarkers.length > 0){
+		var tmp = pMarkers.pop()
+		var dd = tmp.on1data ;
+		pDestList.push( dd );
+	}
+}
 DataManager.prototype.loadFile = function(pFile,pDestPinList,pDestPinItems,pDestPinTagSets, pDestFlags ){
 	var that = this, 
 		parseErrorLog = [],
@@ -212,8 +221,20 @@ DataManager.prototype.loadFile = function(pFile,pDestPinList,pDestPinItems,pDest
 	};
 		
 	var errorHandler = {
-		error 				: (function (aLocator,aError){ return }),
-		fatalError 			: (function (aLocator,aError){ return }),
+		locator: 	null,
+		_error: 	null,
+		
+		reset 				: (function (){
+			this.locator = null;
+			this._error = null;
+		}),
+		error 				: (function (aLocator,aError){ 
+			return }),
+		fatalError 			: (function (aLocator,aError){
+			this.locator = aLocator;
+			this._error = aError;
+			throw 'XML parsing fatal error';
+		}),
 		ignorableWarning 	: (function (aLocator,aError){ return })
 	};
 
