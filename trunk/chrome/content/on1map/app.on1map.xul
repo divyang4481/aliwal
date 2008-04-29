@@ -29,6 +29,7 @@
 	<command id="cmd_viewdebug" oncommand="goDebug();"/>
 	<command id="cmd_viewtests" oncommand="goTests();"/>
 	<command id="cmd_reload" 	oncommand="reload();"/>
+	<command id="cmd_preferences" oncommand="goPreferences();" />
 	
 	<menubar id="on1map-menubar">
 	  <menu id="file-menu" label="File">
@@ -44,9 +45,10 @@
 	    <menupopup id="view-popup">
 <!--      <menuitem label="Data" 	accesskey="u" 	command="cmd_viewdata" 	/> 	-->
 <!--      <menuitem label="Map" 	accesskey="m" 	command="cmd_viewmap" 	/> 	-->
-	      <menuitem label="Debug" 	accesskey="d" 	command="cmd_viewdebug" />  
-	      <menuitem label="Unit Tests" 	accesskey="t" 	command="cmd_viewtests" />  
+<!--	      <menuitem label="Debug" 	accesskey="d" 	command="cmd_viewdebug" />  -->
+<!--	      <menuitem label="Unit Tests" 	accesskey="t" 	command="cmd_viewtests" /> --> 
 	      <menuitem label="Reload" 	accesskey="r" 	command="cmd_reload" 	/>
+	      <menuitem label="Preferences" 			command="cmd_preferences" />
 		</menupopup>	      
 	  </menu>
 	  
