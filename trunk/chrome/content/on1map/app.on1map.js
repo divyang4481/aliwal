@@ -117,8 +117,6 @@ var listener;
 // Load an emtpy set of symbols that will be used to share data between the XUL & HTML
 Components.utils.import("resource://app/modules/xscope.jsm");
 
-
-
 /* ***************************************************************************************************************************** */ 
 function fileOpen(){
 	
@@ -126,8 +124,11 @@ function fileOpen(){
 	var CC = Components.classes;
 	var CI = Components.interfaces;
 	var fp = CC["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-	fp.init(window, "On1Map Data File", nsIFilePicker.modeOpen);
-	fp.appendFilters(nsIFilePicker.filterAll);		
+	fp.init(window, "Pin Data File", nsIFilePicker.modeOpen);
+	fp.appendFilter("On1Map Files","*.o1m");
+	fp.appendFilter("Keyhole Files","*.KML");
+	fp.appendFilters(nsIFilePicker.filterXML);	
+	fp.appendFilters(nsIFilePicker.filterAll);	
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnOK ) {
 		try {
@@ -182,6 +183,11 @@ function goTests(){
 	browser.loadURI("chrome://on1map/content/j3unit-0.9.0/j3unit-0.9.0/index.html", null, null);
 }
 
+function goPreferences(){
+	window.openDialog("chrome://on1map/content/connection.xul", "", "chrome,toolbar");
+	
+}
+
 function showConsole() {
   window.open("chrome://global/content/console.xul", "_blank",
     "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar");
@@ -211,8 +217,11 @@ function forward() {
 }
 
 function reload() {
-  var browser = document.getElementById("browser");
-  browser.reload();
+// Need to repopulate xscopeNS.pinList as they've all been trned into markers
+	var dataMgr = new DataManager();
+	dataMgr.reloadMarkers( xscopeNS.markers, xscopeNS.pinList );
+	var browser = document.getElementById("browser");
+	browser.reload();
 }
 
 function stop() {
