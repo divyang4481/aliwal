@@ -3,7 +3,43 @@ function DataManager(){
 		
 	this._cacheMgr = new CacheManager();
 	this._tmpList = new Array();
-
+	
+	this.errorHandler = {
+		locator: 	null,
+		_error: 	null,
+		
+		reset : (function (){
+			this.locator = null;
+			this._error = null;
+		}),
+		error : (function (aLocator,aError){ 
+			jsdump('SAXErrorHandler: error');
+			return }),
+		fatalError : (function (aLocator,aError){
+			this.locator = aLocator;
+			this._error = aError;
+			alert('Encountered a problem while parsing the data file.\nThe rest of it will not be loaded.');
+			jsdump('SAXErrorHandler: fatalError');
+			throw 'XML parsing fatal error';
+		}),
+		ignorableWarning : (function (aLocator,aError){ 
+			jsdump('SAXErrorHandler: ignorableWarning');
+			return })
+	};
+	
+	this.lexicalHandler = {
+		comment 	: (function (aContents){ return }), 
+		startDTD 	: (function (aName, aPublicId, aSystemId){ return }), 
+		endDTD 		: (function (){ return }), 
+		startCDATA 	: (function (){ return }), 
+		endCDATA 	: (function (){ return }), 
+		startEntity : (function (aName){ return }), 
+		endEntity 	: (function (aName){ return })
+	};
+	this.dtdHandler = {
+		notationDecl 		: (function (aName, aPublicId, aSystemId){ return }),
+		unparsedEntityDecl 	: (function (aName, aPublicId, aSystemId, aNotationName){ return })
+	};
 }
 DataManager.prototype.reloadMarkers = function(pMarkers, pDestList){
 	// When markers are created, the pinList is emptied to reduce memory consumption.
@@ -204,41 +240,8 @@ DataManager.prototype.loadFile = function(pFile,pDestPinList,pDestPinItems,pDest
 			return this;
 		})
 	};
-	
-	var lexicalHandler = {
-		comment 	: (function (aContents){ return }), 
-		startDTD 	: (function (aName, aPublicId, aSystemId){ return }), 
-		endDTD 		: (function (){ return }), 
-		startCDATA 	: (function (){ return }), 
-		endCDATA 	: (function (){ return }), 
-		startEntity : (function (aName){ return }), 
-		endEntity 	: (function (aName){ return })
-	};
-	
-	var dtdHandler = {
-		notationDecl 		: (function (aName, aPublicId, aSystemId){ return }),
-		unparsedEntityDecl 	: (function (aName, aPublicId, aSystemId, aNotationName){ return })
-	};
-		
-	var errorHandler = {
-		locator: 	null,
-		_error: 	null,
-		
-		reset 				: (function (){
-			this.locator = null;
-			this._error = null;
-		}),
-		error 				: (function (aLocator,aError){ 
-			return }),
-		fatalError 			: (function (aLocator,aError){
-			this.locator = aLocator;
-			this._error = aError;
-			throw 'XML parsing fatal error';
-		}),
-		ignorableWarning 	: (function (aLocator,aError){ return })
-	};
 
-
+		
     try {        
         var filestream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
         var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
@@ -252,9 +255,9 @@ DataManager.prototype.loadFile = function(pFile,pDestPinList,pDestPinItems,pDest
         }
 
         saxReader.contentHandler = contentHandler;
-        saxReader.lexicalHandler = lexicalHandler;
-        saxReader.dtdHandler = dtdHandler;
-        saxReader.errorHandler = errorHandler;
+        saxReader.lexicalHandler = this.lexicalHandler;
+        saxReader.dtdHandler = this.dtdHandler;
+        saxReader.errorHandler = this.errorHandler;
 
 		while( pDestPinList.length > 0){ pDestPinList.pop(); };
 		for(var kk in pDestPinItems){ delete pDestPinItems[kk] };
@@ -264,8 +267,9 @@ DataManager.prototype.loadFile = function(pFile,pDestPinList,pDestPinItems,pDest
         var uri = ioService.newFileURI( pFile);
         var channel = ioService.newChannelFromURI(uri, null, null);
         var StreamChunkSize = 32768;
-        var streamListener = new StreamListener(saxReader, channel);        
-        saxReader.parseAsync(null);
+        var streamListener = new StreamListener(saxReader, channel);     
+        var observer = null;   
+        saxReader.parseAsync(observer);
         pump.init(filestream, - 1, - 1, StreamChunkSize, 1, false);
         pump.asyncRead(streamListener, null);
       }

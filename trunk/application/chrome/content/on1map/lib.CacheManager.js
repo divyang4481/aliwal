@@ -40,6 +40,7 @@ CacheManager.prototype.getConn = function(){
 }
 CacheManager.prototype.getItem = function( pKey){
 	/* Args: pKey is case insensitive & trimmed of whitespace */
+	this._checkKey( pKey );
 	var ret;
 	var conn = this.getConn();
 	pKey = $.trim( pKey.toUpperCase() );
@@ -62,6 +63,7 @@ CacheManager.prototype.setItem = function( pKey, pValue ){
 	/* Args: pKey is case insensitive & trimmed of whitespace 
 	 * 		 pValue is a string
 	 */
+	this._checkKey( pKey );
 	var conn = this.getConn();
 	conn.beginTransactionAs( conn.TRANSACTION_DEFERRED );
 	pKey = $.trim( pKey.toUpperCase() );
@@ -81,9 +83,9 @@ CacheManager.prototype.setItem = function( pKey, pValue ){
 	conn.commitTransaction();
 }
 CacheManager.prototype.delItem = function( pKey){
-	/* Args: pKey is case insensitive & trimmed of whitespace 
-	 * 		 pValue is a string
+	/* Args: pKey is case insensitive. Leading and trailing whitespace is ignored.
 	 */
+	this._checkKey( pKey );
 	var conn = this.getConn();
 	conn.beginTransactionAs( conn.TRANSACTION_DEFERRED );
 	pKey = $.trim( pKey.toUpperCase() );
@@ -103,19 +105,12 @@ CacheManager.prototype._checkKey = function( pKey ){
 		throw 'CacheManager: key undefined'; 
 	}
 	if(typeof(pKey) === undefined){
-		throw 'CacheManager: key undefined'; 
-	}
-	if(typeof(pKey) === undefined){
-		throw 'CacheManager: key undefined'; 
+		throw 'CacheManager: key typeof undefined'; 
 	}
 	if(typeof(pKey) === null){
 		throw 'CacheManager: key null'; 
 	}
-	if(typeof(pKey) === ''){
+	if( $.trim(pKey) === ''){
 		throw 'CacheManager: key empty string'; 
-	}
-	if(typeof(pKey) === undefined){
-		throw 'CacheManager: key undefined'; 
-	}
-	
+	}	
 };

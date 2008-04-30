@@ -154,6 +154,7 @@ function fileOpen(){
 										xscopeNS.pinTagSets,
 										xscopeNS.flags );
 		} catch(e){
+			jsdump('app.on1map.js fileOpen threw an error');
 			throw e	
 		}
 	}
