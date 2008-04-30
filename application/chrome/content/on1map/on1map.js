@@ -44,7 +44,6 @@ function drawMarkers( pPoll){
 	if( redraw) {
 		if(pPoll){
 			/*There's more data coming so sleep for a bit and then recurse */
-			jsdump( 'Setting drawMarkers polling. xscopeNS.loadingData = ' + xscopeNS.loadingData );
 			window.setTimeout( drawMarkers,1000,true);
 		}
 	}
@@ -117,7 +116,6 @@ DomManager.prototype.drawLabelSelector = function( pDivId, pLabels ){
 		dd.append('<div class="warn">No data</div>');
 		this.log('No pin labels found in data', 'INFO');
 	}
-	
 }
 DomManager.prototype.drawPopupSelector= function( pDivId, pLabels){
 	/* Args: The string id of the div and and an array of label options */
