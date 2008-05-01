@@ -254,9 +254,10 @@ DataManager.prototype.loadFile = function(pFile,pDestPinList,pDestPinItems,pDest
         	// Ignore
         }
 
+		/* Not using content or lexical handlers. Removed looking for performance */
         saxReader.contentHandler = contentHandler;
-        saxReader.lexicalHandler = this.lexicalHandler;
-        saxReader.dtdHandler = this.dtdHandler;
+        //saxReader.lexicalHandler = this.lexicalHandler;
+        //saxReader.dtdHandler = this.dtdHandler;
         saxReader.errorHandler = this.errorHandler;
 
 		while( pDestPinList.length > 0){ pDestPinList.pop(); };
@@ -318,7 +319,7 @@ DataManager.prototype._enrichFromCache = function( pObj){
 			var cachedStr = this._cacheMgr.getItem( lookup );
 			pObj.Point.coordinates = ''+cachedStr;
 		} catch(e) {
-			jsdump('Cache unlucky. Going with file data for address:\n' + pObj.ExtendedData[_addrMember] );
+			//jsdump('Cache unlucky. Going with file data for address:\n' + pObj.ExtendedData[_addrMember] );
 		}		
 	}
 }
