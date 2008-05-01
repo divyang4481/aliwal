@@ -23,29 +23,24 @@ function drawMarkers( pPoll){
 	while( xscopeNS.pinList.length > 0){
 		var fm = xscopeNS.pinList.shift();
 		var nm = markerMgr.createMarker( fm );
+		
+		YEvent.Capture( nm, EventsList.MouseClick, function(){
+			this.openSmartWindow('<blink>Loading...</blink>');
+			domMgr.setPopupLabel( this, domMgr.getPopupDetails() );
+		});
+		
 		map.addOverlay(nm);
 		xscopeNS.markers.push( nm );
-		
-
 	}
-
-	// This only works via the markers array. Some scope issue if in loop above	
-	$.each(xscopeNS.markers, function(idx, val){	
-		// Sort out the smartWindow
-		YEvent.Capture( val, EventsList.MouseClick, function(){
-			val.openSmartWindow('<blink>Loading...</blink>');
-			domMgr.setPopupLabel( val, domMgr.getPopupDetails() );
-		});
-	});
 	
-	// Trigger a clicked event to set the intial pin labels
-	$('#sel_change_pin_label').trigger( 'change');
-			
-	if( redraw) {
-		if(pPoll){
-			/*There's more data coming so sleep for a bit and then recurse */
-			window.setTimeout( drawMarkers,1000,true);
-		}
+	if( redraw && pPoll) {
+		/*There's more data coming so sleep for a bit and then recurse */
+		window.setTimeout( drawMarkers,1000,true);
+	} else {
+		// Having finished loading.
+		// Trigger a clicked event to set the intial pin labels
+		$('#sel_change_pin_label').trigger( 'change');
+
 	}
 }
 
@@ -237,7 +232,7 @@ MarkerManager.prototype.createMarker = function( pObj ){
 		if( typeof(pObj.Point.coordinates) !== 'undefined'){
 			var spl = pObj.Point.coordinates.split(',');
 			var geo = new YGeoPoint( spl[0], spl[1] );
-			jsdump('Cache hit. Going with cache data for address:\n' + pObj.ExtendedData[_addrMember] );
+			//jsdump('Cache hit. Going with cache data for address:\n' + pObj.ExtendedData[_addrMember] );
 			ret = new YMarker( geo );
 		}
 	}
