@@ -118,8 +118,10 @@ var listener;
 Components.utils.import("resource://app/modules/xscope.jsm");
 
 /* ***************************************************************************************************************************** */ 
+
+
+
 function fileOpen(){
-	
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
 	var CC = Components.classes;
 	var CI = Components.interfaces;
@@ -130,32 +132,111 @@ function fileOpen(){
 	fp.appendFilters(nsIFilePicker.filterXML);	
 	fp.appendFilters(nsIFilePicker.filterAll);	
 	var rv = fp.show();
+	if (rv == nsIFilePicker.returnOK ) {			
+		try {
+			xscopeNS.flags.loadingData = true;
+			var dataMgr = new DataManager();
+			dataMgr.emptyObj( xscopeNS.domMarkers );
+			dataMgr.emptyObj( xscopeNS.KML );
+			dataMgr.emptyObj( xscopeNS.pinTagSets);
+			dataMgr.emptyObj( xscopeNS.pinItems);
+			dataMgr.loadFile( fp.file.path, function( pDoc ){
+				/* dataMgr.loadFile() is asyncronous. 
+				 * This is called when it's finished loading successfully.
+				 */
+
+				/* Scope issues mean that pDoc has to be copied back to xscopeNS in here. */
+				var inter = Sarissa.getDomDocument();
+				var clonedNode = inter.importNode( pDoc.firstChild , true );
+				inter.appendChild( clonedNode );
+				xscopeNS.KML = inter;
+
+				dataMgr.enrichFromCache( xscopeNS.KML );
+				xscopeNS.pinTagSets = dataMgr.domTagSetCensus( xscopeNS.KML );
+				xscopeNS.pinItems = dataMgr.domLabelCensus( xscopeNS.KML );	
+				xscopeNS.flags.loadingData = false;
+				
+				// Drop the Map drawing into it's own thread
+				window.setTimeout( goMap, 1);
+			});
+		} catch(e){
+			jsdump(e);
+		}				
+	}	
+}
+
+
+
+
+
+
+function fileSave(){
+	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
+	var CC = Components.classes;
+	var CI = Components.interfaces;
+	var fp = CC["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "Pin Data File", nsIFilePicker.modeSave);
+	fp.appendFilter("On1Map Files","*.o1m");
+	fp.appendFilter("Keyhole Files","*.KML");
+	fp.appendFilters(nsIFilePicker.filterXML);	
+	fp.appendFilters(nsIFilePicker.filterAll);	
+	var rv = fp.show();
 	if (rv == nsIFilePicker.returnOK ) {
 		try {
-			// Destroy any existing markers and empty the list.
-//			for ( var idx in xscopeNS.markers){
-//				xscopeNS.markers[idx] = null;
-//			};
-//			xscopeNS.markers = [];
+			var savefile = fp.file;
+			//Thanks: http://www.captain.at/programming/xul/
+			var file = Components.classes["@mozilla.org/file/local;1"]
+				.createInstance(Components.interfaces.nsILocalFile);
+			file.initWithPath( savefile );
+			if ( file.exists() == false ) {
+				jsdump( "Creating file... " );
+				file.create( Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420 );
+			}
+			var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+				.createInstance( Components.interfaces.nsIFileOutputStream );
+			/* Open flags 
+			#define PR_RDONLY       0x01
+			#define PR_WRONLY       0x02
+			#define PR_RDWR         0x04
+			#define PR_CREATE_FILE  0x08
+			#define PR_APPEND      0x10
+			#define PR_TRUNCATE     0x20
+			#define PR_SYNC         0x40
+			#define PR_EXCL         0x80
+			*/
+			/*
+			** File modes ....
+			**
+			** CAVEAT: 'mode' is currently only applicable on UNIX platforms.
+			** The 'mode' argument may be ignored by PR_Open on other platforms.
+			**
+			**   00400   Read by owner.
+			**   00200   Write by owner.
+			**   00100   Execute (search if a directory) by owner.
+			**   00040   Read by group.
+			**   00020   Write by group.
+			**   00010   Execute by group.
+			**   00004   Read by others.
+			**   00002   Write by others
+			**   00001   Execute by others.
+			**
+			*/
+			outputStream.init( file, 0x04 | 0x08 | 0x20, 420, 0 );
+			var openingstr = '<kml xmlns="http://earth.google.com/kml/2.2"><Document><name>Sample data</name>';
+			var datastr = '';
+			var closingstr = '</Document></kml>';
+			var result = outputStream.write( openingstr, openingstr.length );
+			for(var idx=0, ll= xscopeNS.markers.length;idx<ll;idx++){
+				datastr =  '<Placemark><ExtendedData>';
+				datastr += dataMgr.markerToXML( xscopeNS.markers[idx] );
+				datastr += '</ExtendedData></Placemark>';
+				outputStream.write( datastr, datastr.length );
+			}
 			
-//			xscopeNS.pinList = [];
-//			xscopeNS.pinItems = {};
-//			xscopeNS.pinTagSets= {};
-			
-			
-			// Get the browser settting up the webpage in the mean time.
-			// It's important that xscopeNS.loadingData is set before loading the page otherwise it won't look for new data at all
-			// Page loading done via a setTimeout to get it into a seperate thread			
-			window.setTimeout( goMap, 1);
-	
-			var dataMgr = new DataManager();
-			dataMgr.loadFile( fp.file,  xscopeNS.pinList, 
-										xscopeNS.pinItems, 
-										xscopeNS.pinTagSets,
-										xscopeNS.flags );
+			result += outputStream.write( closingstr, closingstr.length );
+			outputStream.close();
 		} catch(e){
-			jsdump('app.on1map.js fileOpen threw an error');
-			throw e	
+			//
 		}
 	}
 }
@@ -164,7 +245,9 @@ function fileClose(){
 	xscopeNS.raw_data = [];
 	goWelcome();
 }
-
+function goAbout(){
+	window.openDialog("chrome://on1map/content/about.xul","aboutDialog","dialog" );
+}
 function goWelcome(){
 	var browser = document.getElementById("browser");
 	browser.loadURI("chrome://on1map/content/welcome.html", null, null);
@@ -220,7 +303,6 @@ function forward() {
 function reload() {
 // Need to repopulate xscopeNS.pinList as they've all been trned into markers
 	var dataMgr = new DataManager();
-	dataMgr.reloadMarkers( xscopeNS.markers, xscopeNS.pinList );
 	var browser = document.getElementById("browser");
 	browser.reload();
 }
