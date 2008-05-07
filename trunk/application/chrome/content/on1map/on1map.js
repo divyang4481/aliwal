@@ -1,5 +1,6 @@
 Components.utils.import("resource://app/modules/xscope.jsm");
 
+var dataMgr = new DataManager();
 var markerMgr = new MarkerManager();
 var domMgr = new DomManager();
 var cacheMgr = new CacheManager();
@@ -21,6 +22,11 @@ $(document).ready( function(){
 	// Attach an event handler to ALL of the options hideshow checkboxes
 	$('.cb_hideshow_option').bind( 'change', function(e){
 		domMgr.hideShowOptions( this.id, this.checked );
+	});	
+	
+	// Attach another event handler to hideshow2
+	$('.div_hideshow_option').bind( 'click', function(e){
+		domMgr.hideShow2( this.id );
 	});	
 	
 	/* Filter controls need to be in place bfore the map can be drawn */
@@ -75,6 +81,8 @@ $(document).ready( function(){
 	var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
 	map.drawZoomAndCenter( homeloc, 7);
 
-
+	// Trigger a clicked event to set the intial pin labels
+	$('#sel_change_pin_label').trigger( 'change');
+	
 });
 

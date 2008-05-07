@@ -38,43 +38,44 @@ DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pB
 	}
 	try{	
 		for( var key in pHiddenMarkers ){
-			if( that.inBounds(pBounds, pHiddenMarkers[key].YGeoPoint.Lat, pHiddenMarkers[key].YGeoPoint.Lon)
-			 	&& markerMgr.unfilteredMarker(pHiddenMarkers[key], fils) ){
-				if ( visicount <= 599 ){
-					//jsdump('Moving from hidden to visible: ' + pHiddenMarkers[key].id );
-					pVisibleMarkers[key] = pHiddenMarkers[key];
-					map.addOverlay(pVisibleMarkers[key]);
-					delete pHiddenMarkers[key];
-				} else {
-					throw 'Map density ceiling';
+			if( that.inBounds(pBounds, pHiddenMarkers[key].YGeoPoint.Lat, pHiddenMarkers[key].YGeoPoint.Lon) ){
+				if( markerMgr.unfilteredMarker(pHiddenMarkers[key], fils) ){
+					if ( visicount < 600 ){
+						//jsdump('Moving from hidden to visible: ' + pHiddenMarkers[key].id );
+						visicount++;
+						pVisibleMarkers[key] = pHiddenMarkers[key];
+						map.addOverlay(pVisibleMarkers[key]);
+						delete pHiddenMarkers[key];	
+					} else {
+						throw 'Map density ceiling';
+				 	}
 				}
 			}
 		}
 	} catch(e){
-		jsdump('Only the 1st 599 markers within this map area shown.\nTry zooming to avoid this limit.');
+		jsdump('Only the 1st 599 markers within this map area shown.\nTry zooming or filtering to avoid this limit.');
 	}
-	// Trigger a clicked event to set the intial pin labels
-	$('#sel_change_pin_label').trigger( 'change');
 }
 DomManager.prototype.drawControls = function( pPoll ){
 	var redraw = xscopeNS.flags.loadingData;
+	var pinItems = dataMgr.domLabelCensus( xscopeNS.KML );	
+	var pinTagSets = dataMgr.domTagSetCensus( xscopeNS.KML );
 	
 	// Filtering stuff
 	var labels = [];
-	for (var pi in xscopeNS.pinItems){
+	for (var pi in pinItems){
 		labels.push(pi);
 	}
 	
-	var tagdata = xscopeNS.pinTagSets;
 	var html = '<table id="tbl_filters"></table>';
 	$("#div_filters").empty();
 	$("#div_filters").append(html);
 
  	var filcnt = 0;
-	$.each( tagdata, function(tagset, tags){
+	$.each( pinTagSets, function(tagset, tags){
 		html = '<tr><td id="divFilter_' + filcnt + '"></td></tr>';
 		$('#tbl_filters').append(html);
-		domMgr.drawTagsetFilter('divFilter_' + filcnt, tagset, tagdata );
+		domMgr.drawTagsetFilter('divFilter_' + filcnt, tagset, pinTagSets );
 		filcnt++;
 	});
 	
@@ -172,9 +173,30 @@ DomManager.prototype.getFilterSelection = function(){
 }
 DomManager.prototype.hideShowOptions = function( pId, pChecked){
 	/* Takes the ID of the checkbox and hides or shows everything in that div except the triggering element ( usually checkbox pId) 
-	 * */
+	 */
 	var dd = $('#' + pId ).siblings().not('label');
 	pChecked ? dd.slideDown(20): dd.slideUp(20);
+}
+DomManager.prototype.hideShow2 = function(pId){
+/*
+ 			<div class="div_hideshow_option" state="SHOWN">
+				<div class="hideshowlabel float_left"><label>Popup Details</label></div>
+				<div class="hideshowicon float_right"><img src="icons/log_info.png" /></div>
+				<div class="float_clear"></div>
+			</div>
+*/
+	var ctl = $('#'+pId);
+	var victims = ctl.siblings();
+
+	if( ctl.attr('state') === 'HIDDEN'){
+		victims.slideDown(20);
+		ctl.attr('state','SHOWN');
+		ctl.find('.hideshowicon>img').attr('src','images/red_cross_circle.png');
+	} else{ 
+		victims.slideUp(20);
+		ctl.attr('state','HIDDEN');
+		ctl.find('.hideshowicon>img').attr('src','images/green_tick_circle.png');
+	}
 }
 DomManager.prototype.log = function( pMsg, pClass){
 	if(!pClass){
