@@ -14,6 +14,8 @@
 	<script src="jquery-1.2.3.js" 		/>  
 	<script src="io.js" 				/>  
 	<script src="xmlsax.js" 				/>  
+	<script src="sarissa-full-0.9.9.3/gr/abiss/js/sarissa/sarissa.js" />
+  
 	
 <!-- On1Map libs -->
 	<script src="lib.CacheManager.js" 	/>
@@ -35,10 +37,10 @@
 	<menubar id="on1map-menubar">
 	  <menu id="file-menu" label="File">
 	    <menupopup id="file-popup">
-	      <menuitem label="Open" 	accesskey="o" 	command="cmd_open" 	/>
-<!--      <menuitem label="Save" 	accesskey="s" 	command="cmd_save"	/> 		-->
-<!--      <menuitem label="Save As"  				command="cmd_saveas" /> 	-->
-	      <menuitem label="Close"  					command="cmd_close" />
+			<menuitem label="Open file"		accesskey="o" 	command="cmd_open" 	/>
+      		<menuitem label="Save file" 	accesskey="s" 	command="cmd_save"	/> 		
+<!--      <menuitem label="Save As"  						command="cmd_saveas" /> 	-->
+	      <menuitem label="Close map"  						command="cmd_close" />
 	    </menupopup>
 	  </menu>
 	  
@@ -55,21 +57,13 @@
 
 		<menu id="about-menu" label="About">
 			<menupopup id="about-popup">
-				<menuitem label="About" 						command="cmd_about" />
+				<menuitem label="About Aliwal On1map" 			command="cmd_about" />
 			</menupopup>	
 		</menu>
 	</menubar>
-<!--  
-  <hbox>
-    <button id="back" label="&on1map.back;" oncommand="back();" disabled="true"/>
-    <button id="forward" label="&on1map.forward;" oncommand="forward();" disabled="true"/>
-    <button id="reload" label="&on1map.reload;" oncommand="reload();"/>
-    <button id="stop" label="&on1map.stop;" oncommand="stop();" disabled="true"/>
-    <textbox id="urlbar" value="" flex="1" onchange="go();"/>
-    <button id="go" label="&on1map.go;" oncommand="go();"/>
-  </hbox>
--->
-  <browser flex="1" id="browser" src="" type="content-primary"/>
+
+	<browser flex="1" id="browser" src="" type="content-primary"/>
+  	
   <statusbar>
     <statusbarpanel id="status" label="" crop="end" flex="1"/>
     <progressmeter id="progress" mode="determined" value="0%" style="display: none"/>
