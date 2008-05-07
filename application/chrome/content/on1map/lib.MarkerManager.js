@@ -46,9 +46,6 @@ MarkerManager.prototype.unfilteredMarker = function( pMarker, pFilterSets ){
 	for(var tagset in pFilterSets){
 		for(var idx in pFilterSets[tagset]){
 			var filterval = pFilterSets[tagset][idx];
-//				var ll = $(xscopeNS.KML).find('Placemark[on1map_markerid="'+pMarker.id+'"]')
-//							            .find('ExtendedData>TagSet[name="'+tagset+'"]')
-//							            .find('Tag:contains("'+filterval+'")').length;
 			var ll = $(pMarker.on1map_kml_ref).find('ExtendedData>TagSet[name="'+tagset+'"]')
 											.find('Tag:contains("'+filterval+'")').length;
 			if ( ll > 0 ) {
@@ -57,9 +54,7 @@ MarkerManager.prototype.unfilteredMarker = function( pMarker, pFilterSets ){
 			};
 		};
 	}
-//	jsdump( 'marker.id: ' + pMarker.id);
-//	jsdump( 'unfilteredMarker returning:' + ret +'\nll=' + ll +'\ntagset='+tagset+'\nfilterval='+filterval);
-
+//	jsdump( 'unfilteredMarker returning:' + ret +'\nll=' + ll );
 	return ret;
 }
 MarkerManager.prototype.setPinLabels = function( pVisibleMarkers, pLabelAttrib ){
@@ -67,9 +62,7 @@ MarkerManager.prototype.setPinLabels = function( pVisibleMarkers, pLabelAttrib )
 	 * on1data value named pLabelAttrib
 	 */
 	 $.each(pVisibleMarkers, function(idx, pMarker){
-//		var labelstr = $(xscopeNS.KML).find('Placemark[on1map_markerid="'+pMarker.id+'"]')
-//		 								.find('ExtendedData>Data[name="'+pLabelAttrib+'"]>value').text();
-		var labelstr = $(pMarker.on1map_kml_ref).find('ExtendedData>Data[name="'+pLabelAttrib+'"]>value').text();
+		var labelstr = '<div class="marker_label">' + $(pMarker.on1map_kml_ref).find('ExtendedData>Data[name="'+pLabelAttrib+'"]>value').text() + '</div>';
 		pMarker.addAutoExpand(labelstr);
 	 });
 }
@@ -83,15 +76,14 @@ MarkerManager.prototype.setPopupLabels = function( pVisibleMarkers, pPopupAttrib
 	 });
 }
 MarkerManager.prototype.setPopupLabel = function( pMarker, pPopupAttribArr ){
-	var html = '<table class="tbl_popup_details">';
+	var html = '<table class="marker_popup_table"><caption class="marker_popup_caption"></caption>';
+	html += '<colgroup><col class="marker_popup_labelcol"/><col class="marker_popup_datacol"/></colgroup>';
+	html += '<thead></thead><tfooter></tfooter><tbody class="marker_popup_tbody">';
 	$.each( pPopupAttribArr, function(idx, val){
-		html += '<tr><td></td>';
-//			html += $(xscopeNS.KML).find('Placemark[on1map_markerid="'+marker.id+'"]')
-//		 								.find('ExtendedData>Data[name="'+val+'"]>value').text();
-		html += $(pMarker.on1map_kml_ref).find('ExtendedData>Data[name="'+val+'"]>value').text();
-		html +=	'</tr>\n';
+		html += '<tr><th class="marker_popup_th">' + val + '&nbsp;</th>\n';
+		html += '<td>' + $(pMarker.on1map_kml_ref).find('ExtendedData>Data[name="'+val+'"]>value').text() + '</td></tr>';
 	});
-	html += '</table>';	
+	html += '</tbody></table>';	
 	pMarker.updateSmartWindow( html );
 }
 MarkerManager.prototype.markerInbounds = function( pMarker ){

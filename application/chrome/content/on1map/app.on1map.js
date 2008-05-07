@@ -152,8 +152,6 @@ function fileOpen(){
 				xscopeNS.KML = inter;
 
 				dataMgr.enrichFromCache( xscopeNS.KML );
-				xscopeNS.pinTagSets = dataMgr.domTagSetCensus( xscopeNS.KML );
-				xscopeNS.pinItems = dataMgr.domLabelCensus( xscopeNS.KML );	
 				xscopeNS.flags.loadingData = false;
 				
 				// Drop the Map drawing into it's own thread

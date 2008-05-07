@@ -3,13 +3,15 @@
 	<script type="text/javascript" src="jquery-1.2.3.js"></script>
 	<script type="text/javascript" src="xscope.jsm"></script>	
 	<script type="text/javascript" src="lib.CacheManager.js"></script>		
+	<script type="text/javascript" src="lib.DataManager.js"></script>		
 	<script type="text/javascript" src="lib.MarkerManager.js"></script>		
 	<script type="text/javascript" src="lib.DomManager.js"></script>		
 	<script type="text/javascript" src="on1map.js"></script>
 	
 	<link rel="stylesheet" type="text/css" href="on1struct.css" />
 	<link rel="stylesheet" type="text/css" href="on1map.css" />
-
+	<link rel="stylesheet" type="text/css" href="marker.css" />
+	
 	<!-- This is last because it's not local -->	
 	<script type="text/javascript" src="http://api.maps.yahoo.com/ajaxymap?v=3.8&appid=TQBZw2PV34GYymqj0eHGSn32aSw7fyGL7wdA3Cs5QufCQY4Zy9qn1ZHzSepRxh2XKg--"></script>
 	
@@ -34,18 +36,22 @@
 		</div>
 		<hr>
 		<div id="hsdiv_filters">
-			<input class="cb_hideshow_option" id="cb_filters_hideshow" type="checkbox" checked="checked" value="filters">
-				<label>Tags</label>
-			</input>
+			<div id="hsctl_filters" class="div_hideshow_option" state="SHOWN">
+				<div class="hideshowlabel float_left"><label>Tags</label></div>
+				<div class="hideshowicon float_right"><img height="24px" width="24px" src="images/red_cross_circle.png" /></div>
+				<div class="float_clear"></div>
+			</div>
 			<div id="div_filters">
 				<blink>Loading...</blink>
 			</div><!-- div_ddlb_filters -->
 		</div>
 		<hr>
 		<div id="hsdiv_details">
-			<input class="cb_hideshow_option" id="cb_popup_hideshow" type="checkbox" checked="checked" value="filters">
-				<label>Popup Details</label>
-			</input>
+			<div id="hsctl_details" class="div_hideshow_option" state="SHOWN">
+				<div class="hideshowlabel float_left"><label>Popup Details</label></div>
+				<div class="hideshowicon float_right"><img height="24px" width="24px" src="images/red_cross_circle.png" /></div>
+				<div class="float_clear"></div>
+			</div>			
 			<div id="pin_popup_switches">
 				<blink>Loading...</blink>
 			</div>
@@ -55,8 +61,19 @@
 	</div><!-- extra -->
 	<div id="footer">
  	
+	<div id="hsdiv_messages>">
+		<div id="hsctl_messages" class="div_hideshow_option" state="SHOWN">
+			<div class="hideshowlabel float_left"><label>Messages</label></div>
+			<div class="hideshowicon float_right"><img height="24px" width="24px" src="images/red_cross_circle.png" /></div>
+			<div class="float_clear"></div>
+		</div>			
+		<div id="messagebox" >&nbsp;
+		</div>
+	</div>
 
 
+
+<!--  
 
 <script type="text/javascript">
 function debug(){
@@ -77,18 +94,9 @@ domMgr.log('(xscopeNS.markers.length):\n'+ xscopeNS.markers.length );
 var ss = new XMLSerializer();
 jsdump(ss.serializeToString(xscopeNS.KML) );
 </textarea>
- 
-<div id="results">
-	No results.
-</div>	
+-->
 	
-		<div id="hsdiv_messages>">
-			<input class="cb_hideshow_option" id="cb_messages_hideshow" type="checkbox" checked="checked" value="messagebox">
-				<label>Messages</label>
-			</input>		
-			<div id="messagebox" >&nbsp;
-			</div>
-		</div>
+
 	</div><!-- footer -->
 </div><!-- container -->
 

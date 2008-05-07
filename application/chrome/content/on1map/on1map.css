@@ -57,3 +57,10 @@ h1{
 .tagset_filter{
  width: 200px;
 }
+
+.float_left { float: left; }
+.float_right{ float: right;}
+.float_clear{ clear: both ;}
+
+
+
