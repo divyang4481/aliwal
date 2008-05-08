@@ -146,7 +146,7 @@ function fileOpen(){
 				 */
 
 				/* Scope issues mean that pDoc has to be copied back to xscopeNS in here. */
-				var inter = Sarissa.getDomDocument();
+				var inter = document.implementation.createDocument("","",null);
 				var clonedNode = inter.importNode( pDoc.firstChild , true );
 				inter.appendChild( clonedNode );
 				xscopeNS.KML = inter;
@@ -163,11 +163,6 @@ function fileOpen(){
 	}	
 }
 
-
-
-
-
-
 function fileSave(){
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
 	var CC = Components.classes;
@@ -181,10 +176,11 @@ function fileSave(){
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnOK ) {
 		try {
-			var savefile = fp.file;
+			var savefile = fp.file.path;
 			//Thanks: http://www.captain.at/programming/xul/
 			var file = Components.classes["@mozilla.org/file/local;1"]
 				.createInstance(Components.interfaces.nsILocalFile);
+			jsdump('savefile is:\n' + savefile);
 			file.initWithPath( savefile );
 			if ( file.exists() == false ) {
 				jsdump( "Creating file... " );
@@ -219,22 +215,12 @@ function fileSave(){
 			**   00001   Execute by others.
 			**
 			*/
-			outputStream.init( file, 0x04 | 0x08 | 0x20, 420, 0 );
-			var openingstr = '<kml xmlns="http://earth.google.com/kml/2.2"><Document><name>Sample data</name>';
-			var datastr = '';
-			var closingstr = '</Document></kml>';
-			var result = outputStream.write( openingstr, openingstr.length );
-			for(var idx=0, ll= xscopeNS.markers.length;idx<ll;idx++){
-				datastr =  '<Placemark><ExtendedData>';
-				datastr += dataMgr.markerToXML( xscopeNS.markers[idx] );
-				datastr += '</ExtendedData></Placemark>';
-				outputStream.write( datastr, datastr.length );
-			}
-			
-			result += outputStream.write( closingstr, closingstr.length );
+			outputStream.init( file, 0x02 | 0x08 | 0x20, 0664, 0);   // write, create, truncate
+			var serializer = new XMLSerializer();
+			serializer.serializeToStream(xscopeNS.KML, outputStream, "");
 			outputStream.close();
 		} catch(e){
-			//
+			jsdump(e);
 		}
 	}
 }
