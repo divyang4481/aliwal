@@ -15,13 +15,61 @@ DomManager.prototype.inBounds = function( pBounds, pLat, pLon ){
 	//jsdump('Out of bounds:');
 	return false;
 }
-DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pBounds ){
+DomManager.prototype.drawMarkers = function( pMarkers, pBounds ){
+	/* Takes a hash of marker objects, to them and puts them on the map.
+	 * Address geocoded markers can arrive here, before they've been encoded with cooordinates. 
+	 * This stumps inBounds() logic etc, hence lat&lon===0 case.
+	 */
+	var that = this;
+	var fils = that.getFilterSelection();
+	var visicount = 0;
+	try{
+		for( var key in pMarkers ){
+			if( !pMarkers[key].on1map_visible && pMarkers[key].YGeoPoint.Lat === 0 && pMarkers[key].YGeoPoint.Lon === 0 ){
+				// The marker has been created but not yet geocoded. Add it to the map and 
+				// leave it alone until it's been geocoded.
+				pMarkers[key].on1map_visible = true;
+				map.addOverlay(pMarkers[key]);
+			} else {
+				if(pMarkers[key].on1map_visible){
+					if( that.inBounds(pBounds, pMarkers[key].YGeoPoint.Lat, pMarkers[key].YGeoPoint.Lon) 
+					  && markerMgr.unfilteredMarker(pMarkers[key], fils) ){
+						// leave already visible,inBounds&unfiltered alone
+						visicount++;
+					} else {
+						// Remove visible&(filtered or out of bounds ) to hidden
+						//jsdump('Moving from visible to hidden: ' + pMarkers[key].id );
+						pMarkers[key].on1map_visible = false;
+						map.removeOverlay(pMarkers[key]);
+					}
+				} else {
+					// Marker is not currently visible
+					if( that.inBounds(pBounds, pMarkers[key].YGeoPoint.Lat, pMarkers[key].YGeoPoint.Lon) ){
+						if( markerMgr.unfilteredMarker(pMarkers[key], fils) ){
+							if ( visicount < 600 ){
+								//jsdump('Moving from hidden to visible: ' + pMarkers[key].id );
+								visicount++;
+								pMarkers[key].on1map_visible = true;
+								map.addOverlay(pMarkers[key]);
+							} else {
+								throw 'Map density ceiling';
+						 	}
+						}
+					}
+				}
+			}
+		}
+	} catch(e){
+		jsdump(e);
+		jsdump('Only the 1st 599 markers within this map area shown.\nTry zooming or filtering to avoid this limit.');
+	}
+}
+DomManager.prototype.drawMarkers_bak = function( pVisibleMarkers, pHiddenMarkers, pBounds ){
 	/* Takes a hash of marker objects, to them and puts them on the map.
 	 */
 	var that = this;
 	var fils = that.getFilterSelection();
 	var visicount = 0;
-	
 	
 	for( var key in pVisibleMarkers ){	
 		if( that.inBounds(pBounds, pVisibleMarkers[key].YGeoPoint.Lat, pVisibleMarkers[key].YGeoPoint.Lon) 
@@ -56,8 +104,8 @@ DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pB
 		jsdump('Only the 1st 599 markers within this map area shown.\nTry zooming or filtering to avoid this limit.');
 	}
 }
-DomManager.prototype.drawControls = function( pPoll ){
-	var redraw = xscopeNS.flags.loadingData;
+DomManager.prototype.drawControls = function(){
+	
 	var pinItems = dataMgr.domLabelCensus( xscopeNS.KML );	
 	var pinTagSets = dataMgr.domTagSetCensus( xscopeNS.KML );
 	
@@ -81,7 +129,7 @@ DomManager.prototype.drawControls = function( pPoll ){
 	
 	// Attach an event handler to the filter stuff
 	$('.tagset_filter').bind('change', function(e){
-		domMgr.drawMarkers( xscopeNS.domMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
+		domMgr.drawMarkers( xscopeNS.domMarkers, map.getBoundsLatLon() );
 	});
 	
 	// Pin label stuff
@@ -92,13 +140,6 @@ DomManager.prototype.drawControls = function( pPoll ){
 
 	// Popup Selectors	
 	domMgr.drawPopupSelector('pin_popup_switches', labels );	
-
-	if( redraw ){ 
-		if(pPoll){
-			jsdump( 'Setting drawControls polling. xscopeNS.flags.loadingData = ' + xscopeNS.flags.loadingData );
-			window.setTimeout( drawControls, 1000, true);
-		}
-	}
 }
 DomManager.prototype.drawLabelSelector = function( pDivId, pLabels ){
 	/* Args: The string id of the div and an array of label options */
@@ -171,20 +212,7 @@ DomManager.prototype.getFilterSelection = function(){
 	});
 	return ret;
 }
-DomManager.prototype.hideShowOptions = function( pId, pChecked){
-	/* Takes the ID of the checkbox and hides or shows everything in that div except the triggering element ( usually checkbox pId) 
-	 */
-	var dd = $('#' + pId ).siblings().not('label');
-	pChecked ? dd.slideDown(20): dd.slideUp(20);
-}
 DomManager.prototype.hideShow2 = function(pId){
-/*
- 			<div class="div_hideshow_option" state="SHOWN">
-				<div class="hideshowlabel float_left"><label>Popup Details</label></div>
-				<div class="hideshowicon float_right"><img src="icons/log_info.png" /></div>
-				<div class="float_clear"></div>
-			</div>
-*/
 	var ctl = $('#'+pId);
 	var victims = ctl.siblings();
 

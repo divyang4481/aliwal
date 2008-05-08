@@ -8,27 +8,29 @@ MarkerManager.prototype.createMarkersFromDom = function( pKML, pDest, pClickEven
 	 * Tags the YMarker object with a jquery reference "on1map_kml_ref" into the DOM doc.
 	 */
 	var that = this;
+	var nm;
 	for(var keys in pDest){
 		delete pDest[keys];
 	};
 	$(pKML).find('Placemark').each(function(idx, pmark){
-		try{	
-			var nm;
+		try{
 			if ( $(pmark).is('Placemark:has(Point>coordinates)') ) {
 				var spl = $(pmark).children('Point>coordinates:first').text().split(',');
-				var geopoint = new YGeoPoint( spl[0], spl[1] );
+				/* NB!  KML says coordinates come LON,LAT */
+				var geopoint = new YGeoPoint( spl[1], spl[0] );
 				nm = new YMarker( geopoint );		
-			} else if ( $(pmark).is(":contains('ExtendedData>GeocodeAddress')") ){
-				var geoaddr = $(pmark).children('ExtendedData>GeocodeAddress:first').text().trim();
+			} else if ( $(pmark).is("Placemark:has('ExtendedData>GeocodeAddress')") ){
+				var geoaddr = $.trim( $(pmark).find('ExtendedData>GeocodeAddress:first').text() );
 				nm = new YMarker(geoaddr);		
 			} else {
 				throw 'MarkerManager: No Point.coordinates or ExtendedData.GeocodeAddress on marker data';
 			}
 			
-			$(pmark).attr('on1map_markerid', nm.id );		
+			$(pmark).attr('on1map_markerid', nm.id );					
+			nm.on1map_kml_ref = $(pKML).find('Placemark[on1map_markerid='+nm.id+']');
+			nm.on1map_visible = false;
 			pDest[nm.id] = nm;
 			YEvent.Capture( pDest[nm.id], EventsList.MouseClick, pClickEventHandler );
-			nm.on1map_kml_ref = $(pmark);
 		} catch(e){
 			jsdump(e)
 		}
@@ -41,6 +43,28 @@ MarkerManager.prototype.unfilteredMarker = function( pMarker, pFilterSets ){
 	 * run thorugh the tagsets and look for that as a member on the marker.
 	 * If any matches are found, the marker should be shown so return true
 	 */
+	 
+	var isEmpty = function(o){
+	/* Thanks: http://javascript.crockford.com/remedial.html
+	 * Swapped TypeOf for typeof. Don't need to detect arrays
+	 * Oh When will the python gecko be ready ? 
+	 */
+	    var i, v;
+	    if (typeof(o) === 'object') {
+	        for (i in o) {
+	            v = o[i];
+	            if (v !== undefined && typeof(v) !== 'function') {
+	                return false;
+	            }
+	        }
+	    }
+	    return true;
+	};
+	
+	if (isEmpty(pFilterSets)){
+		return true;
+	}
+	
 	var ret = false;
 //	jsdump('uneval(pFilterSets):'+uneval(pFilterSets));
 	for(var tagset in pFilterSets){
