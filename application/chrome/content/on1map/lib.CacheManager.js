@@ -11,32 +11,38 @@ function CacheManager(){
 	 this._conn = undefined;
 }
 CacheManager.prototype.getConn = function(){
-	if (typeof(this._conn) === 'undefined'){
-		var dserv = Components.classes["@mozilla.org/file/directory_service;1"]
-		                      	.getService(Components.interfaces.nsIProperties);
-		                      
-		var storageService = Components.classes["@mozilla.org/storage/service;1"]
-								.getService(Components.interfaces.mozIStorageService);
+	if (typeof(CacheManager.prototype._conn) === 'undefined'){
+		try{
+			jsdump('Creating CACHE Connection');
+			var dserv = Components.classes["@mozilla.org/file/directory_service;1"]
+			                      	.getService(Components.interfaces.nsIProperties);
+			                      
+			var storageService = Components.classes["@mozilla.org/storage/service;1"]
+									.getService(Components.interfaces.mozIStorageService);
+			 
+			 // Here's where the file will end up in the profile directory
+			 var usrfile = dserv.get("ProfD", Components.interfaces.nsIFile);
+			 usrfile.append("on1map.db.sqlite");
+			 	 
+			// nsILocalFile extends nsIFile, the input into Storage Service Open Data Base call
+			var ifile = Components.classes["@mozilla.org/file/local;1"]
+									.createInstance(Components.interfaces.nsILocalFile);
+			
+			ifile.initWithFile( usrfile );
 		 
-		 // Here's where the file will end up in the profile directory
-		 var usrfile = dserv.get("ProfD", Components.interfaces.nsIFile);
-		 usrfile.append("on1map.db.sqlite");
-		 	 
-		// nsILocalFile extends nsIFile, the input into Storage Service Open Data Base call
-		var ifile = Components.classes["@mozilla.org/file/local;1"]
-								.createInstance(Components.interfaces.nsILocalFile);
-		
-		ifile.initWithFile( usrfile );
-	 
-		this._conn = storageService.openDatabase(ifile);
-		
-		// If this is the 1st run for this user, create the tables
-		if (! this._conn.tableExists('app_cache')){
-			this._conn.createTable('app_cache', ' name string not null primary key, value string not null ');
+			CacheManager.prototype._conn = storageService.openDatabase(ifile);
+			
+			// If this is the 1st run for this user, create the tables
+			if (! CacheManager.prototype._conn.tableExists('app_cache')){
+				CacheManager.prototype._conn.createTable('app_cache', ' name string not null primary key, value string not null ');
+			}
+		} catch(e){
+			jsdump(e);
+			throw e;
 		}
 	}
 		
-	return this._conn;
+	return CacheManager.prototype._conn;
 }
 CacheManager.prototype.getItem = function( pKey){
 	/* Args: pKey is case insensitive & trimmed of whitespace */
