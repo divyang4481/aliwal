@@ -12,10 +12,6 @@
   
 <!-- External libs -->
 	<script src="jquery-1.2.3.js" 		/>  
-	<script src="io.js" 				/>  
-	<script src="xmlsax.js" 				/>  
-	<script src="sarissa-full-0.9.9.3/gr/abiss/js/sarissa/sarissa.js" />
-  
 	
 <!-- On1Map libs -->
 	<script src="lib.CacheManager.js" 	/>
