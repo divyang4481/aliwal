@@ -62,5 +62,15 @@ h1{
 .float_right{ float: right;}
 .float_clear{ clear: both ;}
 
+#feedback_pin_ceiling{
+	height: 32px;
+	width: 32px;
+	float: right;
+}
+#feedback_geocoding_err{
+	height: 32px;
+	width: 32px;
+	float: right;
+}
 
 
