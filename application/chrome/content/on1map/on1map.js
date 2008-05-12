@@ -12,15 +12,16 @@ function jsdump(str){
 try{
 	Components.utils.import("resource://app/modules/xscope.jsm");
 }catch(e){
-	alert('Failed to import module xscope.jsm:\nFAKING IT INSTEAD');
+	alert('Falling back to DEMO mode because\nof an error while importing module xscope.jsm.');
 	// ********************************* START OF FAKE JSM **********************************************
 	var xscopeNS = {
 		KML 		: {},   // A KML DOM document
 		domMarkers  : {},   // Hash of YMarker objects that are on the map, keyed by ymarker.id
-		//OBSOLETE hiddenMarkers: {}, 	// Hash of hidden/filtered etc. markers
+		hiddenMarkers: {}, 	// Hash of hidden/filtered etc. markers
 		
-		flags		: { loadingData : false // Whole flags object should be passed because of pass by reference requirement
-					  }
+		flags		: { loadingData : false, // Whole flags object should be passed because of pass by reference requirement
+					    warnGeocodingError: true,
+					    warnPinCountError: true}
 	};
 	
    try {
@@ -30,8 +31,8 @@ try{
    }
 	var req = new XMLHttpRequest();
 	req.overrideMimeType('text/xml');	
-	req.open("GET", "fake-jsm-data-980.o1m", false);
-	//req.open("GET", "fake-jsm-data-49.o1m", false);
+	//req.open("GET", "fake-jsm-data-980.o1m", false);
+	req.open("GET", "fake-jsm-data-49.o1m", false);
 	//req.open("GET", "google-addresses.kml", false); 
 	req.send(null);
 	
@@ -82,22 +83,18 @@ $(document).ready( function(){
 	
 	// Capture events that require drawing
 	YEvent.Capture(map, EventsList.endMapDraw, function(resultObj) { 
-		jsdump('Event: endMapDraw:\n' ); 
-		domMgr.drawMarkers(xscopeNS.domMarkers, map.getBoundsLatLon() );
+		domMgr.drawMarkers(xscopeNS.domMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
 	});
 	YEvent.Capture(map, EventsList.endPan, function(resultObj) { 
-		jsdump('Event: endPan:\n' ); 
-		domMgr.drawMarkers(xscopeNS.domMarkers, map.getBoundsLatLon() );
+		domMgr.drawMarkers(xscopeNS.domMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
 	});
 	YEvent.Capture(map, EventsList.endAutoPan, function(resultObj) { 
-		jsdump('Event: endAutoPan:\n' ); 
 		var currb = map.getBoundsLatLon();
 		/* endAutoPan fires by popups even if the map hasn't moved when no need to redraw */
 		if (uneval(lastBounds) !== uneval(currb)){ 
-			domMgr.drawMarkers(xscopeNS.domMarkers, currb );
+			domMgr.drawMarkers(xscopeNS.domMarkers, xscopeNS.hiddenMarkers, currb );
 			lastBounds = currb;
 		}
-		return true;
 	});
 	YEvent.Capture(map, EventsList.onEndGeoCode, function(resultObj) {
 		/* Make the map update the address cache whenever it can.
@@ -110,15 +107,11 @@ $(document).ready( function(){
 		 	var cachestr = resultObj.GeoPoint.Lon + ',' + resultObj.GeoPoint.Lat;
 		 	cacheMgr.setItem(addrhash, cachestr);
 		 } else {
-		 	domMgr.log('Couldn\'t map address: '+resultObj.Address , 'WARN' );
+		 	domMgr.warningGeocodingError(true);
 		 }
 	});
 		
-	markerMgr.createMarkersFromDom(xscopeNS.KML, xscopeNS.domMarkers, function(){
-			/* Scope of "this" will have changed to the YMarker object by the time this gets invoked. */
-			this.openSmartWindow('<blink>Loading...</blink>');
-			markerMgr.setPopupLabel( this, domMgr.getPopupSelection() );
-	});
+	markerMgr.createMarkersFromDom(xscopeNS.KML, xscopeNS.hiddenMarkers );
 	
 	// Specifying the Map starting location and zoom level
 	var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
