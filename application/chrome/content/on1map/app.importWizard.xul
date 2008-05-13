@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<wizard id="importwizard" title="Import a text file" onwizardfinish="return impwiz.onWizardFinished()"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
+
+<!-- External libs -->
+	<script src="jquery-1.2.3.js" 		/>  
+	
+<!-- On1Map libs -->
+	<script src="lib.DataManager.js" 	/>
+	<script src="app.importWizard.js" 	/>
+	
+<script>
+	var impwiz = new ImportWizard();
+	function checkCode(){
+		return impwiz.checkCode();
+	}
+</script>
+
+	<wizardpage 
+		description="Layout Details"
+		onpageadvanced="impwiz.grabLayoutSelection();" >
+	    <description>
+	      This wizard will gather the details needed to import a text file.
+	      
+	    </description>
+	    <groupbox flex="1">
+			<radiogroup flex="1">
+				<description value="How is the file layout best described?"/>
+				<radio id="rb_layout_delimited" label="Delimited columns"
+					checked="true"
+					src="icons/importwiz-delimited.png" />
+					
+				<radio label="Fixed width columns" disabled="true"
+					src="icons/importwiz-fixedwidth.png" 
+					oncommand="alert('Fixed');" />
+			</radiogroup>
+		</groupbox>
+	</wizardpage>
+	
+	<wizardpage 
+		description="Delimiter details"
+		onpageadvanced="impwiz.grabDelimiterSelection();" >
+<!--	    <description>How is the data delimited?</description>
+-->
+	    <hbox>
+			<groupbox flex="1">
+				<caption label="Delimiters" />
+					<grid>
+						<columns>
+							<col />
+							<col />
+						</columns>
+						<rows>
+							<row>
+								<checkbox label="Comma"
+									src="images/betty_boop.xbm" 
+									oncommand="impwiz.impDelimiter = ',';impwiz.drawHeaderPreview();" />							
+								<checkbox label="Tab" disabled="true"
+									src="images/betty_boop.xbm" 
+									oncommand="alert('');" />
+								<checkbox label="Semicolon"   disabled="true"
+									src="images/betty_boop.xbm" 
+									oncommand="alert('');" />
+
+							</row>
+							<row>
+								<checkbox label="Space"   disabled="true"
+									src="images/betty_boop.xbm" 
+									oncommand="alert('');" />
+								<checkbox label="Other"   disabled="true"
+									src="images/betty_boop.xbm" 
+									oncommand="alert('');" />
+							</row>
+						</rows>
+					</grid>
+
+
+			</groupbox>
+			<groupbox>
+				<caption label="Header rows" />
+				<checkbox label="1st row is column headings"  checked="true"  disabled="true"
+					src="images/betty_boop.xbm" 
+					oncommand="alert('');" />
+			</groupbox>
+		</hbox>
+		
+		<groupbox flex="1">
+			<caption label="Data preview" />
+			<grid id="gd_header_preview">
+				<html:table>
+					<html:tr>
+						<html:th>Col 1</html:th>
+						<html:th>Col 2</html:th>
+						<html:th>Col 3</html:th>
+						<html:th>Col 4</html:th>
+						<html:th>Col 5</html:th>
+					</html:tr>
+				</html:table>
+			</grid>
+		</groupbox>
+	</wizardpage>
+	
+	
+	<wizardpage description="Coordinate columns" onpageshow="impwiz.drawLonLatColumns()"
+		onpageadvanced="impwiz.grabLonLatSelections();" >
+		<description>
+			Choose the longitude and latitude columns with coordinate data.
+			These are optional. If none are provided, geocoding will be tried instead.
+			
+			Longitude should be 1st, then latitude.
+		</description>
+		<groupbox flex="1">
+			<hbox>
+				<listbox id="lb_posslonlat_cols" rows="7" flex="1" seltype="multiple" >
+					<!-- Populated by script -->
+				</listbox>
+
+				<vbox>
+						<button label=" &gt;&gt; " oncommand="impwiz.drawMoveListItem('lb_posslonlat_cols', 'lb_lonlat_cols')" />
+						<button label=" &lt;&lt; " oncommand="impwiz.drawMoveListItem('lb_lonlat_cols', 'lb_posslonlat_cols')" />
+				</vbox>
+		      
+
+				<listbox id="lb_lonlat_cols" rows="7" flex="1" seltype="multiple" >
+					<!-- Populated by script -->
+				</listbox>
+
+			</hbox>
+		</groupbox>
+
+	</wizardpage>
+	
+	<wizardpage description="Geocoding columns" onpageshow="impwiz.drawGeoColumns()"
+		onpageadvanced="impwiz.grabGeoSelections();" >
+		<description>
+			Choose the columns with address data for geocoding.
+			Geocoding turns addresses into latitude and longitude coordinates that can be shown on the map.
+			These are optional and only required if the data doesn't already have coordinates.
+			Order like address lins, from most specific to general eg. house number to country.
+		</description>
+		<groupbox flex="1">
+			<hbox>
+				<listbox id="lb_address_cols" rows="7" flex="1" seltype="multiple" >
+					<!-- Populated by script -->
+				</listbox>
+
+				<vbox>
+						<button label=" &gt;&gt; " oncommand="impwiz.drawMoveListItem('lb_address_cols', 'lb_geo_cols')" />
+						<button label=" &lt;&lt; " oncommand="impwiz.drawMoveListItem('lb_geo_cols', 'lb_address_cols')" />
+				</vbox>
+		      
+
+				<listbox id="lb_geo_cols" rows="7" flex="1" seltype="multiple" >
+					<!-- Populated by script -->
+				</listbox>
+
+			</hbox>
+		</groupbox>
+
+	</wizardpage>
+	
+	<wizardpage description="Pin Label &amp; Popup details" onpageshow="impwiz.drawDataColumns()"
+		onpageadvanced="impwiz.grabDataSelections();" >
+		<description>
+			Choose the columns for pin labels and popup details.
+			This is the data that can be shown on the pop up of each pin in the map.
+		</description>
+		<groupbox flex="1">
+			<hbox>
+				<listbox id="lb_possdata_cols" rows="7" flex="1" seltype="multiple" >
+					<!-- Populated by script -->
+				</listbox>
+
+				<vbox>
+						<button label=" &gt;&gt; " oncommand="impwiz.drawMoveListItem('lb_possdata_cols', 'lb_data_cols')" />
+						<button label=" &lt;&lt; " oncommand="impwiz.drawMoveListItem('lb_data_cols', 'lb_possdata_cols')" />
+				</vbox>
+		      
+
+				<listbox id="lb_data_cols" rows="7" flex="1" seltype="multiple" >
+					<!-- Populated by script -->
+				</listbox>
+
+			</hbox>
+		</groupbox>
+
+	</wizardpage>
+	
+	<wizardpage description="Tag columns" onpageshow="impwiz.drawTagColumns()"
+		onpageadvanced="impwiz.grabTagSelections();" >
+		<description>
+			Choose the columns that contain tag data.
+			These are used to hide and show pins on the map.
+		</description>
+		<groupbox flex="1">
+			<hbox>
+				<listbox id="lb_posstag_cols" rows="7" flex="1" seltype="multiple" >
+					<!-- Populated by script -->
+				</listbox>
+
+				<vbox>
+						<button label=" &gt;&gt; " oncommand="impwiz.drawMoveListItem('lb_posstag_cols', 'lb_tag_cols')" />
+						<button label=" &lt;&lt; " oncommand="impwiz.drawMoveListItem('lb_tag_cols', 'lb_posstag_cols')" />
+				</vbox>
+		      
+
+				<listbox id="lb_tag_cols" rows="7" flex="1" seltype="multiple" >
+					<!-- Populated by script -->
+				</listbox>
+
+			</hbox>
+		</groupbox>
+
+	</wizardpage>
+	
+
+</wizard>

@@ -92,3 +92,8 @@ DataManager.prototype.loadFile = function(pFile, pCallback ){
 	req.open('GET', 'file://' + pFile, true);
 	req.send(null);
 }
+
+
+
+
+

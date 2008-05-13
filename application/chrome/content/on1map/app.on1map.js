@@ -119,8 +119,6 @@ Components.utils.import("resource://app/modules/xscope.jsm");
 
 /* ***************************************************************************************************************************** */ 
 
-
-
 function fileOpen(){
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
 	var CC = Components.classes;
@@ -163,7 +161,7 @@ function fileOpen(){
 	}	
 }
 
-function fileSave(){
+function fileSaveAs(){
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
 	var CC = Components.classes;
 	var CI = Components.interfaces;
@@ -255,7 +253,6 @@ function goPreferences(){
 	window.openDialog("chrome://on1map/content/connection.xul", "", "chrome,toolbar");
 	
 }
-
 function showConsole() {
   window.open("chrome://global/content/console.xul", "_blank",
     "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar");
@@ -306,6 +303,45 @@ function jsdump(str)
   Components.classes['@mozilla.org/consoleservice;1']
             .getService(Components.interfaces.nsIConsoleService)
             .logStringMessage(str);
+}
+
+
+
+function fileImport(){
+	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
+	var CC = Components.classes;
+	var CI = Components.interfaces;
+	var fp = CC["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "Import CVS Data File", nsIFilePicker.modeOpen);
+	fp.appendFilter("CSV Files","*.csv");
+	fp.appendFilters(nsIFilePicker.filterAll);	
+	var rv = fp.show();
+	if (rv == nsIFilePicker.returnOK ) {
+		xscopeNS.currentFile = fp.file.path;
+		var params = { 
+			filename: fp.file.path, 
+			callback: function(pDoc){
+				jsdump('Into app.on1map.js callback');
+				var dataMgr = new DataManager();
+				dataMgr.emptyObj( xscopeNS.domMarkers );
+				dataMgr.emptyObj( xscopeNS.KML );
+				dataMgr.emptyObj( xscopeNS.pinTagSets);
+				dataMgr.emptyObj( xscopeNS.pinItems);
+
+				var inter = document.implementation.createDocument("","",null);
+				var clonedNode = inter.importNode( pDoc.firstChild , true );
+				inter.appendChild( clonedNode );
+				xscopeNS.KML = inter;
+
+				dataMgr.enrichFromCache( xscopeNS.KML );
+				xscopeNS.flags.loadingData = false;
+				
+				// Drop the Map drawing into it's own thread
+				window.setTimeout( goMap, 1);
+			}
+		};
+		window.openDialog("chrome://on1map/content/app.importWizard.xul","importWizard","modal", params);
+	}
 }
 
 
