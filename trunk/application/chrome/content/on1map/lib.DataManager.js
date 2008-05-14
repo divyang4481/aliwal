@@ -22,14 +22,23 @@ DataManager.prototype.domTagSetCensus = function( pDoc ){
 		if (typeof(ret[tagsetname]) === 'undefined'){
 			ret[tagsetname] = new Object();
 		}
+		var dups = new Object();
 		$.each($(tagset_element).children('tag'), function(ii, tag_element){
 			var tag = $.trim( $(tag_element).text() );
-			if( typeof( ret[tagsetname][tag] ) === 'undefined' ){
-				ret[tagsetname][tag] = 1;
+			if( typeof( dups[tag] ) === 'undefined' ){
+				dups[tag] = 1;
 			} else {
-				ret[tagsetname][tag]++;
+				dups[tag]++;
 			}
 		});
+		for(key in dups){
+			if( typeof( ret[tagsetname][key] ) === 'undefined' ){
+				ret[tagsetname][key] = 1;
+			} else {
+				ret[tagsetname][key]++;
+			}
+			
+		}
 	});
 	return ret;
 }
