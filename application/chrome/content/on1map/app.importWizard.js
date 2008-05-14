@@ -31,6 +31,13 @@ function ImportWizard(){
 }
 
 //onwizardback, onwizardnext and onwizardcancel
+ImportWizard.prototype.onWizardLoad = function(){
+	var that = this;
+	that.drawLonLatColumns();
+	that.drawGeoColumns();
+	that.drawDataColumns();
+	that.drawTagColumns();
+}
 ImportWizard.prototype.checkCode = function(){
 	// Allow the wizard to advance
 	return true;
@@ -60,7 +67,6 @@ ImportWizard.prototype.importHeadings = function(){
 	                        .createInstance(Components.interfaces.nsIFileInputStream);
 	
 	if (typeof(ImportWizard.prototype._headerCache) === 'undefined'){
-		jsdump('ImportWizard.importHeadings');
 		try{
 			var file = Components.classes["@mozilla.org/file/local;1"]
 		                     .createInstance(Components.interfaces.nsILocalFile);
@@ -68,13 +74,11 @@ ImportWizard.prototype.importHeadings = function(){
 			// open an input stream from file
 
 			istream.init(file, 0x01, 0444, 0);
-			jsdump('File opened');
 			istream.QueryInterface(Components.interfaces.nsILineInputStream);
 			
 			
 			// Skip past header row(s), last one is headings
 			for(var rr = 0; rr < that.impHeaderRows; rr++){
-				jsdump('Found a row');
 				hasmore = istream.readLine(headerline);
 				if(!hasmore){
 					break;
@@ -83,11 +87,7 @@ ImportWizard.prototype.importHeadings = function(){
 			jsdump('Splitting headerline');
 			if(headerline.value){
 				ret = headerline.value.split( that.impRegex );
-				jsdump('read headerline.value:\n' +headerline.value);
-				jsdump('uneval headerline:\n' +uneval(headerline));
-				jsdump('uneval colheadings:\n' +uneval(ret));
 			}
-			jsdump('uneval(ret):\n' +uneval(ret));
 		}catch(e){
 			throw e;
 		} finally{
@@ -155,16 +155,19 @@ ImportWizard.prototype.drawHeaderPreview = function(){
 	
 	var grid = document.getElementById("gd_header_preview");
 	var table = document.createElement('html:table');
+	table.setAttribute('style','border-width: 1px 1px 1px 1px;border-spacing: 2px;border-style: outset outset outset outset;');
 	var hrow = document.createElement('html:tr');
 	var erow = document.createElement('html:tr');
 
 	for(var idx in headers){
 		var txt1 = document.createTextNode(headers[idx]);
 		var th = document.createElement('html:th');
+		th.setAttribute('style','background-color:gray;font-style:bold;padding: 3px 3px 3px 3px;');
 		th.appendChild(txt1);
 		hrow.appendChild(th);
 		// Create and empty data row just to make table look better
 		var td = document.createElement('html:td');
+		td.setAttribute('style','background-color:white;');
 		var txt2 = document.createTextNode('&nbsp;FRED');
 		td.appendChild(txt2);
 		erow.appendChild(td);
@@ -173,9 +176,8 @@ ImportWizard.prototype.drawHeaderPreview = function(){
 		grid.removeChild(grid.firstChild);
 	}	
 	table.appendChild(hrow);
-	//table.appendChild(erow);
+//	table.appendChild(erow);
 	grid.appendChild(table);
-	jsdump('appended');
 }
 ImportWizard.prototype.drawLonLatColumns = function(){
 	/* needs this.impLonLatCols */
@@ -184,25 +186,38 @@ ImportWizard.prototype.drawLonLatColumns = function(){
 	
 	var opts = document.getElementById('lb_posslonlat_cols');
 	var lonlat = document.getElementById('lb_lonlat_cols');
+	var lonidx;
+	var latidx;
+	$(lonlat).empty();
+	$(opts).empty();
 	for(var idx in headers){
 		li = document.createElement('listitem');
 		li.setAttribute('label',headers[idx]);
 		// If no selections, guess
-		if(that.impLonLatCols.length === 0){
-			if( headers[idx].toUpperCase() === 'LONGITUDE' || 
-				headers[idx].toUpperCase() === 'LONG' || 
-				headers[idx].toUpperCase() === 'LATITUDE' || 
-				headers[idx].toUpperCase() === 'LAT' ){
-					lonlat.appendChild(li);
-			} else {
-				opts.appendChild(li);
-			}
-		} else { // honor user selection
-			if( $.inArray(headers[idx], that.impLonLatCols ) >= 0 ){
-				lonlat.appendChild(li);
-			} else {
-				opts.appendChild(li);
-			}
+		if( headers[idx].toUpperCase() === 'LONGITUDE' || 
+				headers[idx].toUpperCase() === 'LONG' ){
+			lonlat.appendChild(li);
+			lonidx = idx;
+			break;
+		}
+	}
+	for(var idx in headers){
+		li = document.createElement('listitem');
+		li.setAttribute('label',headers[idx]);
+		// If no selections, guess
+		if( headers[idx].toUpperCase() === 'LATITUDE' || 
+				headers[idx].toUpperCase() === 'LAT' ){ 
+			lonlat.appendChild(li);
+			latidx = idx;
+			break;
+		}
+	}
+	for(var idx in headers){
+		li = document.createElement('listitem');
+		li.setAttribute('label',headers[idx]);
+		// If no selections, guess
+		if( idx !== lonidx && idx !== latidx ){
+			opts.appendChild(li);
 		}
 	}
 }
@@ -213,6 +228,8 @@ ImportWizard.prototype.drawGeoColumns = function(){
 	
 	var opts = document.getElementById('lb_address_cols');
 	var geo = document.getElementById('lb_geo_cols');
+	$(geo).empty();
+	$(opts).empty();
 	for(var idx in headers){
 		li = document.createElement('listitem');
 		li.setAttribute('label',headers[idx]);
@@ -229,12 +246,6 @@ ImportWizard.prototype.drawGeoColumns = function(){
 			} else {
 				opts.appendChild(li);
 			}
-		} else {
-			if( $.inArray(headers[idx], that.impGeocodeAddressCols ) >= 0 ){
-				geo.appendChild(li);
-			}else{
-				opts.appendChild(li);
-			}
 		}
 	}
 }
@@ -245,6 +256,8 @@ ImportWizard.prototype.drawDataColumns = function(){
 	
 	var opts = document.getElementById('lb_possdata_cols');
 	var data = document.getElementById('lb_data_cols');
+	$(data).empty();
+	$(opts).empty();
 	for(var idx in headers){
 		li = document.createElement('listitem');
 		li.setAttribute('label',headers[idx]);
@@ -252,18 +265,22 @@ ImportWizard.prototype.drawDataColumns = function(){
 		// If no data cols have been selected, suggest everything except geoaddress cols,
 		// othherwise go with previous selection
 		if(that.impDataCols.length === 0){
-			if( $.inArray(idx, that.impGeocodeAddressCols ) >= 0 || 
-				$.inArray(idx, that.impLonLatCols ) >= 0 ||
-				headers[idx].toUpperCase().substring(0,3) === 'TAG' ){
+			if( headers[idx].toUpperCase() === 'LONGITUDE' || 
+					headers[idx].toUpperCase() === 'LONG' || 
+					headers[idx].toUpperCase() === 'LATITUDE' || 
+					headers[idx].toUpperCase() === 'LAT' || 
+					headers[idx].toUpperCase().substring(0,4) === 'ADDR' || 
+					headers[idx].toUpperCase() === 'STREET' || 
+					headers[idx].toUpperCase() === 'CITY' || 
+					headers[idx].toUpperCase() === 'TOWN' || 
+					headers[idx].toUpperCase() === 'ZIPCODE' || 
+					headers[idx].toUpperCase() === 'POSTCODE' || 
+					headers[idx].toUpperCase() === 'COUNTRY' || 
+					headers[idx].toUpperCase() === 'STATE' || 
+					headers[idx].toUpperCase().substring(0,3) === 'TAG' ){
 				opts.appendChild(li);
 			} else {
 				data.appendChild(li);
-			}
-		} else {
-			if( $.inArray(headers[idx], that.impDataCols ) >= 0 )
-				data.appendChild(li);
-			else{
-				opts.appendChild(li);
 			}
 		}
 	}
@@ -275,6 +292,8 @@ ImportWizard.prototype.drawTagColumns = function(){
 	
 	var opts = document.getElementById('lb_posstag_cols');
 	var tag = document.getElementById('lb_tag_cols');
+	$(tag).empty();
+	$(opts).empty();
 	for(var idx in headers){
 		li = document.createElement('listitem');
 		li.setAttribute('label',headers[idx]);
@@ -282,12 +301,6 @@ ImportWizard.prototype.drawTagColumns = function(){
 			if( headers[idx].toUpperCase().substring(0,3) === 'TAG'){
 				tag.appendChild(li);
 			} else {
-				opts.appendChild(li);
-			}
-		} else {
-			if( $.inArray(headers[idx], that.impTagCols ) >= 0 ){
-				tag.appendChild(li);
-			}else{
 				opts.appendChild(li);
 			}
 		}
@@ -307,15 +320,6 @@ ImportWizard.prototype.drawMoveListItem = function(pSourceListBoxId, pDestListBo
 }
 
 
-
-
-
-
-
-
-
-
-
 ImportWizard.prototype.doImport = function(){
 	var that = this;
 	var headerline={};
@@ -331,7 +335,6 @@ ImportWizard.prototype.doImport = function(){
 		}
 
 		colheadings = that.importHeadings();
-		jsdump('doImport - uneval(colheadings):\n' + uneval(colheadings) );
 		
 		var file = Components.classes["@mozilla.org/file/local;1"]
 	                     .createInstance(Components.interfaces.nsILocalFile);
@@ -351,12 +354,8 @@ ImportWizard.prototype.doImport = function(){
 			hasmore = istream.readLine(dataline);
 			// Split the line up
 			linesplit = dataline.value.split( that.impRegex);
-			jsdump('read dataline.value:\n' +dataline.value);
-			jsdump('uneval dataline:\n' +uneval(dataline));
-			jsdump('uneval linesplit:\n' +uneval(linesplit));
 			
 			// Create XML nodes for the data columns
-			jsdump('uneval(that.impDataCols):\n' + uneval(that.impDataCols) );
 			$.each( that.impDataCols, function(idx,colid){
 				jsdump('colid = ' + colid);
 				var nn1 = doc.createElement('Data');
@@ -408,22 +407,17 @@ ImportWizard.prototype.doImport = function(){
 		} while(hasmore);
 		
 		istream.close();
-		doc.appendChild(docu);
-		
-		var ss = XMLSerializer();
-		jsdump( ss.serializeToString(doc) );
-		
-		jsdump('About to callback');
-	
+		doc.appendChild(docu);		
 		that.callback(doc);
-		jsdump('Done with callback');		
 	} catch(e){
 		jsdump(e);
 		throw e;
 	}
 }
 
-
+ImportWizard.prototype.checkDelimiter = function(){
+	document.getElementById('importwizard').canAdvance = document.getElementById('cb_delimiter_comma').checked;
+}
 
 
 

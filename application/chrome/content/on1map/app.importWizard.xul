@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<wizard id="importwizard" title="Import a text file" onwizardfinish="return impwiz.onWizardFinished()"
+<wizard id="importwizard" title="Import a text file" 
+	onload="impwiz.onWizardLoad();"
+	onwizardfinish="return impwiz.onWizardFinished()"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
 
@@ -42,11 +44,12 @@
 	
 	<wizardpage 
 		description="Delimiter details"
+		onpageshow="impwiz.checkDelimiter(); return true;"
 		onpageadvanced="impwiz.grabDelimiterSelection();" >
 <!--	    <description>How is the data delimited?</description>
 -->
 	    <hbox>
-			<groupbox flex="1">
+			<groupbox flex="1" minwidth="200" >
 				<caption label="Delimiters" />
 					<grid>
 						<columns>
@@ -55,9 +58,9 @@
 						</columns>
 						<rows>
 							<row>
-								<checkbox label="Comma"
+								<checkbox id="cb_delimiter_comma" label="Comma"
 									src="images/betty_boop.xbm" 
-									oncommand="impwiz.impDelimiter = ',';impwiz.drawHeaderPreview();" />							
+									oncommand="impwiz.impDelimiter = ',';impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
 								<checkbox label="Tab" disabled="true"
 									src="images/betty_boop.xbm" 
 									oncommand="alert('');" />
@@ -87,9 +90,9 @@
 			</groupbox>
 		</hbox>
 		
-		<groupbox flex="1">
+		<groupbox flex="1" maxwidth="200" >
 			<caption label="Data preview" />
-			<grid id="gd_header_preview">
+			<grid id="gd_header_preview" >
 				<html:table>
 					<html:tr>
 						<html:th>Col 1</html:th>
@@ -104,7 +107,7 @@
 	</wizardpage>
 	
 	
-	<wizardpage description="Coordinate columns" onpageshow="impwiz.drawLonLatColumns()"
+	<wizardpage description="Coordinate columns"
 		onpageadvanced="impwiz.grabLonLatSelections();" >
 		<description>
 			Choose the longitude and latitude columns with coordinate data.
@@ -124,7 +127,7 @@
 				</vbox>
 		      
 
-				<listbox id="lb_lonlat_cols" rows="7" flex="1" seltype="multiple" >
+				<listbox id="lb_lonlat_cols" rows="7" flex="1" seltype="multiple">
 					<!-- Populated by script -->
 				</listbox>
 
@@ -133,7 +136,7 @@
 
 	</wizardpage>
 	
-	<wizardpage description="Geocoding columns" onpageshow="impwiz.drawGeoColumns()"
+	<wizardpage description="Geocoding columns"
 		onpageadvanced="impwiz.grabGeoSelections();" >
 		<description>
 			Choose the columns with address data for geocoding.
@@ -162,7 +165,7 @@
 
 	</wizardpage>
 	
-	<wizardpage description="Pin Label &amp; Popup details" onpageshow="impwiz.drawDataColumns()"
+	<wizardpage description="Pin Label &amp; Popup details"
 		onpageadvanced="impwiz.grabDataSelections();" >
 		<description>
 			Choose the columns for pin labels and popup details.
@@ -189,7 +192,7 @@
 
 	</wizardpage>
 	
-	<wizardpage description="Tag columns" onpageshow="impwiz.drawTagColumns()"
+	<wizardpage description="Tag columns"
 		onpageadvanced="impwiz.grabTagSelections();" >
 		<description>
 			Choose the columns that contain tag data.
