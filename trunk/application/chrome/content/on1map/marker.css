@@ -34,3 +34,8 @@
 	font-size: 	small;
 	color:		#C33;
 }
+.marker_popup_warning_img{
+	height: 32;
+	width: 32;
+	float: left;
+}

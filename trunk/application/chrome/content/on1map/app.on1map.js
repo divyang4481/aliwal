@@ -135,10 +135,7 @@ function fileOpen(){
 		try {
 			xscopeNS.flags.loadingData = true;
 			var dataMgr = new DataManager();
-			dataMgr.emptyObj( xscopeNS.domMarkers );
 			dataMgr.emptyObj( xscopeNS.KML );
-			dataMgr.emptyObj( xscopeNS.pinTagSets);
-			dataMgr.emptyObj( xscopeNS.pinItems);
 			dataMgr.loadFile( fp.file.path, function( pDoc ){
 				/* dataMgr.loadFile() is asyncronous. 
 				 * This is called when it's finished loading successfully.
@@ -284,7 +281,6 @@ function forward() {
 }
 
 function reload() {
-// Need to repopulate xscopeNS.pinList as they've all been trned into markers
 	var dataMgr = new DataManager();
 	var browser = document.getElementById("browser");
 	browser.reload();
@@ -323,11 +319,7 @@ function fileImport(){
 			filename: fp.file.path, 
 			callback: function(pDoc){
 				var dataMgr = new DataManager();
-				dataMgr.emptyObj( xscopeNS.domMarkers );
 				dataMgr.emptyObj( xscopeNS.KML );
-				dataMgr.emptyObj( xscopeNS.pinTagSets);
-				dataMgr.emptyObj( xscopeNS.pinItems);
-
 				var inter = document.implementation.createDocument("","",null);
 				var clonedNode = inter.importNode( pDoc.firstChild , true );
 				inter.appendChild( clonedNode );
