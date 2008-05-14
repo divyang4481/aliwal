@@ -131,6 +131,7 @@ function fileOpen(){
 	fp.appendFilters(nsIFilePicker.filterAll);	
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnOK ) {			
+		document.defaultView.title = 'Aliwal On1map - ' + fp.file.leafName;
 		try {
 			xscopeNS.flags.loadingData = true;
 			var dataMgr = new DataManager();
@@ -305,8 +306,6 @@ function jsdump(str)
             .logStringMessage(str);
 }
 
-
-
 function fileImport(){
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
 	var CC = Components.classes;
@@ -314,9 +313,10 @@ function fileImport(){
 	var fp = CC["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 	fp.init(window, "Import CVS Data File", nsIFilePicker.modeOpen);
 	fp.appendFilter("CSV Files","*.csv");
-	fp.appendFilters(nsIFilePicker.filterAll);	
+	fp.appendFilter("TXT Files","*.txt");
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnOK ) {
+		document.defaultView.title = 'Aliwal On1map - ' + fp.file.leafName;
 		xscopeNS.currentFile = fp.file.path;
 		var params = { 
 			filename: fp.file.path, 
