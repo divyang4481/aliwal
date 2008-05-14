@@ -357,7 +357,6 @@ ImportWizard.prototype.doImport = function(){
 			
 			// Create XML nodes for the data columns
 			$.each( that.impDataCols, function(idx,colid){
-				jsdump('colid = ' + colid);
 				var nn1 = doc.createElement('Data');
 				nn1.setAttribute('name', colheadings[ colid ] );
 				var nn2 = doc.createElement('value');

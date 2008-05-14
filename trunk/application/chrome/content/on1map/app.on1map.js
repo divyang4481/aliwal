@@ -322,7 +322,6 @@ function fileImport(){
 		var params = { 
 			filename: fp.file.path, 
 			callback: function(pDoc){
-				jsdump('Into app.on1map.js callback');
 				var dataMgr = new DataManager();
 				dataMgr.emptyObj( xscopeNS.domMarkers );
 				dataMgr.emptyObj( xscopeNS.KML );
