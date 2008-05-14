@@ -110,7 +110,7 @@ MarkerManager.prototype.setPopupLabels = function( pVisibleMarkers, pPopupAttrib
 MarkerManager.prototype.setPopupLabel = function( pMarker, pPopupAttribArr ){
 	var html;
 	if(pPopupAttribArr.length === 0){
-		html = '<img class="marker_popup_warning" src="icons/no_pin_info_warning.png" />No popup details selected';
+		html = '<div class="marker_popup_warning"><img class="marker_popup_warning_img" src="icons/no_pin_info_warning.png" />No popup details selected</div>';
 	} else {
 		html = '<table class="marker_popup_table"><caption class="marker_popup_caption"></caption>';
 		html += '<colgroup><col class="marker_popup_labelcol"/><col class="marker_popup_datacol"/></colgroup>';

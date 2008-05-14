@@ -65,12 +65,10 @@ h1{
 #feedback_pin_ceiling{
 	height: 32px;
 	width: 32px;
-	float: right;
 }
 #feedback_geocoding_err{
 	height: 32px;
 	width: 32px;
-	float: right;
 }
 
 

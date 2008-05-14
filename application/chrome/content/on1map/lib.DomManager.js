@@ -87,6 +87,14 @@ DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pB
 	} catch(e){
 		this.warningPinCeiling(true);
 	}
+	var totalcount = 0;
+	for(var m in pVisibleMarkers){
+		totalcount++;
+	}
+	for(var m in pHiddenMarkers){
+		totalcount++;
+	}
+	$('#feedback_pincounts').text(visicount + ' / ' + totalcount);
 }
 DomManager.prototype.drawControls = function(){
 	
