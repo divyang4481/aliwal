@@ -119,6 +119,7 @@ $(document).ready( function(){
 	lastBounds = map.getBoundsLatLon();
 
 	// Trigger a clicked event to set the intial pin labels
+	jsdump('TRIGGER');
 	$('#sel_change_pin_label').trigger( 'change');
 	
 });

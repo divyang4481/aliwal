@@ -108,14 +108,19 @@ MarkerManager.prototype.setPopupLabels = function( pVisibleMarkers, pPopupAttrib
 	 });
 }
 MarkerManager.prototype.setPopupLabel = function( pMarker, pPopupAttribArr ){
-	var html = '<table class="marker_popup_table"><caption class="marker_popup_caption"></caption>';
-	html += '<colgroup><col class="marker_popup_labelcol"/><col class="marker_popup_datacol"/></colgroup>';
-	html += '<thead></thead><tfooter></tfooter><tbody class="marker_popup_tbody">';
-	$.each( pPopupAttribArr, function(idx, val){
-		html += '<tr><th class="marker_popup_th">' + val + '&nbsp;</th>\n';
-		html += '<td>' + $(pMarker.on1map_kml_ref).find('ExtendedData>Data[name="'+val+'"]>value').text() + '</td></tr>';
-	});
-	html += '</tbody></table>';	
+	var html;
+	if(pPopupAttribArr.length === 0){
+		html = '<img class="marker_popup_warning" src="icons/no_pin_info_warning.png" />No popup details selected';
+	} else {
+		html = '<table class="marker_popup_table"><caption class="marker_popup_caption"></caption>';
+		html += '<colgroup><col class="marker_popup_labelcol"/><col class="marker_popup_datacol"/></colgroup>';
+		html += '<thead></thead><tfooter></tfooter><tbody class="marker_popup_tbody">';
+		$.each( pPopupAttribArr, function(idx, val){
+			html += '<tr><th class="marker_popup_th">' + val + '&nbsp;</th>\n';
+			html += '<td>' + $(pMarker.on1map_kml_ref).find('ExtendedData>Data[name="'+val+'"]>value').text() + '</td></tr>';
+		});
+		html += '</tbody></table>';	
+	}
 	pMarker.updateSmartWindow( html );
 }
 MarkerManager.prototype.markerInbounds = function( pMarker ){
