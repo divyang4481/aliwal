@@ -232,6 +232,7 @@ function goAbout(){
 	window.openDialog("chrome://on1map/content/about.xul","aboutDialog","dialog" );
 }
 function goWelcome(){
+	document.defaultView.title = 'Aliwal On1map. Your data, on a map.';
 	var browser = document.getElementById("browser");
 	browser.loadURI("chrome://on1map/content/welcome.html", null, null);
 }
