@@ -89,40 +89,6 @@ MarkerManager.prototype.unfilteredMarker = function( pMarker, pFilterSets ){
 	}	
 	return foundclosure;
 }
-MarkerManager.prototype.unfilteredMarker_bak = function( pMarker, pFilterSets ){
-	/* pFilterSets =    {  	'Tagset1': ['selected_filter1','selected_filter2','etc'],
-	 * 						'Tagset2': ['another_selection1','another_selection2','etc'], 
-	 * 					};
-	 * run through the tagsets and look for that as a member on the marker.
-	 * If any matches are found, the marker should be shown so return true.
-	 * Performance critical function.
-	 */
-	
-	var tscount = 0;
-	var foundclosure = false;
-	
-	for(var tagset in pFilterSets){
-		tscount++;
-		
-		$(pMarker.on1map_kml_ref).find('ExtendedData>TagSet[name="'+tagset+'"]>Tag').each(function(idx,ele){
-			if( $.inArray( $(ele).text(), pFilterSets[tagset]) >= 0 ){
-				foundclosure = true;
-				return false;// break out of $.each() iterating
-			} else {
-				return true;// $.each() should keep iterating
-			};
-		});
-		if (foundclosure){
-			return true;
-		}
-	}
-	if(tscount === 0){
-		// If there are no tagsets in the data, so there's no filtering
-		return true;
-	}	
-	return foundclosure;
-}
-
 MarkerManager.prototype.setPinLabels = function( pVisibleMarkers, pLabelAttrib ){
 	/* Takes an array of enriched markers and sets their autoexpand / label to the
 	 * on1data value named pLabelAttrib
