@@ -233,11 +233,19 @@ function goWelcome(){
 	var browser = document.getElementById("browser");
 	browser.loadURI("chrome://on1map/content/welcome.html", null, null);
 }
+function goViewData(){
+	var browser = document.getElementById("browser");
+	toggleSidebar("viewDataSidebar");
+}
+
+
+
+
+
 function goDebug(){
 	var browser = document.getElementById("browser");
 	browser.loadURI("chrome://on1map/content/debug.html", null, null);
 }
-
 function goMap(){
 	var browser = document.getElementById("browser");
 	browser.loadURI("chrome://on1map/content/on1map.html", null, null);
@@ -303,7 +311,7 @@ function jsdump(str)
             .logStringMessage(str);
 }
 
-function fileImport(){
+function fileImportFlat(){
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
 	var CC = Components.classes;
 	var CI = Components.interfaces;
@@ -335,8 +343,110 @@ function fileImport(){
 		window.openDialog("chrome://on1map/content/app.importWizard.xul","importWizard","modal", params);
 	}
 }
+function fileImportKML(){
+	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
+	var CC = Components.classes;
+	var CI = Components.interfaces;
+	var fp = CC["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "Import KML File", nsIFilePicker.modeOpen);
+	fp.appendFilter("Keyhole Files","*.kml");
+	var rv = fp.show();
+	if (rv == nsIFilePicker.returnOK ) {
+		document.defaultView.title = 'Aliwal On1map - ' + fp.file.leafName;
+		xscopeNS.currentFile = fp.file.path;
+		var params = { 
+			filename: fp.file.path, 
+			callback: function(pDoc, pGeocodeArr ){
+				var dataMgr = new DataManager();
+				dataMgr.emptyObj( xscopeNS.KML );
+				var inter = document.implementation.createDocument("","",null);
+				var clonedNode = inter.importNode( pDoc.firstChild , true );
+				inter.appendChild( clonedNode );
+				xscopeNS.KML = inter;
+				dataMgr.enrichWithGeocode( xscopeNS.KML );
+				dataMgr.enrichFromCache( xscopeNS.KML );
+				xscopeNS.flags.loadingData = false;
+				
+				// Drop the Map drawing into it's own thread
+				window.setTimeout( goMap, 1);
+			}
+		};
+		window.openDialog("chrome://on1map/content/wiz.importKML.xul","importKMLWizard","modal", params);
+	}
+}
 
+function graftKMLToSidebar(){
+	jsdump('STARTING');
+	xscopeNS.KML.firstChild.setAttribute('id', 'xscopeNS_KML');
+	xscopeNS.KML.firstChild.setAttribute('xmlns', ''); // Needed to get query below to work
+	document.importNode(xscopeNS.KML.firstChild, true);
+	var gb = document.getElementById('gb_tree_data');
+	while( gb.hasChildNodes() ){
+		gb.removeChild( gb.firstChild );
+	}
+	jsdump('GB Empty');
+	var tree = document.createElement('tree' );
+	tree.setAttribute('id', 		'tr_kml_data' );
+	tree.setAttribute('datasources','#xscopeNS_KML' );
+	tree.setAttribute('ref', 		'*' );
+	tree.setAttribute('querytype', 	'xml' );
+	
+	jsdump('MID');
+	var tcols = document.createElement('treecols');
+	var treecol = document.createElement('treecol');
+	treecol.setAttribute( 'id', 	'mycolid');
+	treecol.setAttribute( 'flex', 	'1');
+	treecol.setAttribute( 'label', 	'cats');
+	treecol.setAttribute( 'primary', 'true');
+	
+	tcols.appendChild(treecol);
+	tree.appendChild(tcols);
+	
+	var template = document.createElement('template');
+	var query = document.createElement('query');
+	query.setAttribute('expr','Placemark');
+	var action1 = document.createElement('action');
+	var a1_1 = document.createElement('treechildren');
+	var a1_2 = document.createElement('treeitem');
+	var a1_3 = document.createElement('treerow');
+	var a1_4 = document.createElement('treecell');
+	a1_4.setAttribute('label', 	'?');
+	
+	a1_3.appendChild(a1_4);
+	a1_2.appendChild(a1_3);
+	a1_1.appendChild(a1_2);
+	action1.appendChild(a1_1);
+	
+	template.appendChild(query);
+	template.appendChild(action1);
 
+	
+	jsdump('BUILT');
+	
+	gb.appendChild(tree);
+	
+	var frag = '';
+	frag += '<tree id="tr_kml_data" datasources="#xscopeNS_KML" ref="*" querytype="xml" ';
+	frag += ' 	flex="1" hidecolumnpicker="true" >';
+	frag += '	<treecols>';
+	frag += '		<treecol id="sex2"   flex="1" label="Cats" primary="true" />';
+	frag += '	</treecols>';
+	frag += '	<template>';
+	frag += '		<rule>';
+	frag += '			<treechildren>';
+	frag += '				<treeitem uri="rdf:*">';
+	frag += '					<treerow>';
+	frag += '						<treecell label="rdf:http://home.netscape.com/NC-rdf#Name"/>';
+//	frag += '						<treecell label="rdf:http://home.netscape.com/WEB-rdf#LastModifiedDate"/>';
+	frag += '					</treerow>';
+	frag += '				</treeitem>';
+	frag += '			</treechildren>';
+	frag += '		</rule>';
+	frag += '	</template>';
+	frag += '</tree>';
+
+	jsdump('DONE');
+}
 
 addEventListener("load", onload, false);
 
