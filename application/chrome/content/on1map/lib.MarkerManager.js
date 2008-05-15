@@ -18,7 +18,7 @@ MarkerManager.prototype.createMarkersFromDom = function( pKML, pDest ){
 	$(pKML).find('Placemark').each(function(idx, pmark){
 		try{
 			var spl = $(pmark).find('Point>coordinates:first').text().split(',');
-			if( !(isNaN(parseFloat(spl[0])) || isNaN(spl[1])) ) {				
+			if( !(isNaN(parseFloat(spl[0])) || isNaN(parseFloat(spl[1]))) ) {				
 				/* NB!  KML says coordinates come LON,LAT */
 				var geopoint = new YGeoPoint( spl[1], spl[0] );
 				nm = new YMarker( geopoint );		
