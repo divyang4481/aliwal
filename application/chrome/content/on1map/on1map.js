@@ -32,8 +32,8 @@ try{
    }
 	var req = new XMLHttpRequest();
 	req.overrideMimeType('text/xml');	
-	//req.open("GET", "fake-jsm-data-980.o1m", false);
-	req.open("GET", "fake-jsm-data-49.o1m", false);
+	req.open("GET", "fake-jsm-data-980.o1m", false);
+	//req.open("GET", "fake-jsm-data-49.o1m", false);
 	//req.open("GET", "google-addresses.kml", false); 
 	req.send(null);
 	
@@ -108,7 +108,7 @@ $(document).ready( function(){
 		 	var cachestr = resultObj.GeoPoint.Lon + ',' + resultObj.GeoPoint.Lat;
 		 	cacheMgr.setItem(addrhash, cachestr);
 		 } else {
-		 	domMgr.warningGeocodingError(true);
+		 	domMgr.warningGeocodingError(true, resultObj.Address );
 		 }
 	});
 	dataMgr.emptyObj( xscopeNS.domMarkers );
@@ -121,8 +121,6 @@ $(document).ready( function(){
 	lastBounds = map.getBoundsLatLon();
 
 	// Trigger a clicked event to set the intial pin labels
-	jsdump('TRIGGER');
 	$('#sel_change_pin_label').trigger( 'change');
 	
 });
-

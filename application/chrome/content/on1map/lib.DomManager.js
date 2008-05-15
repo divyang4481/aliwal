@@ -21,15 +21,16 @@ DomManager.prototype.warningPinCeiling = function( pSet ){
 		$('#feedback_pin_ceiling').fadeIn('slow');
 	}
 }
-DomManager.prototype.warningGeocodingError = function( pSet ){
+DomManager.prototype.warningGeocodingError = function( pSet, pAddress ){
 	if(pSet){
-		if(xscopeNS.flags.warnGeocodingError){
+		if(xscopeNS.flags.warnGeocodingError === true){
 			alert('Some addresses couldn\'t be geocoded to coordinates.');
 			xscopeNS.flags.warnGeocodingError = false;
 		}
 		$('#feedback_geocoding_err').fadeOut('fast');
 		$('#feedback_geocoding_err').attr('src','icons/geocoding_warn.png');
 		$('#feedback_geocoding_err').fadeIn('slow');
+		jsdump('Couldn\'t geocode address ' + pAddress );
 	} else if ( $('#feedback_geocoding_err').attr('src') !== 'icons/geocoding_ok.png' ){
 		$('#feedback_geocoding_err').fadeOut('fast');
 		$('#feedback_geocoding_err').attr('src','icons/geocoding_ok.png');
@@ -82,6 +83,13 @@ DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pB
 						throw 'Map density ceiling';
 				 	}
 				}
+			} else if( pHiddenMarkers[key].YGeoPoint.Lat === 0 && pHiddenMarkers[key].YGeoPoint.Lon === 0 ){
+				// The marker has been created but not yet geocoded. Add it to the map and 
+				// leave it alone until it's been geocoded.
+				visicount++;
+				pVisibleMarkers[key] = pHiddenMarkers[key];
+				map.addOverlay(pVisibleMarkers[key]);
+				delete pHiddenMarkers[key];	
 			}
 		}
 	} catch(e){
@@ -98,15 +106,9 @@ DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pB
 }
 DomManager.prototype.drawControls = function(){
 	
-	var pinItems = dataMgr.domLabelCensus( xscopeNS.KML );	
-	var pinTagSets = dataMgr.domTagSetCensus( xscopeNS.KML );
-	
 	// Filtering stuff
-	var labels = [];
-	for (var pi in pinItems){
-		labels.push(pi);
-	}
-	
+	var pinTagSets = dataMgr.domTagSetCensus( xscopeNS.KML );
+		
 	var html = '<table id="tbl_filters"></table>';
 	$("#div_filters").empty();
 	$("#div_filters").append(html);
@@ -125,6 +127,11 @@ DomManager.prototype.drawControls = function(){
 	});
 	
 	// Pin label stuff
+	var pinItems = dataMgr.domLabelCensus( xscopeNS.KML );	
+	var labels = [];
+	for (var pi in pinItems){
+		labels.push(pi);
+	}
 	domMgr.drawLabelSelector('pin_label_selector', labels );
 	$('#sel_change_pin_label').bind( 'change', function(e){
 		markerMgr.setPinLabels( xscopeNS.domMarkers, this.value );
