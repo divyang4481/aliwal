@@ -57,6 +57,23 @@ DataManager.prototype.domLabelCensus = function( pDoc){
 	});
 	return ret;
 }
+DataManager.prototype.enrichWithGeocode = function( pDoc, pGeocodeArgs){
+	/* Scans a KML DOM document and adds a Geocode element if there is no Point.coordinates or GeocodeAddress
+	 */
+
+	$(pDoc).find('Placemark').not('Placemark:has(Point>coordinates)').not('Placemark:has(ExtendedData>GeocodeAddress)').each( function(idx, pointless){
+			var geostr = '';
+			$.each(pGeocodeArgs, function(idx,val){
+				if( geostr ){
+					geostr +=', ';
+				}
+				geostr += $(pointless).find('ExtendedData>Data[name='+val+']:first>value').text();
+			});
+			var dp = new DOMParser();
+			var frag = dp.parseFromString( '<ExtendedData><GeocodeAddress>'+geostr+'</GeocodeAddress></ExtendedData>','text/xml');
+			$(pointless).append( $(frag.documentElement) );
+	});
+}
 DataManager.prototype.enrichFromCache = function( pDoc){
 	/* Scans a KML DOM document and adds point data if it's missing from the doc but avail in cache
 	 */
