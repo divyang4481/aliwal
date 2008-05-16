@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<wizard id="importkmlwizard" title="Import a KML file" 
+	onload="impwiz.onWizardLoad();"
+	onwizardfinish="return impwiz.onWizardFinished()"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
+
+<!-- External libs -->
+	<script src="jquery-1.2.3.js" 		/>  
+	
+<!-- On1Map libs -->
+	<script src="lib.DataManager.js" 	/>
+	<script src="wiz.importKML.js" 	/>
+	
+<script>
+	var impwiz = new ImportKMLWizard();
+</script>
+
+	<wizardpage description="Geocoding columns"
+		onpageadvanced="impwiz.grabGeoSelections();" >
+		<description>
+			Choose the columns with address data for geocoding.
+			Geocoding turns addresses into latitude and longitude coordinates that can be shown on the map.
+			These are optional and only required if the data doesn't already have coordinates.
+			
+			Order should be like a regular address, from most specific to general eg. house number to country.
+		</description>
+		<groupbox flex="1">
+			<hbox>
+				<listbox id="lb_address_cols" rows="7" flex="1" seltype="multiple" >
+					<!-- Populated by script -->
+				</listbox>
+
+				<vbox>
+						<button label=" &gt;&gt; " oncommand="impwiz.drawMoveListItem('lb_address_cols', 'lb_geo_cols')" />
+						<button label=" &lt;&lt; " oncommand="impwiz.drawMoveListItem('lb_geo_cols', 'lb_address_cols')" />
+				</vbox>
+		      
+
+				<listbox id="lb_geo_cols" rows="7" flex="1" seltype="multiple" >
+					<!-- Populated by script -->
+				</listbox>
+
+			</hbox>
+		</groupbox>
+		<checkbox  flex="1" label="Remember choices for this file" default="true" disabled="true"
+                      oncommand="xscopeNS.flags.promptForGeocodeFields=this.checked;" />
+
+
+	</wizardpage>
+</wizard>

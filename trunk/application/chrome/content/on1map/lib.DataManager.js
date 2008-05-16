@@ -57,21 +57,35 @@ DataManager.prototype.domLabelCensus = function( pDoc){
 	});
 	return ret;
 }
-DataManager.prototype.enrichWithGeocode = function( pDoc, pGeocodeArgs){
+DataManager.prototype.enrichWithGeocode = function( pDoc ){
 	/* Scans a KML DOM document and adds a Geocode element if there is no Point.coordinates or GeocodeAddress
 	 */
-
-	$(pDoc).find('Placemark').not('Placemark:has(Point>coordinates)').not('Placemark:has(ExtendedData>GeocodeAddress)').each( function(idx, pointless){
+	xscopeNS.flags.promptForGeocodeFields = true;
+	var geofields = [];
+	var dp = new DOMParser()
+	$(pDoc).find('Placemark').not('Placemark:has(Point>coordinates)')
+				.not('Placemark:has(ExtendedData>GeocodeAddress)')
+				.each( function(idx, pointless){
+			
+			if(xscopeNS.flags.promptForGeocodeFields){
+				// Pop up a wizard which can get the geocode fields from the user
+				// Wizard should also ask if these are to be remembered 
+				var params = {  
+								KML: xscopeNS.KML,
+								callback : function(pGeocodeArgs){ geofields = pGeocodeArgs; }
+							 };
+				window.openDialog("chrome://on1map/content/wiz.importKML.xul","importWizard","modal", params);
+			}
 			var geostr = '';
-			$.each(pGeocodeArgs, function(idx,val){
+			for(var idx in geofields){
 				if( geostr ){
 					geostr +=', ';
 				}
-				geostr += $(pointless).find('ExtendedData>Data[name='+val+']:first>value').text();
-			});
-			var dp = new DOMParser();
-			var frag = dp.parseFromString( '<ExtendedData><GeocodeAddress>'+geostr+'</GeocodeAddress></ExtendedData>','text/xml');
-			$(pointless).append( $(frag.documentElement) );
+				geostr += $(pointless).find('ExtendedData>Data[@name="'+geofields[idx]+'"]:first>value').text();
+			}
+			var fragstr = '<GeocodeAddress on1map_geocoding="generated_geocode_tag">' + geostr + '</GeocodeAddress>';
+			var frag = dp.parseFromString( fragstr,'text/xml');
+			$(pointless).children('ExtendedData:first').append( $(frag.documentElement) );
 	});
 }
 DataManager.prototype.enrichFromCache = function( pDoc){
@@ -83,7 +97,7 @@ DataManager.prototype.enrichFromCache = function( pDoc){
 		try{
 			var cacheret = cacheMgr.getItem( cachestr );
 			var dp = new DOMParser();
-			var frag = dp.parseFromString( '<Point on1map_geocoding="cached"><coordinates>'+cacheret+'</coordinates></Point>','text/xml');
+			var frag = dp.parseFromString( '<Point on1map_geocoding="point_from_cache"><coordinates>'+cacheret+'</coordinates></Point>','text/xml');
 			$(pointless).append( $(frag.documentElement) );
 			//jsdump('cache HIT for address:\n' + cachestr );
 		}catch(e){
