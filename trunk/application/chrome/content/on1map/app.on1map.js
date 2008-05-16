@@ -231,8 +231,7 @@ function goWelcome(){
 	browser.loadURI("chrome://on1map/content/welcome.html", null, null);
 }
 function goViewData(){
-	var browser = document.getElementById("browser");
-	toggleSidebar("viewDataSidebar");
+	toggleSidebar();
 }
 function goMap(){
 	var browser = document.getElementById("browser");
@@ -309,58 +308,30 @@ function fileImportFlat(){
 	}
 }
 
-function graftKMLToSidebar(){
-	jsdump('STARTING');
-	xscopeNS.KML.firstChild.setAttribute('id', 'xscopeNS_KML');
-	xscopeNS.KML.firstChild.setAttribute('xmlns', ''); // Needed to get query below to work
-	document.importNode(xscopeNS.KML.firstChild, true);
-	var gb = document.getElementById('gb_tree_data');
-	while( gb.hasChildNodes() ){
-		gb.removeChild( gb.firstChild );
+function toggleSidebar(){
+	var sb = document.getElementById('hb_sidebar_data');
+	var sp = document.getElementById('sp_sidebar_data');
+	if( sb.getAttribute('collapsed') === 'true' ){
+		drawSidebarTree();
+		sb.removeAttribute('collapsed');
+		sp.removeAttribute('collapsed');
+	} else {
+		sb.setAttribute('collapsed', 'true');
+		sp.setAttribute('collapsed', 'true');
 	}
-	jsdump('GB Empty');
-	var tree = document.createElement('tree' );
-	tree.setAttribute('id', 		'tr_kml_data' );
-	tree.setAttribute('datasources','#xscopeNS_KML' );
-	tree.setAttribute('ref', 		'*' );
-	tree.setAttribute('querytype', 	'xml' );
-	
-	jsdump('MID');
-	var tcols = document.createElement('treecols');
-	var treecol = document.createElement('treecol');
-	treecol.setAttribute( 'id', 	'mycolid');
-	treecol.setAttribute( 'flex', 	'1');
-	treecol.setAttribute( 'label', 	'cats');
-	treecol.setAttribute( 'primary', 'true');
-	
-	tcols.appendChild(treecol);
-	tree.appendChild(tcols);
-	
-	var template = document.createElement('template');
-	var query = document.createElement('query');
-	query.setAttribute('expr','Placemark');
-	var action1 = document.createElement('action');
-	var a1_1 = document.createElement('treechildren');
-	var a1_2 = document.createElement('treeitem');
-	var a1_3 = document.createElement('treerow');
-	var a1_4 = document.createElement('treecell');
-	a1_4.setAttribute('label', 	'?');
-	
-	a1_3.appendChild(a1_4);
-	a1_2.appendChild(a1_3);
-	a1_1.appendChild(a1_2);
-	action1.appendChild(a1_1);
-	
-	template.appendChild(query);
-	template.appendChild(action1);
+}
 
+function drawSidebarTree(){
+	xscopeNS.KML.firstChild.setAttribute('id', 'xscopeNS_KML');
+	var dataEle = document.getElementById('xscopeNS_KML');
+	alert(uneval(dataEle));
+	if ( !(dataEle == null )){
+		document.removeChild( dataEle );
+	}
+	document.getElementById('on1map').appendChild(xscopeNS.KML.firstChild, true);
 	
-	jsdump('BUILT');
-	
-	gb.appendChild(tree);
-	xscopeNS.KML.firstChild.setAttribute('xmlns', 'http://earth.google.com/kml/2.2'); // Put the namespace back
-
-	jsdump('DONE');
+	var tree = document.getElementById("tr_raw_data");
+	tree.datasources="#xscopeNS_KML";
 }
 
 addEventListener("load", onload, false);
