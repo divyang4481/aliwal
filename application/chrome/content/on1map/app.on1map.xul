@@ -25,7 +25,7 @@
 	<command id="cmd_save" 		oncommand="fileSave();"/>
 	<command id="cmd_saveas" 	oncommand="fileSaveAs();"/>
 	<command id="cmd_close" 	oncommand="fileClose();"/>
-	<command id="cmd_viewdata" oncommand="goViewData();"/>
+	<command id="cmd_viewdata" 	oncommand="goViewData();"/>
 	<command id="cmd_reload" 	oncommand="reload();"/>
 	<command id="cmd_preferences" oncommand="goPreferences();" />
 	<command id="cmd_about" 	oncommand="goAbout();" />
@@ -33,8 +33,8 @@
 	<menubar id="on1map-menubar">
 	  <menu id="file-menu" label="File">
 	    <menupopup id="file-popup">
-			<menuitem id="mi_file_open" 		label="Open File"			accesskey="o" 	command="cmd_open" 	/>
-      		<menuitem id="mi_file_importflat" 	label="Import Flat File"	accesskey="i" 	command="cmd_import_flat" 	/>
+			<menuitem id="mi_file_open" 		label="Open File..."		accesskey="o" 	command="cmd_open" 	/>
+      		<menuitem id="mi_file_importflat" 	label="Import Text File..."	accesskey="i" 	command="cmd_import_flat" 	/>
       		<menuitem id="mi_file_saveas" 		label="Save As" 			accesskey="s" 	command="cmd_saveas" 	disabled="true"	/> 		
 <!--      	<menuitem id="mi_file_save" 		label="Save"  								command="cmd_save" 		disabled="true"	/> 	-->
 	      	<menuitem id="mi_file_close" 		label="Close Map"  							command="cmd_close" 	disabled="true"	/>
@@ -45,10 +45,10 @@
 			<menupopup id="view-popup">
 <!--    	    <menuitem label="Data" 			accesskey="u" 	command="cmd_viewdata" 	/> 	-->
 <!--    	    <menuitem label="Map" 			accesskey="m" 	command="cmd_viewmap" 	/> 	-->
-<!--			    <menuitem label="Debug" 		accesskey="d" 	command="cmd_viewdebug" />  -->
+<!--			    <menuitem label="Debug" 	accesskey="d" 	command="cmd_viewdebug" />  -->
 <!--		    <menuitem label="Unit Tests" 	accesskey="t" 	command="cmd_viewtests" /> --> 
-<!--				<menuitem label="View Data" 		accesskey="d" 	command="cmd_viewdata" 	/> -->
-				<menuitem label="Reload Map" 		accesskey="r" 	command="cmd_reload" 	/>
+				<menuitem label="View Data" accesskey="d" 	command="cmd_viewdata" 	type="checkbox" checked="false"/> 
+				<menuitem label="Reload Map" 	accesskey="r" 	command="cmd_reload" 	/>
 				<menuitem label="Preferences" 					command="cmd_preferences" />
 			</menupopup>	      
 		</menu>
@@ -61,20 +61,64 @@
 	</menubar>
 
 	<hbox flex="1">
-<!--
-		<vbox flex="1" id="hb_sidebar_data" >
-			<hbox align="end">
-				<button image="icons/open.png"
-						label="Graft xscopeNS.KML"
-						orient="vertical" 
-						dir="forward"
-						oncommand="graftKMLToSidebar();" />
-				<button image="icons/close.png"
-			       oncommand="setText('label-text','A button with an image only');" />
 
-			</hbox>
+		<vbox flex="1" id="hb_sidebar_data" collapsed="true">
 			<hbox flex="1">			
-				<groupbox id="gb_tree_data" flex="1">
+				<groupbox id="gb_tree_data" flex="1">								
+					<tree id="tr_raw_data" datasources="" ref="*" querytype="xml" rows="22" enableColumnDrag="true" >
+						<treecols>
+					    	<treecol id="Tags" 		label="Tags" primary="true" flex="1" persist="width ordinal hidden"/>
+							<treecol id="Contents" 	label="Contents"  flex="2" persist="width ordinal hidden"/>
+						</treecols>
+					
+						<template>
+							<query expr="*">
+								<assign var="?o1m_text" 	expr="text()"/>
+								<assign var="?o1m_name" expr="name()"/>
+								
+							</query>
+										
+							<rule>
+								<where subject="?o1m_name" rel="equals" value="TagSet"/>
+								<action>
+									<treechildren>
+										<treeitem uri="?"  container="true" open="true">
+											<treerow>
+												<treecell label="?o1m_name" />
+												<treecell label="?name" />
+											</treerow>
+										</treeitem>
+									</treechildren>
+								</action>
+							</rule>			
+							<rule>
+								<where subject="?o1m_name" rel="equals" value="Data"/>
+								<action>
+									<treechildren>
+										<treeitem uri="?"  container="true" open="true">
+											<treerow>
+												<treecell label="?o1m_name" />
+												<treecell label="?name" />
+											</treerow>
+										</treeitem>
+									</treechildren>
+								</action>
+							</rule>			
+							<rule>
+								<action>
+									<treechildren>
+										<treeitem uri="?"  container="true" open="true">
+											<treerow>
+												<treecell label="?o1m_name" />
+												<treecell label="?o1m_text" />
+											</treerow>
+										</treeitem>
+									</treechildren>
+								</action>
+							</rule>
+						</template>
+					
+					</tree>
 				</groupbox>
 			</hbox>
 		</vbox>
@@ -83,11 +127,12 @@
 		    state="closed"
 		    collapse="before"
 		    resizebefore="closest"
-		    resizeafter="closest">
+		    resizeafter="closest"
+		     collapsed="true" >
 		    <grippy />
 		</splitter>
--->
-		<browser flex="1" id="browser" src="" type="content-primary"/>
+
+		<browser flex="5" id="browser" src="" type="content-primary"/>
 	</hbox>
   	
   <statusbar>
