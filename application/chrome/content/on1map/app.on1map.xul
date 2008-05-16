@@ -22,13 +22,10 @@
  	<command id="cmd_new" 		oncommand="fileNew();"/>
 	<command id="cmd_open" 		oncommand="fileOpen();"/>
 	<command id="cmd_import_flat" 	oncommand="fileImportFlat();"/>
-	<command id="cmd_import_kml" 	oncommand="fileImportKML();"/>
 	<command id="cmd_save" 		oncommand="fileSave();"/>
 	<command id="cmd_saveas" 	oncommand="fileSaveAs();"/>
 	<command id="cmd_close" 	oncommand="fileClose();"/>
 	<command id="cmd_viewdata" oncommand="goViewData();"/>
-	<command id="cmd_viewdebug" oncommand="goDebug();"/>
-	<command id="cmd_viewtests" oncommand="goTests();"/>
 	<command id="cmd_reload" 	oncommand="reload();"/>
 	<command id="cmd_preferences" oncommand="goPreferences();" />
 	<command id="cmd_about" 	oncommand="goAbout();" />
@@ -36,12 +33,11 @@
 	<menubar id="on1map-menubar">
 	  <menu id="file-menu" label="File">
 	    <menupopup id="file-popup">
-			<menuitem id="mi_file_open" 		label="Open file"			accesskey="o" 	command="cmd_open" 	/>
+			<menuitem id="mi_file_open" 		label="Open File"			accesskey="o" 	command="cmd_open" 	/>
       		<menuitem id="mi_file_importflat" 	label="Import Flat File"	accesskey="i" 	command="cmd_import_flat" 	/>
-      		<menuitem id="mi_file_importkml" 	label="Import KML File"		accesskey="i" 	command="cmd_import_kml" 	/>
       		<menuitem id="mi_file_saveas" 		label="Save As" 			accesskey="s" 	command="cmd_saveas" 	disabled="true"	/> 		
 <!--      	<menuitem id="mi_file_save" 		label="Save"  								command="cmd_save" 		disabled="true"	/> 	-->
-	      	<menuitem id="mi_file_close" 		label="Close map"  							command="cmd_close" 	disabled="true"	/>
+	      	<menuitem id="mi_file_close" 		label="Close Map"  							command="cmd_close" 	disabled="true"	/>
 	    </menupopup>
 	  </menu>
 	  

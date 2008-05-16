@@ -127,7 +127,6 @@ function fileOpen(){
 	fp.init(window, "Pin Data File", nsIFilePicker.modeOpen);
 	fp.appendFilter("On1Map Files","*.o1m");
 	fp.appendFilter("Keyhole Files","*.KML");
-	fp.appendFilters(nsIFilePicker.filterXML);	
 	fp.appendFilters(nsIFilePicker.filterAll);	
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnOK ) {			
@@ -136,6 +135,8 @@ function fileOpen(){
 			xscopeNS.flags.loadingData = true;
 			var dataMgr = new DataManager();
 			dataMgr.emptyObj( xscopeNS.KML );
+			dataMgr.emptyObj( xscopeNS.domMarkers );
+			dataMgr.emptyObj( xscopeNS.hiddenMarkers );
 			dataMgr.loadFile( fp.file.path, function( pDoc ){
 				/* dataMgr.loadFile() is asyncronous. 
 				 * This is called when it's finished loading successfully.
@@ -146,7 +147,7 @@ function fileOpen(){
 				var clonedNode = inter.importNode( pDoc.firstChild , true );
 				inter.appendChild( clonedNode );
 				xscopeNS.KML = inter;
-
+				dataMgr.enrichWithGeocode(xscopeNS.KML);
 				dataMgr.enrichFromCache( xscopeNS.KML );
 				xscopeNS.flags.loadingData = false;
 				
@@ -176,10 +177,8 @@ function fileSaveAs(){
 			//Thanks: http://www.captain.at/programming/xul/
 			var file = Components.classes["@mozilla.org/file/local;1"]
 				.createInstance(Components.interfaces.nsILocalFile);
-			jsdump('savefile is:\n' + savefile);
 			file.initWithPath( savefile );
 			if ( file.exists() == false ) {
-				jsdump( "Creating file... " );
 				file.create( Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420 );
 			}
 			var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
@@ -220,9 +219,7 @@ function fileSaveAs(){
 		}
 	}
 }
-
 function fileClose(){
-	xscopeNS.raw_data = [];
 	goWelcome();
 }
 function goAbout(){
@@ -237,25 +234,10 @@ function goViewData(){
 	var browser = document.getElementById("browser");
 	toggleSidebar("viewDataSidebar");
 }
-
-
-
-
-
-function goDebug(){
-	var browser = document.getElementById("browser");
-	browser.loadURI("chrome://on1map/content/debug.html", null, null);
-}
 function goMap(){
 	var browser = document.getElementById("browser");
 	browser.loadURI("chrome://on1map/content/on1map.html", null, null);
 }
-
-function goTests(){
-	var browser = document.getElementById("browser");
-	browser.loadURI("chrome://on1map/content/j3unit-0.9.0/j3unit-0.9.0/index.html", null, null);
-}
-
 function goPreferences(){
 	window.openDialog("chrome://on1map/content/connection.xul", "", "chrome,toolbar");
 	
@@ -264,7 +246,6 @@ function showConsole() {
   window.open("chrome://global/content/console.xul", "_blank",
     "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar");
 }
-
 function onload() {
     listener = new WebProgressListener();
 
@@ -275,32 +256,14 @@ function onload() {
 	goWelcome();
 	//goDebug();
 }
-
-function back() {
-  var browser = document.getElementById("browser");
-  browser.stop();
-  browser.goBack();
-}
-
-function forward() {
-  var browser = document.getElementById("browser");
-  browser.stop();
-  browser.goForward();
-}
-
 function reload() {
 	var dataMgr = new DataManager();
 	var browser = document.getElementById("browser");
 	browser.reload();
 }
-
 function stop() {
   var browser = document.getElementById("browser");
   browser.stop();
-}
-
-function fileNew(){
-	alert('File New');
 }
 
 function jsdump(str)
@@ -328,6 +291,8 @@ function fileImportFlat(){
 			callback: function(pDoc){
 				var dataMgr = new DataManager();
 				dataMgr.emptyObj( xscopeNS.KML );
+				dataMgr.emptyObj( xscopeNS.domMarkers );
+				dataMgr.emptyObj( xscopeNS.hiddenMarkers );
 				var inter = document.implementation.createDocument("","",null);
 				var clonedNode = inter.importNode( pDoc.firstChild , true );
 				inter.appendChild( clonedNode );
@@ -341,37 +306,6 @@ function fileImportFlat(){
 			}
 		};
 		window.openDialog("chrome://on1map/content/app.importWizard.xul","importWizard","modal", params);
-	}
-}
-function fileImportKML(){
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
-	var CC = Components.classes;
-	var CI = Components.interfaces;
-	var fp = CC["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-	fp.init(window, "Import KML File", nsIFilePicker.modeOpen);
-	fp.appendFilter("Keyhole Files","*.kml");
-	var rv = fp.show();
-	if (rv == nsIFilePicker.returnOK ) {
-		document.defaultView.title = 'Aliwal On1map - ' + fp.file.leafName;
-		xscopeNS.currentFile = fp.file.path;
-		var params = { 
-			filename: fp.file.path, 
-			callback: function(pDoc, pGeocodeArr ){
-				var dataMgr = new DataManager();
-				dataMgr.emptyObj( xscopeNS.KML );
-				var inter = document.implementation.createDocument("","",null);
-				var clonedNode = inter.importNode( pDoc.firstChild , true );
-				inter.appendChild( clonedNode );
-				xscopeNS.KML = inter;
-				dataMgr.enrichWithGeocode( xscopeNS.KML );
-				dataMgr.enrichFromCache( xscopeNS.KML );
-				xscopeNS.flags.loadingData = false;
-				
-				// Drop the Map drawing into it's own thread
-				window.setTimeout( goMap, 1);
-			}
-		};
-		window.openDialog("chrome://on1map/content/wiz.importKML.xul","importKMLWizard","modal", params);
 	}
 }
 
@@ -424,26 +358,7 @@ function graftKMLToSidebar(){
 	jsdump('BUILT');
 	
 	gb.appendChild(tree);
-	
-	var frag = '';
-	frag += '<tree id="tr_kml_data" datasources="#xscopeNS_KML" ref="*" querytype="xml" ';
-	frag += ' 	flex="1" hidecolumnpicker="true" >';
-	frag += '	<treecols>';
-	frag += '		<treecol id="sex2"   flex="1" label="Cats" primary="true" />';
-	frag += '	</treecols>';
-	frag += '	<template>';
-	frag += '		<rule>';
-	frag += '			<treechildren>';
-	frag += '				<treeitem uri="rdf:*">';
-	frag += '					<treerow>';
-	frag += '						<treecell label="rdf:http://home.netscape.com/NC-rdf#Name"/>';
-//	frag += '						<treecell label="rdf:http://home.netscape.com/WEB-rdf#LastModifiedDate"/>';
-	frag += '					</treerow>';
-	frag += '				</treeitem>';
-	frag += '			</treechildren>';
-	frag += '		</rule>';
-	frag += '	</template>';
-	frag += '</tree>';
+	xscopeNS.KML.firstChild.setAttribute('xmlns', 'http://earth.google.com/kml/2.2'); // Put the namespace back
 
 	jsdump('DONE');
 }

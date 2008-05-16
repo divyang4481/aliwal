@@ -23,10 +23,6 @@ DomManager.prototype.warningPinCeiling = function( pSet ){
 }
 DomManager.prototype.warningGeocodingError = function( pSet, pAddress ){
 	if(pSet){
-		if(xscopeNS.flags.warnGeocodingError === true){
-			alert('Some addresses couldn\'t be geocoded to coordinates.');
-			xscopeNS.flags.warnGeocodingError = false;
-		}
 		$('#feedback_geocoding_err').fadeOut('fast');
 		$('#feedback_geocoding_err').attr('src','icons/geocoding_warn.png');
 		$('#feedback_geocoding_err').fadeIn('slow');

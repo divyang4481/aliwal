@@ -108,12 +108,22 @@ $(document).ready( function(){
 		 	var cachestr = resultObj.GeoPoint.Lon + ',' + resultObj.GeoPoint.Lat;
 		 	cacheMgr.setItem(addrhash, cachestr);
 		 } else {
+		 	// A wierd issue (race I think), trying to set the warning out here.
+			if(xscopeNS.flags.warnGeocodingError === true){
+				xscopeNS.flags.warnGeocodingError = false;
+				alert('Some addresses couldn\'t be geocoded to coordinates.');
+			}
 		 	domMgr.warningGeocodingError(true, resultObj.Address );
+
 		 }
 	});
 	dataMgr.emptyObj( xscopeNS.domMarkers );
 	dataMgr.emptyObj( xscopeNS.hiddenMarkers );
-	markerMgr.createMarkersFromDom(xscopeNS.KML, xscopeNS.hiddenMarkers );
+	try{
+		markerMgr.createMarkersFromDom(xscopeNS.KML, xscopeNS.hiddenMarkers );
+	} catch(e){
+		jsdump('Exception:\n'+e);
+	}
 	
 	// Specifying the Map starting location and zoom level
 	var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
