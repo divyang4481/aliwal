@@ -130,7 +130,7 @@ function fileOpen(){
 	fp.appendFilters(nsIFilePicker.filterAll);	
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnOK ) {			
-		document.defaultView.title = 'Aliwal On1map - ' + fp.file.leafName;
+		document.title = 'Aliwal Geocoder - ' + fp.file.leafName;
 		try {
 			xscopeNS.flags.loadingData = true;
 			var dataMgr = new DataManager();
@@ -226,7 +226,7 @@ function goAbout(){
 	window.openDialog("chrome://on1map/content/about.xul","aboutDialog","dialog" );
 }
 function goWelcome(){
-	document.defaultView.title = 'Aliwal On1map. Your data, on a map.';
+	document.title = 'Aliwal Geocoder. Your data, on a map.';
 	var browser = document.getElementById("browser");
 	browser.loadURI("chrome://on1map/content/welcome.html", null, null);
 }
@@ -283,7 +283,7 @@ function fileImportFlat(){
 	fp.appendFilter("TXT Files","*.txt");
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnOK ) {
-		document.defaultView.title = 'Aliwal On1map - ' + fp.file.leafName;
+		document.title = 'Aliwal Geocoder - ' + fp.file.leafName;
 		xscopeNS.currentFile = fp.file.path;
 		var params = { 
 			filename: fp.file.path, 

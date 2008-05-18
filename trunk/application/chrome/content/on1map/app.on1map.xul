@@ -5,7 +5,7 @@
 
 <window
   id     = "on1map"
-  title  = "Aliwal On1map. Your data, on a map."
+  title  = "Aliwal Geocoder. Your data, on a map."
   width  = "800"
   height = "600"
   xmlns  = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
@@ -55,7 +55,7 @@
 
 		<menu id="about-menu" label="About">
 			<menupopup id="about-popup">
-				<menuitem label="About Aliwal On1map" 			command="cmd_about" />
+				<menuitem label="About Aliwal Geocoder" 			command="cmd_about" />
 			</menupopup>	
 		</menu>
 	</menubar>
