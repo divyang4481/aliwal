@@ -11,7 +11,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>WebRunnerX</string>
 	<key>CFBundleIconFile</key>
-	<string>aliwal_on1map.icns</string>
+	<string>aliwal_geocoder.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.baudmap.aliwal_on1map</string>
 	<key>CFBundleInfoDictionaryVersion</key>
