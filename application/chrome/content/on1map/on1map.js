@@ -111,7 +111,7 @@ $(document).ready( function(){
 		 	// A wierd issue (race I think), trying to set the warning out here.
 			if(xscopeNS.flags.warnGeocodingError === true){
 				xscopeNS.flags.warnGeocodingError = false;
-				alert('Some addresses couldn\'t be geocoded to coordinates.');
+				alert('Some addresses couldn\'t be geocoded to \ncoordinates and are not shown.');
 			}
 		 	domMgr.warningGeocodingError(true, resultObj.Address );
 

@@ -7,7 +7,7 @@ DomManager.prototype.warningPinCeiling = function( pSet ){
 	if(pSet){
 		if(xscopeNS.flags.warnPinCountError){
 			//ToDo, move xscopeNS ... to an argument 
-			alert('Only the 1st 200 markers within this map area shown.\nTry zooming or filtering to avoid this limit.');
+			alert('Only the 1st 200 markers within this map area are shown.\nZoom or filter to avoid this limit.');
 			xscopeNS.flags.warnPinCountError = false;
 		}
 		$('#feedback_pin_ceiling').fadeOut('fast');
