@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="lemons.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3480">
+      <stop
+         style="stop-color:#f04848;stop-opacity:1;"
+         offset="0"
+         id="stop3482" />
+      <stop
+         style="stop-color:#f04848;stop-opacity:0;"
+         offset="1"
+         id="stop3484" />
+    </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="21.515481 : 60.11999 : 1"
+       inkscape:vp_y="5.8059312e-14 : 5496.6992 : 0"
+       inkscape:vp_z="727.05137 : 60.11999 : 1"
+       inkscape:persp3d-origin="374.28343 : -903.96642 : 1"
+       id="perspective10" />
+    <filter
+       inkscape:collect="always"
+       id="filter3274"
+       x="-0.23053868"
+       width="1.4610774"
+       y="-0.60368788"
+       height="2.2073758">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="37.896842"
+         id="feGaussianBlur3276" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3480"
+       id="linearGradient3494"
+       x1="365.24863"
+       y1="771.50415"
+       x2="464.75775"
+       y2="771.50415"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0684376,0,0,0.993922,-54.4237,167.1573)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3480"
+       id="linearGradient3496"
+       x1="313.28226"
+       y1="604.08209"
+       x2="448.63995"
+       y2="604.08209"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0684376,0,0,0.993922,-45.680443,168.78399)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.61100637"
+     inkscape:cx="372.04724"
+     inkscape:cy="567.17317"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     inkscape:window-width="1344"
+     inkscape:window-height="846"
+     inkscape:window-x="49"
+     inkscape:window-y="22" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:none">
+    <path
+       sodipodi:type="arc"
+       style="fill:#7d2d0e;fill-opacity:1;stroke:#ded8d8;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2383"
+       sodipodi:cx="315.87231"
+       sodipodi:cy="463.17029"
+       sodipodi:rx="198.03394"
+       sodipodi:ry="194.76065"
+       d="M 513.90625,463.17029 A 198.03394,194.76065 0 1 1 117.83838,463.17029 A 198.03394,194.76065 0 1 1 513.90625,463.17029 z"
+       transform="matrix(0.492427,0,0,0.5007031,232.67002,-16.203216)" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="hand-drawn">
+    <path
+       transform="matrix(1.0935744,0,0,0.5925357,-265.48889,100.1909)"
+       d="M 563.00558,698.02875 A 194.76065,72.830666 0 1 1 173.48428,698.02875 A 194.76065,72.830666 0 1 1 563.00558,698.02875 z"
+       sodipodi:ry="72.830666"
+       sodipodi:rx="194.76065"
+       sodipodi:cy="698.02875"
+       sodipodi:cx="368.24493"
+       id="path3498"
+       style="opacity:1;fill:#3d3d37;fill-opacity:1;stroke:#86868c;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3274)"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       style="fill:url(#linearGradient3494);fill-opacity:1;fill-rule:evenodd;stroke:#ae1313;stroke-width:11.98074436;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 405.33354,903.63972 C 381.49488,889.30784 341.52128,904.72867 342.49073,930.13254 C 338.89323,950.06892 356.90317,969.6846 381.68975,969.68427 C 401.53535,970.58714 430.77261,966.42147 435.43364,947.13789 C 439.48753,925.69966 418.03943,906.68412 395.74177,899.33095 C 388.74291,897.50125 380.88115,900.2797 378.15237,906.0287"
+       id="path3439"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       style="fill:url(#linearGradient3496);fill-opacity:1;fill-rule:evenodd;stroke:#ae1313;stroke-width:15.45759869;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 297.05539,668.17991 C 307.55523,655.80218 326.13752,656.85514 341.36994,656.80623 C 364.72889,656.71684 388.08837,656.76233 411.44686,656.92133 C 424.01781,660.6327 424.74937,674.93189 424.98657,685.19653 C 425.88779,710.03703 427.13721,649.26533 419.15042,767.29608 C 412.70911,793.44958 414.66538,820.42576 416.00565,846.9681 C 416.20359,856.51392 416.09744,866.067 415.59588,875.60378 C 408.41764,886.40841 393.6205,879.59627 383.06287,878.54003 C 372.09721,876.82611 360.67527,875.56075 349.74677,878.17417 C 330.29774,816.96321 317.60039,754.34701 306.05933,688.59487 C 306.23875,681.69386 297.1067,674.13283 300.07753,668.72205 C 302.2155,669.10496 303.99836,670.37995 305.79866,671.43328"
+       id="path3473"
+       sodipodi:nodetypes="cccccccccccc"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       style="fill:#d5f91f;fill-opacity:1;fill-rule:evenodd;stroke:#c9d435;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 484.44666,224.22024 C 504.88957,221.59852 497.74736,197.87232 512.26961,171.84763 C 538.31221,109.55133 537.89131,120.82259 553.18572,94.925357 C 560.26441,85.487097 569.99256,81.790547 576.09873,73.648977 C 582.52272,65.083667 592.77407,60.401377 602.28504,55.645897 C 613.54001,50.018407 625.9743,48.905257 638.29121,45.826027 C 693.57805,27.596567 674.48374,41.265127 726.67,37.642807 C 741.90656,37.642807 752.73415,49.186567 764.31281,40.916097"
+       id="path3194"
+       sodipodi:nodetypes="cccssccc" />
+    <path
+       style="fill:#d5f91f;fill-opacity:1;fill-rule:evenodd;stroke:#c3d615;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 492.62988,222.5836 C 505.15401,228.91745 517.49945,228.93081 530.2727,234.04011 C 542.95115,239.11149 554.04048,241.54747 567.91551,243.85997 C 580.78306,246.00456 595.6814,243.85997 608.83162,243.85997 C 625.26693,243.85997 643.95084,246.12751 659.56759,242.22333 C 675.92929,238.1329 688.87693,225.11369 703.75698,217.67367 C 715.85754,211.62338 725.607,201.28615 736.48986,193.124 C 747.60609,184.78683 749.71439,181.40474 756.12959,168.57434 C 761.79832,157.23689 760.95721,144.18931 765.94945,134.20481 C 769.75917,126.58538 767.5861,114.75624 767.5861,106.38186 C 767.5861,98.173657 770.83308,85.237027 772.49603,76.922267 C 774.19852,68.409847 772.49603,57.869327 772.49603,49.099317 C 772.49603,44.470187 766.81659,41.349657 762.67617,39.279447"
+       id="path3198" />
+    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#7d3800;stroke-width:15;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 756.12959,52.372607 C 753.09484,48.451187 759.62391,34.148497 769.22274,24.549657 C 774.50442,19.267982 788.45031,14.117552 793.77241,11.456502 C 794.74831,10.968552 791.59021,11.456502 790.49912,11.456502"
+       id="path3200" />
+    <path
+       style="fill:#18970b;fill-opacity:1;fill-rule:evenodd;stroke:#1d7401;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 754.49295,37.642807 C 756.61158,31.889327 747.7594,26.537207 743.03644,14.729792 C 739.60347,6.1473721 734.91288,0.059662094 726.67,-8.1832279 C 721.54921,-13.304008 706.14524,-18.445598 700.48369,-21.276378 C 688.98101,-27.027718 678.89605,-28.796908 667.75081,-34.369528 C 655.93439,-40.277738 637.95555,-43.454988 628.47135,-45.826038 C 620.66655,-47.777238 598.30395,-41.557478 615.37819,-45.826038 C 623.93418,-47.965038 635.95043,-42.904818 643.20114,-39.279458 C 652.26793,-34.746068 653.34132,-20.920958 651.38437,-13.093158 C 649.1623,-4.2049079 649.97884,3.8510821 653.02101,11.456502 C 655.27083,17.081062 679.57406,19.731412 685.75389,21.276367 C 698.42283,24.443597 709.68158,26.186297 723.39671,26.186297 C 733.33097,26.186297 742.70743,26.021797 749.58301,29.459587 C 752.42824,30.882207 752.8563,34.915067 754.49295,37.642807 z"
+       id="path3202" />
+    <path
+       id="path3204"
+       d="M 758.79831,31.951237 C 759.75194,26.416987 755.76744,21.268807 753.64156,9.9113121 C 752.09633,1.6559021 749.98502,-4.1998379 746.27478,-12.128638 C 743.96983,-17.054278 737.03627,-21.999968 734.48792,-24.722878 C 729.31038,-30.255078 724.77099,-31.956838 719.75435,-37.317108 C 714.43559,-43.000208 706.34304,-46.056378 702.07406,-48.337098 C 698.561,-50.213948 688.49525,-44.231178 696.18063,-48.337098 C 700.03181,-50.394578 705.4405,-45.527178 708.70416,-42.039968 C 712.78526,-37.679318 713.26841,-24.380998 712.38756,-16.851478 C 711.38737,-8.3019179 711.75491,-0.55287791 713.12423,6.7627421 C 714.13692,12.172972 725.07617,14.722322 727.8578,16.208442 C 733.56029,19.254982 738.62803,20.931267 744.80142,20.931267 C 749.27298,20.931267 753.49347,20.773037 756.58827,24.079837 C 757.86895,25.448237 758.06163,29.327417 758.79831,31.951237 z"
+       style="fill:#18970b;fill-opacity:1;fill-rule:evenodd;stroke:#1d7401;stroke-width:3.2900002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cccssccc"
+       id="path3206"
+       d="M 471.32441,77.345917 C 490.81368,79.985107 484.00464,103.8694 497.84944,130.0675 C 522.67718,192.7789 522.27592,181.43253 536.85686,207.50232 C 543.60533,217.00347 552.87967,220.72465 558.701,228.92047 C 564.82531,237.54286 574.59845,242.25635 583.66574,247.04351 C 594.39567,252.7085 606.24992,253.82907 617.99225,256.92882 C 670.70002,275.27974 652.49644,261.52011 702.24826,265.16656 C 716.77405,265.16656 727.09654,253.54588 738.13507,261.87146"
+       style="fill:#d5f91f;fill-opacity:1;fill-rule:evenodd;stroke:#c9d435;stroke-width:4.89822245;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path3208"
+       d="M 479.12589,78.993467 C 491.06578,72.617407 502.83532,72.603957 515.01271,67.460617 C 527.09972,62.355447 537.67174,59.903227 550.89952,57.575327 C 563.16681,55.416447 577.37015,57.575327 589.90693,57.575327 C 605.57555,57.575327 623.38787,55.292677 638.27611,59.222867 C 653.87455,63.340557 666.2182,76.446517 680.40411,83.936107 C 691.94019,90.026717 701.23485,100.43283 711.61003,108.64936 C 722.2077,117.04209 724.21765,120.44671 730.33358,133.3626 C 735.73787,144.7756 734.936,157.91012 739.69536,167.96115 C 743.32736,175.63135 741.25566,187.53931 741.25566,195.96949 C 741.25566,204.23238 744.35117,217.25521 745.93655,225.62537 C 747.55962,234.19451 745.93655,244.80527 745.93655,253.63371 C 745.93655,258.29369 740.52205,261.43501 736.57477,263.51902"
+       style="fill:#d5f91f;fill-opacity:1;fill-rule:evenodd;stroke:#c3d615;stroke-width:4.89822245;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cccssccc"
+       id="path3280"
+       d="M 95.037705,538.37194 C 113.19679,520.68297 81.743075,507.96418 70.022525,476.8675 C 33.081405,409.11766 44.137495,418.08474 33.333635,386.49361 C 30.929315,373.82624 37.075305,363.53044 35.001295,352.6034 C 32.819375,341.10765 38.494035,329.65458 43.339695,318.7132 C 49.073875,305.7655 60.609695,295.37557 70.022525,283.56779 C 107.78257,227.18587 102.25396,252.31273 151.73874,209.5114 C 167.26421,197.82601 190.05978,198.37527 193.43069,183.15235"
+       style="fill:#d5f91f;fill-opacity:1;fill-rule:evenodd;stroke:#c9d435;stroke-width:6.25089312;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       id="path3282"
+       d="M 96.970685,530.93174 C 114.89855,526.1817 126.64779,516.71879 143.64833,510.83792 C 160.52269,505.00071 173.3809,498.36064 188.77002,489.48823 C 203.04175,481.26006 215.16644,468.18233 227.66806,458.09162 C 243.29276,445.48013 263.21083,432.88318 274.34571,417.90397 C 286.01173,402.21021 285.94369,382.28479 293.01677,365.15766 C 298.76863,351.22979 298.20985,335.81645 300.79637,321.20243 C 303.43836,306.27503 302.2274,302.06203 296.1286,287.2941 C 290.73949,274.24455 277.5358,264.87803 272.78978,253.38577 C 269.16798,244.61571 255.85638,237.20622 247.89505,230.78021 C 240.0917,224.48171 230.87996,212.06336 224.55623,204.40707 C 218.08218,196.56874 206.44301,189.78695 198.10557,183.05736 C 193.70475,179.50525 185.33881,181.4688 179.43452,183.05735"
+       style="fill:#d5f91f;fill-opacity:1;fill-rule:evenodd;stroke:#c3d615;stroke-width:6.03942919;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       id="path3284"
+       d="M 185.65821,198.12775 C 179.04512,197.44737 171.65492,181.4623 171.6549,166.73112 C 171.65492,158.62544 180.01656,143.97206 182.54637,137.84625 C 183.01025,136.72298 180.4718,139.52074 179.43452,140.358"
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#7d3800;stroke-width:18.11828804;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       id="path3286"
+       d="M 170.09899,188.08082 C 166.64342,182.04023 153.1397,184.72597 137.42463,179.28979 C 126.00188,175.33839 115.75519,174.26633 100.08253,174.26632 C 90.346115,174.26633 70.813895,182.14107 62.740425,184.31324 C 46.337425,188.72648 35.067945,195.10751 19.174625,199.38361 C 2.3242317,203.91722 -17.788401,215.27508 -29.058927,220.7333 C -38.333734,225.225 -53.680372,247.15743 -41.5063,230.78022 C -35.405807,222.57351 -19.171583,217.23587 -8.8319473,214.454 C 4.0974417,210.97533 18.261115,220.76025 23.842405,228.26848 C 30.179795,236.79388 38.614705,242.34902 48.737145,245.85058 C 56.223145,248.44016 81.847315,231.82501 89.191085,228.26848 C 104.24617,220.97744 116.60637,213.67538 129.64504,203.15119 C 139.08931,195.52822 147.84691,188.20705 157.65161,185.56911 C 161.70896,184.47748 165.94987,187.24359 170.09899,188.08082 z"
+       style="fill:#18970b;fill-opacity:1;fill-rule:evenodd;stroke:#1d7401;stroke-width:6.03942919;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       style="fill:#18970b;fill-opacity:1;fill-rule:evenodd;stroke:#1d7401;stroke-width:3.97394466;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 168.78116,180.40977 C 164.42645,175.43135 155.74421,174.53842 142.92589,167.45461 C 133.60864,162.30561 126.03453,159.43236 114.96955,156.19529 C 108.09559,154.18433 96.802255,155.70969 91.790985,155.57576 C 81.609475,155.30362 75.676145,157.48105 65.811055,157.21736 C 55.351835,156.93779 44.752985,160.80241 38.526335,162.32809 C 33.402265,163.58361 29.520675,175.8983 32.923585,166.85035 C 34.628815,162.3164 44.398065,161.90104 50.815955,162.07257 C 58.841345,162.28709 71.943085,172.1207 78.263825,178.57432 C 85.440845,185.90223 93.157095,191.56636 101.41367,196.12921 C 107.51981,199.50361 120.34311,193.06569 124.40037,192.07161 C 132.71788,190.03358 139.12927,187.43117 144.99818,182.69409 C 149.24919,179.26287 153.11109,175.90289 159.19694,176.06557 C 161.71536,176.13289 165.58639,178.96169 168.78116,180.40977 z"
+       id="path3288"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       style="fill:#f1f1e1;fill-opacity:1;fill-rule:evenodd;stroke:#b9cf2e;stroke-width:5.65226793;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 130.23608,265.19238 C 120.53308,268.13028 114.93616,277.7827 107.09209,283.76594 C 102.52735,288.11659 98.782405,296.44194 103.69136,302.00257 C 110.88315,311.11133 121.1509,317.7081 132.25749,319.68578 C 145.93052,320.28774 157.06683,310.23992 166.83393,301.41376 C 172.54773,296.34895 179.5062,290.05039 178.8483,281.36553 C 177.4446,273.59724 170.43116,268.87627 164.44738,265.11661 C 153.99081,259.28025 140.31445,257.47473 130.23608,265.19238 z"
+       id="path3294"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       style="fill:#f1f1e1;fill-opacity:1;fill-rule:evenodd;stroke:#b9cf2e;stroke-width:6.03942919;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 215.86516,263.86363 C 206.7677,260.46808 197.29545,268.50906 198.12674,275.76545 C 198.28933,289.36386 202.7029,303.08436 211.21156,314.83646 C 216.86208,322.86142 231.12971,323.45427 239.44186,317.95326 C 249.58063,310.00422 258.02432,299.5558 259.11127,287.90351 C 260.45129,278.67829 253.41323,269.70951 242.99346,266.06227 C 234.62294,262.86508 224.85746,262.13154 215.86516,263.86363 z"
+       id="path3296"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#83861f;stroke-width:7.24731493;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 71.051075,346.08148 C 74.756695,352.71719 82.436385,357.06544 88.143955,362.50446 C 99.424205,371.95643 113.72122,379.25641 129.80197,381.84239 C 151.0614,386.44824 173.49791,387.69569 195.25362,384.84772 C 208.92237,382.96023 221.9111,378.03407 232.13672,370.43935 C 237.2721,368.1057 242.715,360.86896 234.42278,358.64013 C 235.3445,367.84437 231.56533,377.44907 224.15292,384.4545 C 215.36388,390.26108 207.51115,397.04579 197.58085,401.63388 C 189.11542,405.5304 181.54705,410.95875 171.82926,412.76618 C 161.85234,414.46969 151.93892,419.35321 141.54602,416.8984 C 134.15759,412.73595 126.29763,408.60211 119.71026,403.52898 C 113.84972,398.1235 113.37768,390.19724 107.67863,384.88629 C 100.84071,379.46529 101.02392,370.93892 94.952145,365.26466 C 87.927175,361.26411 87.725955,353.22943 79.068785,350.84625 C 76.204795,349.49591 73.244805,348.13564 71.051075,346.08148 z"
+       id="path3336"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#83861f;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3340"
+       sodipodi:cx="292.21375"
+       sodipodi:cy="543.15802"
+       sodipodi:rx="7.5223341"
+       sodipodi:ry="5.7864108"
+       d="M 299.73608,543.15802 A 7.5223341,5.7864108 0 1 1 284.69141,543.15802 A 7.5223341,5.7864108 0 1 1 299.73608,543.15802 z"
+       transform="matrix(1.3444615,0,0,1.0851842,-244.80096,-302.37057)"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       d="M 299.73608,543.15802 A 7.5223341,5.7864108 0 1 1 284.69141,543.15802 A 7.5223341,5.7864108 0 1 1 299.73608,543.15802 z"
+       sodipodi:ry="5.7864108"
+       sodipodi:rx="7.5223341"
+       sodipodi:cy="543.15802"
+       sodipodi:cx="292.21375"
+       id="path3342"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#83861f;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:type="arc"
+       transform="matrix(1.3444615,0,0,1.0851842,-167.00489,-303.62643)"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_lemon.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       style="fill:#d5f91f;fill-opacity:1;fill-rule:evenodd;stroke:#c9d435;stroke-width:5.33294296;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 539.89514,971.78409 C 525.46418,955.58272 550.46032,943.93357 559.77459,915.45206 C 589.13154,853.39987 580.34531,861.61282 588.93109,832.67844 C 590.84179,821.07638 585.95761,811.64644 587.6058,801.63834 C 589.33977,791.10936 584.83014,780.61947 580.97932,770.59824 C 576.42238,758.73943 567.25493,749.22327 559.77459,738.4085 C 529.76684,686.7682 534.16041,709.78194 494.83506,670.58012 C 482.49704,659.87746 464.3815,660.38051 461.70264,646.43783"
+       id="path3344"
+       sodipodi:nodetypes="cccssccc"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       style="fill:#d5f91f;fill-opacity:1;fill-rule:evenodd;stroke:#c3d615;stroke-width:5.15253305;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 538.359,964.9696 C 524.1118,960.61902 514.77474,951.95193 501.26448,946.56563 C 487.8545,941.21932 477.63613,935.13765 465.40647,927.01141 C 454.0648,919.47521 444.42934,907.49729 434.49436,898.25519 C 422.07749,886.70431 406.24868,875.16673 397.39984,861.44725 C 388.1289,847.07331 388.18297,828.82357 382.56203,813.13683 C 377.99105,800.38025 378.43511,786.26314 376.37962,772.87813 C 374.28005,759.2061 375.24238,755.34741 380.08906,741.82143 C 384.37178,729.86933 394.86468,721.29051 398.63633,710.76473 C 401.51456,702.73222 412.09323,695.94585 418.42007,690.06026 C 424.62136,684.29145 431.94188,672.91747 436.96732,665.90505 C 442.11223,658.72591 451.36182,652.51446 457.98755,646.35082 C 461.48485,643.09744 468.13323,644.89586 472.82535,646.35081"
+       id="path3346"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#7d3800;stroke-width:15.45759869;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 467.87941,660.15381 C 473.1348,659.53065 479.00777,644.8899 479.00778,631.3976 C 479.00777,623.97358 472.3628,610.55252 470.35238,604.94189 C 469.98373,603.91307 472.00103,606.47555 472.82535,607.24239"
+       id="path3348"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       style="fill:#18970b;fill-opacity:1;fill-rule:evenodd;stroke:#1d7401;stroke-width:5.15253305;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 480.24425,650.95181 C 482.99038,645.41923 493.72172,647.8791 506.21042,642.90008 C 515.28803,639.281 523.43104,638.2991 535.88603,638.29909 C 543.62352,638.2991 559.14569,645.51159 565.56164,647.50108 C 578.59704,651.54318 587.55284,657.38758 600.18319,661.30405 C 613.57413,665.45641 629.55755,675.85909 638.51419,680.85828 C 645.88484,684.97225 658.08074,705.06018 648.40606,690.06027 C 643.55802,682.54373 630.65676,677.65497 622.43989,675.10705 C 612.16496,671.92093 600.90915,680.88296 596.47373,687.75976 C 591.43743,695.56819 584.73424,700.65615 576.68999,703.86324 C 570.7409,706.23504 550.37749,691.0172 544.54142,687.75976 C 532.5772,681.08188 522.7546,674.39391 512.39284,664.75479 C 504.88751,657.77291 497.92788,651.06743 490.13614,648.65133 C 486.91177,647.6515 483.54155,650.18499 480.24425,650.95181 z"
+       id="path3350"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       id="path3352"
+       d="M 481.29153,643.92589 C 484.75219,639.36614 491.65193,638.5483 501.8386,632.06023 C 509.24298,627.34427 515.26209,624.71265 524.05537,621.74781 C 529.51809,619.90596 538.49285,621.30304 542.47529,621.18037 C 550.56649,620.93111 555.28168,622.92543 563.12142,622.68391 C 571.43332,622.42785 579.85618,625.96746 584.80448,627.36484 C 588.87655,628.51477 591.96124,639.79382 589.25696,631.50679 C 587.90182,627.35413 580.13824,626.97371 575.03796,627.13081 C 568.66022,627.32729 558.24834,636.33391 553.22526,642.2448 C 547.52172,648.95644 541.38965,654.14423 534.82818,658.32334 C 529.97566,661.41397 519.78503,655.51747 516.56074,654.60698 C 509.95085,652.74036 504.85576,650.3568 500.19176,646.01809 C 496.8135,642.87544 493.74446,639.79803 488.90806,639.94703 C 486.90668,640.00868 483.8304,642.59959 481.29153,643.92589 z"
+       style="fill:#18970b;fill-opacity:1;fill-rule:evenodd;stroke:#1d7401;stroke-width:3.39036679;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       id="path3354"
+       d="M 511.92313,721.57844 C 519.63407,724.26925 524.08191,733.10993 530.31556,738.58999 C 533.94315,742.57476 536.91924,750.19997 533.0181,755.29296 C 527.30282,763.63569 519.14308,769.67767 510.31673,771.48903 C 499.45084,772.04037 490.60086,762.83755 482.83898,754.75365 C 478.29825,750.11479 472.76838,744.34592 473.29123,736.39145 C 474.40673,729.27646 479.98027,724.95251 484.73557,721.50903 C 493.04535,716.16351 503.9139,714.50982 511.92313,721.57844 z"
+       style="fill:#f1f1e1;fill-opacity:1;fill-rule:evenodd;stroke:#b9cf2e;stroke-width:4.82222652;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       id="path3356"
+       d="M 443.87408,720.36144 C 451.10379,717.25144 458.63135,724.61618 457.97072,731.26233 C 457.84151,743.71713 454.33406,756.28376 447.57227,767.04754 C 443.08183,774.39761 431.74341,774.94059 425.13778,769.90223 C 417.08054,762.62166 410.37037,753.05195 409.50658,742.3796 C 408.44167,733.9302 414.03479,725.71567 422.31534,722.37517 C 428.96735,719.44686 436.72792,718.775 443.87408,720.36144 z"
+       style="fill:#f1f1e1;fill-opacity:1;fill-rule:evenodd;stroke:#b9cf2e;stroke-width:5.15253305;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       id="path3358"
+       d="M 564.33084,847.74115 C 560.98445,843.72485 554.04927,841.09304 548.89503,837.80104 C 538.70833,832.08016 525.79733,827.66181 511.27551,826.09663 C 492.07707,823.3089 471.81565,822.55387 452.16905,824.27764 C 439.82539,825.42005 428.09584,828.40163 418.86155,832.9984 C 414.22401,834.41084 409.30878,838.79094 416.79712,840.13994 C 415.96475,834.56901 419.37756,828.75572 426.07136,824.51564 C 434.00836,821.00115 441.09981,816.89466 450.06743,814.11771 C 457.71218,811.75931 464.54683,808.47376 473.32253,807.3798 C 482.33225,806.34874 491.28461,803.39297 500.66998,804.87875 C 507.34214,807.39811 514.44011,809.90013 520.38888,812.97067 C 525.68128,816.24237 526.10755,821.0398 531.25411,824.25428 C 537.42913,827.53538 537.26368,832.69603 542.74684,836.1304 C 549.09079,838.55175 549.2725,843.4148 557.0904,844.85723 C 559.67674,845.67454 562.34978,846.49785 564.33084,847.74115 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#83861f;stroke-width:5.35801697;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       transform="matrix(-1.0684376,0,0,0.9939221,809.96345,201.7465)"
+       d="M 299.73608,543.15802 A 7.5223341,5.7864108 0 1 1 284.69141,543.15802 A 7.5223341,5.7864108 0 1 1 299.73608,543.15802 z"
+       sodipodi:ry="5.7864108"
+       sodipodi:rx="7.5223341"
+       sodipodi:cy="543.15802"
+       sodipodi:cx="292.21375"
+       id="path3360"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#83861f;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+    <path
+       transform="matrix(-1.0684376,0,0,0.9939221,748.13925,200.59625)"
+       sodipodi:type="arc"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#83861f;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3362"
+       sodipodi:cx="292.21375"
+       sodipodi:cy="543.15802"
+       sodipodi:rx="7.5223341"
+       sodipodi:ry="5.7864108"
+       d="M 299.73608,543.15802 A 7.5223341,5.7864108 0 1 1 284.69141,543.15802 A 7.5223341,5.7864108 0 1 1 299.73608,543.15802 z"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_lemon.png"
+       inkscape:export-xdpi="6.8808913"
+       inkscape:export-ydpi="6.8808913" />
+  </g>
+</svg>

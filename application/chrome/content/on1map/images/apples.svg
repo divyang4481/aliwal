@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="apples.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3480">
+      <stop
+         style="stop-color:#f04848;stop-opacity:1;"
+         offset="0"
+         id="stop3482" />
+      <stop
+         style="stop-color:#f04848;stop-opacity:0;"
+         offset="1"
+         id="stop3484" />
+    </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="21.515481 : 60.11999 : 1"
+       inkscape:vp_y="5.8059312e-14 : 5496.6992 : 0"
+       inkscape:vp_z="727.05137 : 60.11999 : 1"
+       inkscape:persp3d-origin="374.28343 : -903.96642 : 1"
+       id="perspective10" />
+    <filter
+       inkscape:collect="always"
+       id="filter3274"
+       x="-0.23053868"
+       width="1.4610774"
+       y="-0.60368788"
+       height="2.2073758">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="37.896842"
+         id="feGaussianBlur3276" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3480"
+       id="linearGradient3494"
+       x1="365.24863"
+       y1="771.50415"
+       x2="464.75775"
+       y2="771.50415"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0391225,0,0,1.0131935,-112.00199,64.940093)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3480"
+       id="linearGradient3496"
+       x1="313.28226"
+       y1="604.08209"
+       x2="448.63995"
+       y2="604.08209"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0391225,0,0,1.0131935,-103.49863,66.598317)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.61100637"
+     inkscape:cx="349.13422"
+     inkscape:cy="539.53871"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     inkscape:window-width="1344"
+     inkscape:window-height="846"
+     inkscape:window-x="46"
+     inkscape:window-y="22" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:none">
+    <path
+       sodipodi:type="arc"
+       style="fill:#7d2d0e;fill-opacity:1;stroke:#ded8d8;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2383"
+       sodipodi:cx="315.87231"
+       sodipodi:cy="463.17029"
+       sodipodi:rx="198.03394"
+       sodipodi:ry="194.76065"
+       d="M 513.90625,463.17029 A 198.03394,194.76065 0 1 1 117.83838,463.17029 A 198.03394,194.76065 0 1 1 513.90625,463.17029 z"
+       transform="matrix(0.492427,0,0,0.5007031,232.67002,-16.203216)" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="hand-drawn">
+    <path
+       inkscape:export-ydpi="6.6977463"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       sodipodi:type="arc"
+       style="opacity:1;fill:#3d3d37;fill-opacity:1;stroke:#86868c;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3274)"
+       id="path3581"
+       sodipodi:cx="368.24493"
+       sodipodi:cy="698.02875"
+       sodipodi:rx="194.76065"
+       sodipodi:ry="72.830666"
+       d="M 563.00558,698.02875 A 194.76065,72.830666 0 1 1 173.48428,698.02875 A 194.76065,72.830666 0 1 1 563.00558,698.02875 z"
+       transform="matrix(1.0770663,0,0,0.4585938,47.690482,614.54755)" />
+    <path
+       transform="matrix(1.0935744,0,0,0.5925357,-51.088508,3.6288996)"
+       d="M 563.00558,698.02875 A 194.76065,72.830666 0 1 1 173.48428,698.02875 A 194.76065,72.830666 0 1 1 563.00558,698.02875 z"
+       sodipodi:ry="72.830666"
+       sodipodi:rx="194.76065"
+       sodipodi:cy="698.02875"
+       sodipodi:cx="368.24493"
+       id="path3498"
+       style="opacity:1;fill:#3d3d37;fill-opacity:1;stroke:#86868c;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3274)"
+       sodipodi:type="arc"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_apple.png"
+       inkscape:export-xdpi="6.54"
+       inkscape:export-ydpi="6.54" />
+    <path
+       style="fill:#78b10d;fill-opacity:1;fill-rule:evenodd;stroke:#4f7c15;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 371.78246,99.28511 C 375.06134,81.66944 401.93454,82.18256 416.69107,83.93074 C 442.98907,87.52291 469.35031,92.04413 494.97172,98.87664 C 525.36095,109.14232 539.42225,142.444 539.79343,172.4388 C 540.45203,214.22443 533.24941,256.23175 519.68154,295.73094 C 508.45258,331.08612 481.79607,359.70555 449.13623,376.59611 C 432.60703,387.84172 413.34464,391.64385 394.35625,396.51287 C 368.40992,404.39101 341.03708,410.12263 313.99487,404.44862 C 258.34449,396.21142 201.97425,375.68502 163.20817,333.24127 C 128.14517,295.60599 124.5592,237.53042 144.21169,191.63577 C 154.90829,164.022 170.31285,137.70126 194.11592,119.35509 C 210.10204,104.71551 233.11029,103.84043 252.48731,96.12641 C 274.37264,92.92488 297.00989,95.26644 318.78628,98.1923 C 329.42423,100.80518 339.6231,104.86035 350.07012,108.09927"
+       id="path3540"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_apple.png"
+       inkscape:export-xdpi="6.54"
+       inkscape:export-ydpi="6.54" />
+    <path
+       style="fill:url(#linearGradient3494);fill-opacity:1;fill-rule:evenodd;stroke:#ae1313;stroke-width:11.92923546;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 335.1407,815.7024 C 311.95611,801.09264 273.07928,816.81246 274.02213,842.70889 C 270.52335,863.03182 288.03913,883.02784 312.14564,883.02751 C 331.44672,883.94788 359.88178,879.70145 364.41493,860.04398 C 368.3576,838.19007 347.49797,818.80582 325.8121,811.31008 C 319.00527,809.44491 311.35922,812.27722 308.70531,818.1377"
+       id="path3439"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       style="fill:url(#linearGradient3496);fill-opacity:1;fill-rule:evenodd;stroke:#ae1313;stroke-width:15.39114285;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 229.83343,575.67719 C 240.04518,563.05945 258.11761,564.13283 272.9321,564.08298 C 295.65013,563.99186 318.36869,564.03822 341.08629,564.20031 C 353.31232,567.98363 354.02381,582.56008 354.2545,593.02375 C 355.131,618.34589 356.34613,556.39586 348.57848,676.71515 C 342.3139,703.37575 344.2165,730.87498 345.52,757.93195 C 345.7125,767.66286 345.60927,777.40117 345.12146,787.12287 C 338.14019,798.13698 323.74904,791.19276 313.48108,790.11604 C 302.81629,788.36888 291.70774,787.079 281.07909,789.74308 C 262.16369,727.34529 249.81472,663.51501 238.59032,596.48798 C 238.76482,589.45316 229.88333,581.74552 232.77264,576.22984 C 234.85195,576.62017 236.58589,577.91988 238.33679,578.99364"
+       id="path3473"
+       sodipodi:nodetypes="cccccccccccc"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       id="path3284"
+       d="M 373.64206,105.70005 C 367.01129,106.17836 356.95758,91.71943 354.39953,77.21205 C 352.99201,69.229512 358.68208,53.346767 360.10973,46.874723 C 360.3715,45.687969 358.35745,48.884021 357.48131,49.888678"
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#7d3800;stroke-width:18.11828804;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_apple.png"
+       inkscape:export-xdpi="6.54"
+       inkscape:export-ydpi="6.54" />
+    <path
+       id="path3286"
+       d="M 571.98862,28.94833 C 567.53661,23.599565 554.70441,28.589393 538.28412,25.9647 C 526.34874,24.056866 516.07157,24.780412 500.637,27.501935 C 491.04851,29.192655 473.18046,40.339497 465.60684,43.880604 C 450.21938,51.075148 440.22917,59.316165 425.31985,66.287148 C 409.5127,73.67792 391.6779,88.35575 381.5264,95.68815 C 373.17248,101.72216 361.86752,125.98631 371.01277,107.74391 C 375.5955,98.60252 390.65622,90.52694 400.3557,85.99188 C 412.4846,80.32089 428.13223,87.49766 434.93252,93.92264 C 442.65405,101.21804 451.92545,105.22408 462.50215,106.9147 C 470.3241,108.165 492.67378,87.35269 499.2884,82.57496 C 512.84869,72.7804 523.75313,63.442948 534.76621,50.814498 C 542.74328,41.667357 550.09652,32.936673 559.2942,28.636241 C 563.10035,26.856646 567.75716,28.844304 571.98862,28.94833 z"
+       style="fill:#18970b;fill-opacity:1;fill-rule:evenodd;stroke:#1d7401;stroke-width:6.03942919;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_apple.png"
+       inkscape:export-xdpi="6.54"
+       inkscape:export-ydpi="6.54" />
+    <path
+       style="fill:#18970b;fill-opacity:1;fill-rule:evenodd;stroke:#1d7401;stroke-width:5.23632002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 364.62249,113.03566 C 362.40028,103.69996 354.22368,100.0825 344.54292,85.17025 C 337.50626,74.331 331.24179,67.69846 321.69174,59.603464 C 315.75891,54.574609 304.00901,54.329715 299.1314,52.875035 C 289.22145,49.919471 282.47761,52.075196 272.87566,49.211475 C 262.6954,46.175283 250.65905,49.984651 243.89674,50.986256 C 238.33186,51.810499 229.40373,71.299947 236.50588,57.115998 C 240.06482,50.008395 249.85406,51.72124 256.10076,53.584249 C 263.9121,55.913937 272.73148,75.46091 276.27729,87.7291 C 280.30345,101.65932 285.55043,112.96004 291.78604,122.56537 C 296.39759,129.66889 311.69089,122.13454 316.09717,121.48197 C 325.13023,120.14397 332.52093,117.40029 340.26289,110.97936 C 345.87061,106.32848 351.06574,101.70016 356.98925,103.46684 C 359.44051,104.19791 362.07806,109.84604 364.62249,113.03566 z"
+       id="path3288"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_apple.png"
+       inkscape:export-xdpi="6.54"
+       inkscape:export-ydpi="6.54"
+       inkscape:transform-center-y="20.982118"
+       inkscape:transform-center-x="-3.8456406" />
+    <path
+       style="fill:#f1f1e1;fill-opacity:1;fill-rule:evenodd;stroke:#c7f42d;stroke-width:5.65226793;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 330.70757,181.36976 C 321.66213,185.94794 317.82638,196.42561 311.14045,203.68007 C 307.40055,208.75728 305.15817,217.60645 310.95815,222.23017 C 319.62239,229.95171 330.87967,234.66528 342.16095,234.68427 C 355.73079,232.90279 364.95312,221.07382 373.0392,210.68572 C 377.78669,204.70566 383.54571,197.29446 381.3897,188.85579 C 378.65837,181.44926 370.9317,178.01789 364.38596,175.35442 C 353.07478,171.42249 339.29267,172.01927 330.70757,181.36976 z"
+       id="path3294"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_apple.png"
+       inkscape:export-xdpi="6.54"
+       inkscape:export-ydpi="6.54" />
+    <path
+       style="fill:#f1f1e1;fill-opacity:1;fill-rule:evenodd;stroke:#c7f42d;stroke-width:6.03942919;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 414.80502,165.19186 C 405.25614,163.42767 397.32409,172.99132 399.40281,179.99312 C 401.92427,193.3567 408.65333,206.10236 419.07345,216.19839 C 426.03165,223.12024 440.18547,221.22653 447.4161,214.36571 C 456.0205,204.77685 462.52156,193.02093 461.5686,181.35692 C 461.28632,172.03916 452.79777,164.42878 441.90296,162.64633 C 433.10443,160.95123 423.35992,161.9246 414.80502,165.19186 z"
+       id="path3296"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_apple.png"
+       inkscape:export-xdpi="6.54"
+       inkscape:export-ydpi="6.54" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#c7f42d;stroke-width:8.11640549;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 270.85355,274.50184 C 276.16315,281.30152 285.29218,284.76101 292.51697,289.8279 C 306.53714,298.37487 323.37386,303.91641 341.18978,303.78971 C 364.97985,304.96438 389.36673,302.11859 412.20469,294.77149 C 426.53384,290.04443 439.5256,282.01073 449.01266,271.48397 C 454.07229,267.87126 458.48525,258.65654 449.11977,257.70957 C 451.94638,267.94146 449.79541,279.51788 443.21744,288.84469 C 434.91942,297.07716 427.82374,306.23794 418.05498,313.30923 C 409.72432,319.3207 402.66415,326.89397 392.56966,330.781 C 382.17566,334.59969 372.48398,342.00181 360.81343,341.19782 C 352.0348,337.89316 342.75458,334.71028 334.65619,330.22398 C 327.27351,325.22404 325.18546,316.3518 317.99537,311.4281 C 309.55808,306.59602 308.05533,296.92096 300.3918,291.65719 C 292.03647,288.46662 290.21816,279.42041 280.42929,278.36815 C 277.07887,277.38468 273.62319,276.40821 270.85355,274.50184 z"
+       id="path3336"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_apple.png"
+       inkscape:export-xdpi="6.54"
+       inkscape:export-ydpi="6.54" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#83861f;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3340"
+       sodipodi:cx="292.21375"
+       sodipodi:cy="543.15802"
+       sodipodi:rx="7.5223341"
+       sodipodi:ry="5.7864108"
+       d="M 299.73608,543.15802 A 7.5223341,5.7864108 0 1 1 284.69141,543.15802 A 7.5223341,5.7864108 0 1 1 299.73608,543.15802 z"
+       transform="matrix(1.3240362,-0.2334634,0.1884402,1.0686978,-137.18809,-312.44613)"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_apple.png"
+       inkscape:export-xdpi="6.54"
+       inkscape:export-ydpi="6.54" />
+    <path
+       d="M 299.73608,543.15802 A 7.5223341,5.7864108 0 1 1 284.69141,543.15802 A 7.5223341,5.7864108 0 1 1 299.73608,543.15802 z"
+       sodipodi:ry="5.7864108"
+       sodipodi:rx="7.5223341"
+       sodipodi:cy="543.15802"
+       sodipodi:cx="292.21375"
+       id="path3342"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#83861f;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:type="arc"
+       transform="matrix(1.3240362,-0.2334634,0.1884402,1.0686978,-60.791987,-327.19206)"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/happy_apple.png"
+       inkscape:export-xdpi="6.54"
+       inkscape:export-ydpi="6.54" />
+    <path
+       id="path3563"
+       d="M 457.96222,606.6849 C 455.13057,588.26102 431.92286,588.79769 419.1791,590.62607 C 396.46813,594.38306 373.70254,599.11171 351.57585,606.25769 C 325.33167,616.99435 313.18833,651.8239 312.86778,683.19484 C 312.29901,726.89758 318.5192,770.83218 330.23643,812.14358 C 339.93378,849.12083 362.95435,879.05331 391.15943,896.71881 C 405.43406,908.48036 422.06908,912.45693 438.46747,917.54935 C 460.87476,925.78893 484.51396,931.78351 507.86764,925.84917 C 555.92737,917.23406 604.60877,895.7659 638.08719,851.37486 C 668.36764,812.01291 671.46449,751.27285 654.49257,703.27257 C 645.25497,674.39189 631.95158,646.86356 611.39524,627.67569 C 597.5896,612.36444 577.71965,611.44921 560.98564,603.38127 C 542.08544,600.03286 522.5359,602.48186 503.72979,605.54194 C 494.54282,608.2747 485.73508,612.51594 476.71301,615.90345"
+       style="fill:#78b10d;fill-opacity:1;fill-rule:evenodd;stroke:#4f7c15;stroke-width:4.75190115;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-ydpi="6.6977463" />
+    <path
+       inkscape:export-ydpi="6.6977463"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#7d3800;stroke-width:18.04039192;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 474.57541,612.91202 C 481.02425,613.3996 490.80211,598.66032 493.28997,583.87166 C 494.65888,575.73434 489.12493,559.54365 487.73645,552.9461 C 487.48186,551.73635 489.44066,554.99437 490.29275,556.01851"
+       id="path3565" />
+    <path
+       inkscape:export-ydpi="6.6977463"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       style="fill:#18970b;fill-opacity:1;fill-rule:evenodd;stroke:#1d7401;stroke-width:6.01346397;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 492.86566,610.22462 C 484.15136,616.10943 474.37361,612.3763 455.0892,616.73638 C 441.07196,619.90561 430.78092,620.23477 416.55448,619.07117 C 407.71652,618.34828 397.25786,608.89198 391.93506,606.08416 C 381.12066,600.37945 376.78304,593.05527 366.30468,587.52782 C 355.19531,581.66752 347.42592,568.62691 342.23527,562.24087 C 337.96373,556.98563 344.28461,533.54789 340.21336,551.10217 C 338.17322,559.89873 347.98088,566.53072 354.79776,570.12666 C 363.32202,574.62331 385.21362,565.72675 397.21262,558.50766 C 410.83716,550.31056 423.62307,545.28901 436.04461,542.48058 C 445.23092,540.40361 453.14891,559.1984 456.53111,563.3595 C 463.46473,571.88996 467.94201,580.23151 470.05997,591.89933 C 471.59405,600.35066 472.78348,608.44418 479.2477,611.85408 C 481.9227,613.26514 488.32635,610.76777 492.86566,610.22462 z"
+       id="path3567"
+       inkscape:transform-center-x="49.3439"
+       inkscape:transform-center-y="10.010264" />
+    <path
+       inkscape:transform-center-x="4.9139412"
+       inkscape:transform-center-y="15.552213"
+       inkscape:export-ydpi="6.6977463"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       id="path3569"
+       d="M 480.1065,622.27508 C 482.94603,615.35535 493.39407,612.67404 505.76414,601.62089 C 514.75557,593.58671 522.76029,588.67058 534.96332,582.67045 C 542.54429,578.94301 557.55829,578.76149 563.79091,577.68326 C 576.45381,575.49256 585.07109,577.09041 597.34045,574.96778 C 610.34876,572.71731 625.7288,575.54088 634.36966,576.28329 C 641.48046,576.89421 652.88881,591.34005 643.81369,580.82672 C 639.26607,575.55847 626.7574,576.82806 618.77537,578.20893 C 608.79407,579.93574 597.52468,594.42421 592.99385,603.51754 C 587.84922,613.84281 581.14464,622.21905 573.17679,629.33863 C 567.28417,634.60385 547.7424,629.0193 542.11206,628.53561 C 530.56963,627.54387 521.12581,625.51021 511.23314,620.75094 C 504.06762,617.30364 497.42928,613.87307 489.86024,615.18255 C 486.72803,615.72443 483.35776,619.9109 480.1065,622.27508 z"
+       style="fill:#18970b;fill-opacity:1;fill-rule:evenodd;stroke:#1d7401;stroke-width:5.09599304;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="6.6977463"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       id="path3571"
+       d="M 516.33189,690.04891 C 525.12914,694.71586 528.85965,705.39669 535.36215,712.7918 C 538.99942,717.96746 541.18027,726.98821 535.53944,731.70158 C 527.11292,739.57283 516.16451,744.37779 505.19276,744.39716 C 491.99524,742.58113 483.02594,730.52281 475.16173,719.93329 C 470.54449,713.83728 464.94349,706.28238 467.04035,697.6801 C 469.69673,690.12995 477.21141,686.63206 483.57755,683.91694 C 494.57838,679.90877 507.98234,680.51712 516.33189,690.04891 z"
+       style="fill:#f1f1e1;fill-opacity:1;fill-rule:evenodd;stroke:#c7f42d;stroke-width:5.62796688;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="6.6977463"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       id="path3573"
+       d="M 434.54186,673.55734 C 443.82874,671.75894 451.54316,681.50802 449.52148,688.64558 C 447.0692,702.26826 440.52476,715.26106 430.39054,725.55284 C 423.62326,732.60891 409.85778,730.67848 402.82554,723.68463 C 394.45722,713.90985 388.13453,701.92599 389.06135,690.03582 C 389.33589,680.5374 397.59152,672.77945 408.18742,670.96245 C 416.74453,669.23448 426.22168,670.22673 434.54186,673.55734 z"
+       style="fill:#f1f1e1;fill-opacity:1;fill-rule:evenodd;stroke:#c7f42d;stroke-width:6.01346397;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="6.6977463"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       id="path3575"
+       d="M 544.00138,808.41804 C 538.76276,805.03945 529.75579,802.97164 522.62758,800.27663 C 508.79485,795.63113 492.18324,792.19868 474.60551,791.28928 C 451.13351,789.46416 427.07266,789.43391 404.54005,791.53355 C 390.40247,792.90424 377.5844,795.85035 368.22417,800.11978 C 363.23219,801.48711 358.87823,805.43561 368.11849,806.37433 C 365.32968,801.57058 367.4519,796.42593 373.94192,792.54398 C 382.129,789.25276 389.12981,785.47437 398.76796,782.79074 C 406.98725,780.51072 413.95303,777.45192 423.91256,776.23319 C 434.16759,775.06177 443.72969,772.22359 455.24422,773.22244 C 463.90549,775.20086 473.06163,777.15116 481.05174,779.6297 C 488.33572,782.30285 490.39585,786.44855 497.48981,789.0766 C 505.81431,791.73071 507.29696,796.20951 514.85803,799.01781 C 523.10166,800.9214 524.89565,805.13154 534.55366,806.1411 C 537.85929,806.76992 541.26875,807.40129 544.00138,808.41804 z"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#c7f42d;stroke-width:5.43506575;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="6.6977463"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       transform="matrix(-1.287708,-0.2379901,-0.1832698,1.0894191,971.38969,186.65826)"
+       d="M 299.73608,543.15802 A 7.5223341,5.7864108 0 1 1 284.69141,543.15802 A 7.5223341,5.7864108 0 1 1 299.73608,543.15802 z"
+       sodipodi:ry="5.7864108"
+       sodipodi:rx="7.5223341"
+       sodipodi:cy="543.15802"
+       sodipodi:cx="292.21375"
+       id="path3577"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#83861f;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="6.6977463"
+       inkscape:export-xdpi="6.6977463"
+       inkscape:export-filename="/Users/greg/Projects/on1map/src/trunk/application/chrome/content/on1map/icons/unhappy_apple.png"
+       transform="matrix(-1.287708,-0.2379901,-0.1832698,1.0894191,897.0897,171.62643)"
+       sodipodi:type="arc"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#83861f;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3579"
+       sodipodi:cx="292.21375"
+       sodipodi:cy="543.15802"
+       sodipodi:rx="7.5223341"
+       sodipodi:ry="5.7864108"
+       d="M 299.73608,543.15802 A 7.5223341,5.7864108 0 1 1 284.69141,543.15802 A 7.5223341,5.7864108 0 1 1 299.73608,543.15802 z" />
+  </g>
+</svg>
