@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
-	<string>Aliwal On1map</string>
+	<string>Aliwal Geocoder</string>
 	<key>CFBundleExecutable</key>
 	<string>xulrunner</string>
 	<key>CFBundleGetInfoString</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleIconFile</key>
 	<string>aliwal_geocoder.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.baudmap.aliwal_on1map</string>
+	<string>com.baudmap.aliwal_geocoder</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>0.02</string>
 	<key>CFBundleName</key>
