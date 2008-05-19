@@ -185,26 +185,43 @@ DomManager.prototype.drawTagsetFilter = function( pDivId, pTag, pTagData){
 	var labl = '<label class="label_sub">' + pTag + '</label>';
 	dd.append(labl);
 	
+	var options = [];
+	$.each( pTagData[pTag], function(key,val){
+		options.push( '<OPTION SELECTED value="'+key+'">'+key+'     ('+pTagData[pTag][key]+')</OPTION>\n');
+	});
+	options.sort();
+	options.unshift('<OPTION class="tagset_selectall" SELECTED >--ALL--</OPTION>\n');
+	
 	var sellen = 7;
 	var sel = '<SELECT class="tagset_filter" tagset="'+pTag+'" id="sel_filter_'+this.tagsetnum+'" size="' + sellen + '" MULTIPLE>\n';
-	$.each( pTagData[pTag], function(key,val){
-		sel += '<OPTION SELECTED value="'+key+'">'+key+'     ('+pTagData[pTag][key]+')</OPTION>\n';
+	$.each( options, function(idx, opt){
+		sel += opt;
 	});
 	sel += '</SELECT>\n';
 	dd.append(sel);
+	
 	this.tagsetnum++;
 }
 DomManager.prototype.getFilterSelection = function(){
 	/* Returns an object. Members are named after the tagsets, their value is the array of selected tags 
-	 * Must return an empty array for tagsets with not selections. No tagsets implies no filtering at all.
+	 * Must return an empty array for tagsets with no selections. No tagsets implies no filtering at all.
+	 * Special case for options with class 'selectall'
 	 */
 	var ret = {};
 	$('SELECT.tagset_filter').each(function(i,v){
 		var tagset =  $(v).attr('tagset');
 		ret[tagset] = new Array();
-	});
-	$('SELECT.tagset_filter OPTION:selected').each(function(i,v){
-		ret[ $(v).parent().attr('tagset') ].push( $(v).val() );
+		
+		if( $(v).children('OPTION.tagset_selectall:selected').length > 0 ){
+			$(v).find('OPTION').not('.tagset_selectall').each(function(ii,vv){
+				ret[ $(vv).parent().attr('tagset') ].push( $(vv).val() );
+			});
+		} else {
+			$(v).find('OPTION:selected').not('.tagset_selectall').each(function(ii,vv){
+				ret[ $(vv).parent().attr('tagset') ].push( $(vv).val() );
+			});
+		}
+		
 	});
 	
 	return ret;
