@@ -1,0 +1,86 @@
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Document>
+  <name>Sample data</name>
+	
+<Placemark><ExtendedData><Data name="Name"><value>York Minster Library</value></Data>
+	<GeocodeAddress>Deans Pk, York, UK</GeocodeAddress>
+	<Data name="Address"><value>Deans Pk, York, YO1 7JQ‎</value></Data>
+	<Data name="Tel"><value>01904 611118</value></Data>
+	<TagSet name="TagSet1"><Tag>Group 1</Tag></TagSet>
+	<TagSet name="Filter"><Tag>Fred</Tag></TagSet>
+</ExtendedData></Placemark>
+		
+<Placemark><ExtendedData><Data name="Name"><value>The British Library</value></Data>
+	<GeocodeAddress>96 Euston Rd, London, UK</GeocodeAddress>
+	<Data name="Address"><value>96 Euston Road, London, NW1 2DB</value></Data>
+	<Data name="Tel"><value>0870 444 1500</value></Data>
+	<TagSet name="TagSet1"><Tag>Group 1</Tag></TagSet>
+	<TagSet name="Filter"><Tag>Fran</Tag></TagSet>
+</ExtendedData></Placemark>	
+	
+<Placemark><ExtendedData><Data name="Name"><value>Bodleian Library</value></Data>
+	<GeocodeAddress>University of Oxford, Broad St, Oxford, UK</GeocodeAddress>
+	<Data name="Address"><value>University of Oxford, Broad St, Oxford, OX1 3BG</value></Data>
+	<Data name="Tel"><value>01865 277000</value></Data>
+	<TagSet name="TagSet1"><Tag>Group 1</Tag></TagSet>
+	<TagSet name="Filter"><Tag>Bob</Tag></TagSet>
+</ExtendedData></Placemark>
+
+<Placemark><ExtendedData><Data name="Name"><value>Linen Hall Library</value></Data>
+	<GeocodeAddress>17 Donegall Square North, Belfast, UK</GeocodeAddress>
+	<Data name="Address"><value>17 Donegall Square North, Belfast, BT1 5GB</value></Data>
+	<Data name="Tel"><value>028 90321707</value></Data>
+	<TagSet name="TagSet1"><Tag>Group 1</Tag></TagSet>
+	<TagSet name="Filter"><Tag>Fred</Tag></TagSet>
+</ExtendedData></Placemark>
+
+<Placemark><ExtendedData><Data name="Name"><value>Salford Local History Library</value></Data>
+	<GeocodeAddress>Peel Pk, Salford, M5 4WU</GeocodeAddress>
+	<Data name="Address"><value>Peel Pk, Salford, UK</value></Data>
+	<Data name="Tel"><value>0161 736 2649</value></Data>
+	<TagSet name="TagSet1"><Tag>Group 2</Tag></TagSet>
+	<TagSet name="Filter"><Tag>Lars</Tag></TagSet>
+</ExtendedData></Placemark>
+
+<Placemark><ExtendedData><Data name="Name"><value>Central Library</value></Data>
+	<GeocodeAddress>Central Library, William Brown St, Liverpool, UK</GeocodeAddress>
+	<Data name="Address"><value>Central Library, William Brown St, Liverpool, L3 8EW</value></Data>
+	<Data name="Tel"><value>0151 233 5829</value></Data>
+	<TagSet name="TagSet1"><Tag>Group 2</Tag></TagSet>
+	<TagSet name="Filter"><Tag>Fred</Tag></TagSet>
+</ExtendedData></Placemark>
+
+<Placemark><ExtendedData><Data name="Name"><value>The Portico Library &amp; Gallery</value></Data>
+	<GeocodeAddress>57 Mosley Street, Manchester, UK</GeocodeAddress>
+	<Data name="Address"><value>57 Mosley Street, Manchester, M2 3HY</value></Data>
+	<Data name="Tel"><value>0161 236 6785</value></Data>
+	<TagSet name="TagSet1"><Tag>Group 2</Tag></TagSet>
+	<TagSet name="Filter"><Tag>Bob</Tag></TagSet>
+</ExtendedData></Placemark>
+
+<Placemark><ExtendedData><Data name="Name"><value>Bath Central Library</value></Data>
+	<GeocodeAddress>19-23 The Podium, Bath, UK</GeocodeAddress>
+	<Data name="Address"><value>19-23 The Podium, Bath, BA1 5AN</value></Data>
+	<Data name="Tel"><value>01225 394041</value></Data>
+	<TagSet name="TagSet1"><Tag>Group 3</Tag></TagSet>
+	<TagSet name="Filter"><Tag>James</Tag></TagSet>
+</ExtendedData></Placemark>
+
+<Placemark><ExtendedData><Data name="Name"><value>Mitchell Library</value></Data>
+	<GeocodeAddress>Mitchell Library, 201 North St, Glasgow, UK</GeocodeAddress>
+	<Data name="Address"><value>Mitchell Library, 201 North St, Glasgow, G3 7DN</value></Data>
+	<Data name="Tel"><value>0141 287 2872</value></Data>
+	<TagSet name="TagSet1"><Tag>Group 3</Tag></TagSet>
+	<TagSet name="Filter"><Tag>James</Tag></TagSet>
+</ExtendedData></Placemark>
+
+<Placemark><ExtendedData><Data name="Name"><value>RNIB National Library Service</value></Data>
+	<GeocodeAddress>Far Cromwell Rd, Bredbury, Stockport, UK</GeocodeAddress>
+	<Data name="Address"><value>Far Cromwell Rd, Bredbury, Stockport, SK6 2SG</value></Data>
+	<Data name="Tel"><value>0161 355 2000</value></Data>
+	<TagSet name="TagSet1"><Tag>Group 3</Tag></TagSet>
+	<TagSet name="Filter"><Tag>Bob</Tag></TagSet>
+</ExtendedData></Placemark>
+
+</Document>
+</kml>
