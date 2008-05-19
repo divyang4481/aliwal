@@ -67,25 +67,25 @@ DataManager.prototype.enrichWithGeocode = function( pDoc ){
 				.not('Placemark:has(ExtendedData>GeocodeAddress)')
 				.each( function(idx, pointless){
 			
-			if(xscopeNS.flags.promptForGeocodeFields){
-				// Pop up a wizard which can get the geocode fields from the user
-				// Wizard should also ask if these are to be remembered 
-				var params = {  
-								KML: xscopeNS.KML,
-								callback : function(pGeocodeArgs){ geofields = pGeocodeArgs; }
-							 };
-				window.openDialog("chrome://on1map/content/wiz.importKML.xul","importWizard","modal", params);
+		if(xscopeNS.flags.promptForGeocodeFields){
+			// Pop up a wizard which can get the geocode fields from the user
+			// Wizard should also ask if these are to be remembered 
+			var params = {  
+							KML: xscopeNS.KML,
+							callback : function(pGeocodeArgs){ geofields = pGeocodeArgs; }
+						 };
+			window.openDialog("chrome://on1map/content/wiz.importKML.xul","importWizard","modal", params);
+		}
+		var geostr = '';
+		for(var idx2 in geofields){
+			if( geostr ){
+				geostr +=', ';
 			}
-			var geostr = '';
-			for(var idx in geofields){
-				if( geostr ){
-					geostr +=', ';
-				}
-				geostr += $(pointless).find('ExtendedData>Data[@name="'+geofields[idx]+'"]:first>value').text();
-			}
-			var fragstr = '<GeocodeAddress on1map_geocoding="generated_geocode_tag">' + geostr + '</GeocodeAddress>';
-			var frag = dp.parseFromString( fragstr,'text/xml');
-			$(pointless).children('ExtendedData:first').append( $(frag.documentElement) );
+			geostr += $(pointless).find('ExtendedData>Data[@name="'+geofields[idx2]+'"]:first>value').text();
+		}
+		var fragstr = '<GeocodeAddress on1map_geocoding="generated_geocode_tag">' + geostr + '</GeocodeAddress>';
+		var frag = dp.parseFromString( fragstr,'text/xml');
+		$(pointless).children('ExtendedData:first').append( $(frag.documentElement) );
 	});
 }
 DataManager.prototype.enrichFromCache = function( pDoc){
