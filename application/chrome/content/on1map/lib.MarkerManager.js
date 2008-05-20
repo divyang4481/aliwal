@@ -25,8 +25,6 @@ MarkerManager.prototype.createMarkersFromDom = function( pKML, pDest ){
 			} else if ( $(pmark).is("Placemark:has('ExtendedData>GeocodeAddress')") ){
 				var geoaddr = $.trim( $(pmark).find('ExtendedData>GeocodeAddress:first').text() );
 				nm = new YMarker(geoaddr);
-			} else if( false){
-				// ToDo Addr1, Addr2, State, Zip|| Postcode|| Country
 			} else {
 				throw 'MarkerManager: No Point.coordinates or ExtendedData.GeocodeAddress on marker data';
 			}
@@ -35,7 +33,7 @@ MarkerManager.prototype.createMarkersFromDom = function( pKML, pDest ){
 			nm.on1map_kml_ref = $(pmark);
 			nm.on1map_visible = false;
 			
-			// Copy across tag data
+			// Copy across tag data into an array of tags, 1 array per tagset
 			nm.on1map_tagdata = new Object();
 			$(pmark).find('ExtendedData>TagSet').each(function(idx,tagsetele){
 				var tagset = $(tagsetele).attr('name');
@@ -59,35 +57,34 @@ MarkerManager.prototype.unfilteredMarker = function( pMarker, pFilterSets ){
 	/* pFilterSets =    {  	'Tagset1': ['selected_filter1','selected_filter2','etc'],
 	 * 						'Tagset2': ['another_selection1','another_selection2','etc'], 
 	 * 					};
-	 * run through the tagsets and look for that as a member on the marker.
-	 * If any matches are found, the marker should be shown so return true.
+	 * Changed to AND tagsets but OR individual tags within a set
+	 * If all tags present, the marker should, be shown so return true.
 	 * Performance critical function.
 	 */
-	
 	var tscount = 0;
-	var foundclosure = false;
-	
-	for(var filtagset in pFilterSets){
+	var foundOuter = true;
+	$.each(pFilterSets, function( filtagset, filtags ){
 		tscount++;
-		
-		$.each(pMarker.on1map_tagdata[filtagset], function(midx, mtag){
-			if( $.inArray(mtag, pFilterSets[filtagset]) >= 0 ){
-				foundclosure = true;
-				return false;// break out of $.each() iterating
+		var foundInner = false;
+		$.each(filtags, function(idx, itag ){
+			if( typeof(pMarker.on1map_tagdata[filtagset]) !== 'undefined'){
+				if( $.inArray(itag, pMarker.on1map_tagdata[filtagset]) >= 0 ){
+					foundInner = true;
+					return false ;// Found a tag for this set so break out of $.each(filtags, ...)
+				}
 			} else {
-				return true;// $.each() should keep iterating
+				return false; // marker doesn't have the necessary tagset, break out of $.each(filtags, ...)
 			}
 		});
-		
-		if (foundclosure){
-			return true;
-		}
-	}
+		foundOuter = foundOuter && foundInner;
+		return foundOuter; // Keep iterating through pFilterSets ?
+	 });
 	if(tscount === 0){
 		// If there are no tagsets in the data, so there's no filtering
 		return true;
-	}	
-	return foundclosure;
+	}
+	//jsdump('Checking '+uneval(pFilterSets) +'\n against marker with tagdata: ' + uneval(pMarker.on1map_tagdata) + '\nreturning: ' + foundOuter );
+	return foundOuter;
 }
 MarkerManager.prototype.setPinLabels = function( pVisibleMarkers, pLabelAttrib ){
 	/* Takes an array of enriched markers and sets their autoexpand / label to the

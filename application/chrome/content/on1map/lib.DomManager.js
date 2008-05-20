@@ -187,10 +187,10 @@ DomManager.prototype.drawTagsetFilter = function( pDivId, pTag, pTagData){
 	
 	var options = [];
 	$.each( pTagData[pTag], function(key,val){
-		options.push( '<OPTION SELECTED value="'+key+'">'+key+'     ('+pTagData[pTag][key]+')</OPTION>\n');
+		options.push( '<OPTION value="'+key+'">'+key+'     ('+pTagData[pTag][key]+')</OPTION>\n');
 	});
 	options.sort();
-	options.unshift('<OPTION class="tagset_selectall" SELECTED >--ALL--</OPTION>\n');
+	options.unshift('<OPTION class="tagset_selectany" SELECTED > --ANY-- </OPTION>\n');
 	
 	var sellen = 7;
 	var sel = '<SELECT class="tagset_filter" tagset="'+pTag+'" id="sel_filter_'+this.tagsetnum+'" size="' + sellen + '" MULTIPLE>\n';
@@ -211,17 +211,16 @@ DomManager.prototype.getFilterSelection = function(){
 	$('SELECT.tagset_filter').each(function(i,v){
 		var tagset =  $(v).attr('tagset');
 		ret[tagset] = new Array();
-		
-		if( $(v).children('OPTION.tagset_selectall:selected').length > 0 ){
-			$(v).find('OPTION').not('.tagset_selectall').each(function(ii,vv){
-				ret[ $(vv).parent().attr('tagset') ].push( $(vv).val() );
-			});
+	});
+	$('SELECT.tagset_filter').each(function(i,v){
+		if( $(v).children('OPTION.tagset_selectany:selected').length > 0 ){
+			// Remove the tagset all together so induce --ANY-- behaviour
+				delete ret[ $(v).attr('tagset') ];
 		} else {
-			$(v).find('OPTION:selected').not('.tagset_selectall').each(function(ii,vv){
-				ret[ $(vv).parent().attr('tagset') ].push( $(vv).val() );
+			$(v).children('OPTION:selected').not('.tagset_selectany').each(function(ii,vv){
+				ret[ $(v).attr('tagset') ].push( $(vv).val() );
 			});
 		}
-		
 	});
 	
 	return ret;
