@@ -153,6 +153,7 @@ function fileOpen(){
 				
 				// Drop the Map drawing into it's own thread
 				window.setTimeout( goMap, 1);
+				drawSidebarTree();
 			});
 		} catch(e){
 			jsdump(e);
@@ -302,6 +303,7 @@ function fileImportFlat(){
 				
 				// Drop the Map drawing into it's own thread
 				window.setTimeout( goMap, 1);
+				drawSidebarTree();
 			}
 		};
 		window.openDialog("chrome://on1map/content/app.importWizard.xul","importWizard","modal", params);
@@ -312,7 +314,6 @@ function toggleSidebar(){
 	var sb = document.getElementById('hb_sidebar_data');
 	var sp = document.getElementById('sp_sidebar_data');
 	if( sb.getAttribute('collapsed') === 'true' ){
-		drawSidebarTree();
 		sb.removeAttribute('collapsed');
 		sp.removeAttribute('collapsed');
 	} else {
@@ -323,12 +324,17 @@ function toggleSidebar(){
 
 function drawSidebarTree(){
 	xscopeNS.KML.firstChild.setAttribute('id', 'xscopeNS_KML');
-	var dataEle = document.getElementById('xscopeNS_KML');
-	alert(uneval(dataEle));
-	if ( !(dataEle == null )){
+	try{
+		var dataEle = document.getElementById('xscopeNS_KML');
+		jsdump('document.removeChild( dataEle );');
 		document.removeChild( dataEle );
+	} catch(e){
+		// ignore
 	}
-	document.getElementById('on1map').appendChild(xscopeNS.KML.firstChild, true);
+	
+	jsdump('Appending xscopeNS.KML to document.getElementById(\'on1map\')');
+	var cloned = xscopeNS.KML.firstChild.cloneNode(true);
+	document.getElementById('on1map').appendChild( cloned, true);
 	
 	var tree = document.getElementById("tr_raw_data");
 	tree.datasources="#xscopeNS_KML";
