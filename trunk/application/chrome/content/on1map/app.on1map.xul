@@ -43,11 +43,10 @@
 	  
 		<menu id="view-menu" label="View">
 			<menupopup id="view-popup">
-<!--    	    <menuitem label="Data" 			accesskey="u" 	command="cmd_viewdata" 	/> 	-->
 <!--    	    <menuitem label="Map" 			accesskey="m" 	command="cmd_viewmap" 	/> 	-->
-<!--			    <menuitem label="Debug" 	accesskey="d" 	command="cmd_viewdebug" />  -->
+<!--			<menuitem label="Debug" 		accesskey="d" 	command="cmd_viewdebug" />  -->
 <!--		    <menuitem label="Unit Tests" 	accesskey="t" 	command="cmd_viewtests" /> --> 
-				<menuitem label="View Data" accesskey="d" 	command="cmd_viewdata" 	type="checkbox" checked="false"/> 
+<!--			<menuitem label="View Data" 	accesskey="d" 	command="cmd_viewdata" 	type="checkbox" checked="false"/>  -->
 				<menuitem label="Reload Map" 	accesskey="r" 	command="cmd_reload" 	/>
 				<menuitem label="Preferences" 					command="cmd_preferences" />
 			</menupopup>	      
