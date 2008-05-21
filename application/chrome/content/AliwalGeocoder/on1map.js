@@ -16,7 +16,7 @@ try{
 	// ********************************* START OF FAKE JSM **********************************************
 	var xscopeNS = {
 		KML 		: {},   // A KML DOM document
-		domMarkers  : {},   // Hash of YMarker objects that are on the map, keyed by ymarker.id
+		pointMarkers  : {},   // Hash of YMarker objects that are on the map, keyed by ymarker.id
 		hiddenMarkers: {}, 	// Hash of hidden/filtered etc. markers
 		errorMarkers: {}, 	// Hash of error markers.
 		
@@ -87,16 +87,16 @@ $(document).ready( function(){
 	
 	// Capture events that require drawing
 	YEvent.Capture(map, EventsList.endMapDraw, function(resultObj) { 
-		domMgr.drawMarkers(xscopeNS.domMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
+		domMgr.drawMarkers(xscopeNS.pointMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
 	});
 	YEvent.Capture(map, EventsList.endPan, function(resultObj) { 
-		domMgr.drawMarkers(xscopeNS.domMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
+		domMgr.drawMarkers(xscopeNS.pointMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
 	});
 	YEvent.Capture(map, EventsList.endAutoPan, function(resultObj) { 
 		var currb = map.getBoundsLatLon();
 		/* endAutoPan fires by popups even if the map hasn't moved when no need to redraw */
 		if (uneval(lastBounds) !== uneval(currb)){ 
-			domMgr.drawMarkers(xscopeNS.domMarkers, xscopeNS.hiddenMarkers, currb );
+			domMgr.drawMarkers(xscopeNS.pointMarkers, xscopeNS.hiddenMarkers, currb );
 			lastBounds = currb;
 		}
 	});
@@ -121,19 +121,19 @@ $(document).ready( function(){
 				alert('Some addresses couldn\'t be geocoded to \ncoordinates and are not shown.');
 			}
 		 	domMgr.warningGeocodingError(true, resultObj.Address );
-			$.each(xscopeNS.domMarkers, function(key, mkr){
+			$.each(xscopeNS.pointMarkers, function(key, mkr){
 				// Move ungeocoded makers to one side so that that it doesn't keep retrying.
 				if(typeof(mkr.on1map_geocodeAddress) !== 'undefined'){
 					if($.trim(mkr.on1map_geocodeAddress.toUpperCase() ) === $.trim(resultObj.Address.toUpperCase() ) ){
-						xscopeNS.errorMarkers[key] = xscopeNS.domMarkers[key];
-						delete xscopeNS.domMarkers[key];
+						xscopeNS.errorMarkers[key] = xscopeNS.pointMarkers[key];
+						delete xscopeNS.pointMarkers[key];
 						return false; //break $.each() iteration
 					}
 				}
 			})
 		 }
 	});
-	dataMgr.emptyObj( xscopeNS.domMarkers );
+	dataMgr.emptyObj( xscopeNS.pointMarkers );
 	dataMgr.emptyObj( xscopeNS.hiddenMarkers );
 	try{
 		markerMgr.createMarkersFromDom(xscopeNS.KML, xscopeNS.hiddenMarkers );

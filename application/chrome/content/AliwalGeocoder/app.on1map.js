@@ -135,7 +135,7 @@ function fileOpen(){
 			xscopeNS.flags.loadingData = true;
 			var dataMgr = new DataManager();
 			dataMgr.emptyObj( xscopeNS.KML );
-			dataMgr.emptyObj( xscopeNS.domMarkers );
+			dataMgr.emptyObj( xscopeNS.pointMarkers );
 			dataMgr.emptyObj( xscopeNS.hiddenMarkers );
 			dataMgr.loadFile( fp.file.path, function( pDoc ){
 				/* dataMgr.loadFile() is asyncronous. 
@@ -301,7 +301,7 @@ function fileImportFlat(){
 			callback: function(pDoc){
 				var dataMgr = new DataManager();
 				dataMgr.emptyObj( xscopeNS.KML );
-				dataMgr.emptyObj( xscopeNS.domMarkers );
+				dataMgr.emptyObj( xscopeNS.pointMarkers );
 				dataMgr.emptyObj( xscopeNS.hiddenMarkers );
 				var inter = document.implementation.createDocument("","",null);
 				var clonedNode = inter.importNode( pDoc.firstChild , true );
