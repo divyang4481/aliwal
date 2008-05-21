@@ -1,57 +1,80 @@
 function MarkerManager(){
 	/* Namespace for for markers functions */
 }
-MarkerManager.prototype.createMarkersFromDom = function( pKML, pDest ){
+MarkerManager.prototype.createDomPointMarkers = function( pKML, pDest ){
 	/* Populates a hash of marker objects ready to be dropped onto the map.
 	 * The pDest hash is keyed by the YMarker.id
-	 * Checks for exact coordinates 1st, then tries a geocode
-	 * Tags the DOM document Placemark element with attribute "on1map_markerid", the ID of the created marker.
-	 * Tags the YMarker object with a jquery reference "on1map_kml_ref" into the DOM doc.
-	 * Tags the YMarker object with a copy of the tag data in a native structure because refering to the 
-	 * XML doc is too slow.
+	 * Only handles Dom  Placemark elments with cooordinates
 	 */
 	var that = this;
 	var nm;
 	for(var keys in pDest){
 		delete pDest[keys];
 	};
-	$(pKML).find('Placemark').each(function(idx, pmark){
+	$(pKML).find('Placemark:has("Point>coordinates")').each(function(idx, pmark){
 		try{
 			var spl = $(pmark).find('Point>coordinates:first').text().split(',');
 			if( !(isNaN(parseFloat(spl[0])) || isNaN(parseFloat(spl[1]))) ) {				
 				/* NB!  KML says coordinates come LON,LAT */
 				var geopoint = new YGeoPoint( spl[1], spl[0] );
 				nm = new YMarker( geopoint );		
-			} else if ( $(pmark).is("Placemark:has('ExtendedData>GeocodeAddress')") ){
-				var geoaddr = $.trim( $(pmark).find('ExtendedData>GeocodeAddress:first').text() );
-				nm = new YMarker(geoaddr);
-				nm.on1map_geocodeAddress = geoaddr;
-			} else {
-				throw 'MarkerManager: No Point.coordinates or ExtendedData.GeocodeAddress on marker data';
+			}else {
+				throw 'MarkerManager: Point.coordinates could not be parsed.\nIgnoring Placemark';
 			}
-			
-			$(pmark).attr('on1map_markerid', nm.id );					
-			nm.on1map_kml_ref = $(pmark);
-			nm.on1map_visible = false;
-			
-			// Copy across tag data into an array of tags, 1 array per tagset
-			nm.on1map_tagdata = new Object();
-			$(pmark).find('ExtendedData>TagSet').each(function(idx,tagsetele){
-				var tagset = $(tagsetele).attr('name');
-				nm.on1map_tagdata[ tagset ] = new Array();
-				$(tagsetele).children('Tag').each(function(idx2, tagele){
-					nm.on1map_tagdata[ tagset ].push( $(tagele).text() );
-				});
-			});
-			YEvent.Capture( nm, EventsList.MouseClick, function(){
-					/* Scope of "this" will have changed to the YMarker object by the time this gets invoked. */
-					this.openSmartWindow('<blink>Loading...</blink>');
-					markerMgr.setPopupLabel( this, domMgr.getPopupSelection() );
-			});
+			that.enrichMarker( nm, pmark );
+
 			pDest[nm.id] = nm;
 		} catch(e){
 			jsdump(e)
 		}
+	});
+}
+MarkerManager.prototype.createDomGeocodeMarkers = function( pKML, pDest ){
+	/* Populates a hash of marker objects ready to be dropped onto the map.
+	 * The pDest hash is keyed by the YMarker.id
+	 * Only handles Dom Placemark elments with GeoCodeAddress elements AND without a cooordinates element
+	 */
+	var that = this;
+	var nm;
+	for(var keys in pDest){
+		delete pDest[keys];
+	};
+	$(pKML).find('Placemark:has("ExtendedData>GeocodeAddress")').not(':has("Point>coordinates")').each(function(idx, pmark){
+		try{
+			var geoaddr = $.trim( $(pmark).find('ExtendedData>GeocodeAddress:first').text() );
+			nm = new YMarker(geoaddr);
+			nm.on1map_geocodeAddress = geoaddr;
+			
+			that.enrichMarker( nm, pmark );
+
+			pDest[nm.id] = nm;
+		} catch(e){
+			jsdump(e)
+		}
+	});
+}
+MarkerManager.prototype.enrichMarker = function( pMarker, pDomFrag ){
+	/* Tags the DOM document Placemark element with attribute "on1map_markerid", the ID of the created marker.
+	 * Tags the YMarker object with a jquery reference "on1map_kml_ref" into the DOM doc.
+	 * Tags the YMarker object with a copy of the tag data in a native structure because refering to the 
+	 * XML doc is too slow.
+	 */
+	$(pDomFrag).attr('on1map_markerid', pMarker.id );					
+	pMarker.on1map_kml_ref = $(pDomFrag);
+	
+	// Copy across tag data into an array of tags, 1 array per tagset
+	pMarker.on1map_tagdata = new Object();
+	$(pDomFrag).find('ExtendedData>TagSet').each(function(idx,tagsetele){
+		var tagset = $(tagsetele).attr('name');
+		pMarker.on1map_tagdata[ tagset ] = new Array();
+		$(tagsetele).children('Tag').each(function(idx2, tagele){
+			pMarker.on1map_tagdata[ tagset ].push( $(tagele).text() );
+		});
+	});
+	YEvent.Capture( pMarker, EventsList.MouseClick, function(){
+			/* Scope of "this" will have changed to the YMarker object by the time this gets invoked. */
+			this.openSmartWindow('<blink>Loading...</blink>');
+			markerMgr.setPopupLabel( this, domMgr.getPopupSelection() );
 	});
 }
 MarkerManager.prototype.unfilteredMarker = function( pMarker, pFilterSets ){
@@ -120,10 +143,6 @@ MarkerManager.prototype.setPopupLabel = function( pMarker, pPopupAttribArr ){
 		html += '</tbody></table>';	
 	}
 	pMarker.updateSmartWindow( html );
-}
-MarkerManager.prototype.markerInbounds = function( pMarker ){
-	/* Returns a boolean indicating whether the marker is in the map bounds or not 
-	 */
 }
 
 

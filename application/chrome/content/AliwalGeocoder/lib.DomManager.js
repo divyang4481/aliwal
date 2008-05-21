@@ -48,9 +48,6 @@ DomManager.prototype.inBounds = function( pBounds, pLat, pLon ){
 	}
 	return false;
 }
-DomManager.prototype.drawGeocodingMarkers = function( pGeoMarkers, pErrorMarkers ){
-	
-}
 DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pBounds ){
 	/* Takes a hash of marker objects, to them and puts them on the map.
 	 */
@@ -107,41 +104,109 @@ DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pB
 	}
 	$('#feedback_pincounts').text(visicount + ' / ' + totalcount);
 }
-DomManager.prototype.drawControls = function(){
-	
-	// Filtering stuff
-	var pinTagSets = dataMgr.domTagSetCensus( xscopeNS.KML );
-		
-	var html = '<table id="tbl_filters"></table>';
-	$("#div_filters").empty();
-	$("#div_filters").append(html);
 
- 	var filcnt = 0;
-	$.each( pinTagSets, function(tagset, tags){
-		html = '<tr><td id="divFilter_' + filcnt + '"></td></tr>';
-		$('#tbl_filters').append(html);
-		domMgr.drawTagsetFilter('divFilter_' + filcnt, tagset, pinTagSets );
-		filcnt++;
-	});
-	
-	// Attach an event handler to the filter stuff
-	$('.tagset_filter').bind('change', function(e){
-		domMgr.drawMarkers( xscopeNS.pointMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
-	});
-	
-	// Pin label stuff
-	var pinItems = dataMgr.domLabelCensus( xscopeNS.KML );	
-	var labels = [];
-	for (var pi in pinItems){
-		labels.push(pi);
+
+DomManager.prototype.drawInitMarkers = function( pPoll){
+	var that = this;
+	if( pPoll){
+		if(xscopeNS.flags.loadingData){
+			setTimeout( that.drawInitMarkers,555, true );
+		} else {
+			setTimeout( that.drawInitMarkers,1, false );
+		}
+	} else {
+		dataMgr.emptyObj( xscopeNS.pointMarkers );
+		dataMgr.emptyObj( xscopeNS.hiddenMarkers );
+		dataMgr.emptyObj( xscopeNS.geoMarkers );
+		dataMgr.emptyObj( xscopeNS.errorMarkers );
+		try{
+			markerMgr.createDomPointMarkers(xscopeNS.KML, xscopeNS.hiddenMarkers );
+			markerMgr.createDomGeocodeMarkers(xscopeNS.KML, xscopeNS.geoMarkers );
+		} catch(e){
+			jsdump('Exception:\n'+e);
+		}
+
+		// Specifying the Map starting location and zoom level
+		var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
+		for(var key in xscopeNS.hiddenMarkers){
+			// They're all hidden at this point
+			if(xscopeNS.hiddenMarkers.YGeoPoint){
+				if( xscopeNS.hiddenMarkers.YGeoPoint.Lat !== 0 && xscopeNS.hiddenMarkers.YGeoPoint.Lon !== 0){
+					homeloc = xscopeNS.hiddenMarkers.YGeoPoint;
+					map.drawZoomAndCenter( homeloc, 7);
+					break; // Only want 1st good marker
+				}
+			}
+			
+		}
+
+		// Trigger a clicked event to set the intial pin labels
+		$('#sel_change_pin_label').trigger( 'change');
 	}
-	domMgr.drawLabelSelector('pin_label_selector', labels );
-	$('#sel_change_pin_label').bind( 'change', function(e){
-		markerMgr.setPinLabels( xscopeNS.pointMarkers, this.value );
-	});
+}
+DomManager.prototype.drawInitPointlessMarkers = function( pPoll ){
+	/* Markers without coordinates are plonked until the map and left there until
+	 * their geocoding comes back.
+	 */
+	var that = this;
+	if( pPoll){
+		if(xscopeNS.flags.loadingData){
+			setTimeout( that.drawInitPointlessMarkers,555, true );
+		} else {
+			setTimeout( that.drawInitPointlessMarkers,1, false );
+		}
+	} else {
+		$.each(xscopeNS.geoMarkers, function(key, mkr){
+			map.addOverlay(xscopeNS.geoMarkers[key]);
+		});
+	}
+}
 
-	// Popup Selectors	
-	domMgr.drawPopupSelector('pin_popup_switches', labels );	
+
+DomManager.prototype.drawControls = function( pPoll){
+	var that = this;
+	if( pPoll){
+		if(xscopeNS.flags.loadingData){
+			setTimeout( that.drawControls,555, true );
+		} else {
+			setTimeout( that.drawControls,1, false );
+		}
+	} else {
+		// Filtering stuff
+		var pinTagSets = dataMgr.domTagSetCensus( xscopeNS.KML );
+			
+		var html = '<table id="tbl_filters"></table>';
+		$("#div_filters").empty();
+		$("#div_filters").append(html);
+	
+	 	var filcnt = 0;
+		$.each( pinTagSets, function(tagset, tags){
+			html = '<tr><td id="divFilter_' + filcnt + '"></td></tr>';
+			$('#tbl_filters').append(html);
+			domMgr.drawTagsetFilter('divFilter_' + filcnt, tagset, pinTagSets );
+			filcnt++;
+		});
+		
+		// Attach an event handler to the filter stuff
+		$('.tagset_filter').bind('change', function(e){
+			domMgr.drawMarkers( xscopeNS.pointMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
+		});
+		
+		// Pin label stuff
+		var pinItems = dataMgr.domLabelCensus( xscopeNS.KML );	
+		var labels = [];
+		for (var pi in pinItems){
+			labels.push(pi);
+		}
+		domMgr.drawLabelSelector('pin_label_selector', labels );
+		$('#sel_change_pin_label').bind( 'change', function(e){
+			markerMgr.setPinLabels( xscopeNS.pointMarkers, this.value );
+		});
+	
+		// Popup Selectors	
+		domMgr.drawPopupSelector('pin_popup_switches', labels );	
+	}
+
 }
 DomManager.prototype.drawLabelSelector = function( pDivId, pLabels ){
 	/* Args: The string id of the div and an array of label options */
@@ -156,7 +221,7 @@ DomManager.prototype.drawLabelSelector = function( pDivId, pLabels ){
 		dd.append( sel );
 	} else {
 		dd.append('<div class="warn">No data</div>');
-		this.log('No pin labels found in data', 'INFO');
+		jsdump('No pin labels found in data');
 	}
 }
 DomManager.prototype.drawPopupSelector= function( pDivId, pLabels){
@@ -246,27 +311,3 @@ DomManager.prototype.hideShow2 = function(pId){
 		ctl.find('.hideshowicon>img').attr('src','icons/maximize_option.png');
 	}
 }
-DomManager.prototype.log = function( pMsg, pClass){
-	if(!pClass){
-		pClass = 'INFO';
-	}
-	var img;
-	
-	switch( pClass.toUpperCase() ){
-		case 'INFO':
-			img = '<IMG class="img_log_msg_type" src="icons/log_info.png" >';
-			break;
-		case 'WARN':
-			img = '<IMG class="img_log_msg_type" src="icons/log_warning.png" >';
-			break;
-		case 'ERROR':
-			img = '<IMG class="img_log_msg_type" src="icons/log_error.png" >';
-			break;
-		default:
-			img = '<IMG class="img_log_msg_type" src="icons/log_default.png" >';
-			break;
-	}
-	var html = '<p>' + img  + '&nbsp;' + pMsg + '</p>';
-	$('#messagebox').prepend(html);
-}
-

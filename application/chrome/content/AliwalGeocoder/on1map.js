@@ -15,12 +15,14 @@ try{
 	alert('Falling back to DEMO mode because\nof an error while importing module xscope.jsm.');
 	// ********************************* START OF FAKE JSM **********************************************
 	var xscopeNS = {
-		KML 		: {},   // A KML DOM document
-		pointMarkers  : {},   // Hash of YMarker objects that are on the map, keyed by ymarker.id
-		hiddenMarkers: {}, 	// Hash of hidden/filtered etc. markers
-		errorMarkers: {}, 	// Hash of error markers.
+		KML 			: {},   // A KML DOM document
+		pointMarkers  	: {},   // Hash of YMarker objects that are on the map, keyed by ymarker.id
+		hiddenMarkers 	: {}, 	// Hash of hidden/filtered etc. markers
+		errorMarkers 	: {}, 	// Hash of error markers.
+		geoMarkers 		: {}, 	// Hash of markers that need to be geocoded
 		
-		flags		: { loadingData 		: false, // Whole flags object should be passed because of pass by reference requirement
+		// Whole flags object should be passed because of pass by reference requirement
+		flags		: { loadingData 		: false, 
 						scrollOnGeocodeSuccess: false,
 					    warnGeocodingError 	: true,
 					    warnPinCountError 	: true
@@ -35,9 +37,10 @@ try{
 	var req = new XMLHttpRequest();
 	req.overrideMimeType('text/xml');	
 	//req.open("GET", "fake-jsm-data-live-490.o1m", false); //All need geocoding
-	//req.open("GET", "fake-jsm-data-49.o1m", false);
-	req.open("GET", "fake-jsm-data-980.o1m", false);
+	req.open("GET", "fake-jsm-data-49.o1m", false);
+	//req.open("GET", "fake-jsm-data-980.o1m", false);
 	//req.open("GET", "google-addresses.kml", false); 
+	//req.open("GET", "example-data-barebones-49.o1m", false);
 	req.send(null);
 	
 	var inter = document.implementation.createDocument("","",null);
@@ -62,8 +65,10 @@ var lastBounds;
 /* ****************************************************************************************************************************** */
 
 $(document).ready( function(){
-/* Start with things that don't need a net connection */
-
+	
+	/* Filter controls need to be in place bfore the map can be drawn */
+	domMgr.drawControls( true );
+	
 	// Attach an event handler to ALL of the options hideshow checkboxes
 	$('.cb_hideshow_option').bind( 'change', function(e){
 		domMgr.hideShowOptions( this.id, this.checked );
@@ -73,9 +78,7 @@ $(document).ready( function(){
 	$('.div_hideshow_option').bind( 'click', function(e){
 		domMgr.hideShow2( this.id );
 	});	
-	
-	/* Filter controls need to be in place bfore the map can be drawn */
-	domMgr.drawControls( true );
+
 	
 	/* get the map sorted out ASAP ( but not 1st) because it
 	 * originates off-site and takes longer 
@@ -101,61 +104,67 @@ $(document).ready( function(){
 		}
 	});
 	YEvent.Capture(map, EventsList.onEndGeoCode, function(resultObj) {
-		/* Make the map update the address cache whenever it can.
-		 * Thanks: http://josephsmarr.com/2007/03/20/handling-geocoding-errors-from-yahoo-maps/
+		/* An event to  make the map update the address cache whenever it can.
+		 * Also notifies user of geoError
 		 */
-		 if( resultObj.success ){
-		 	// Cache the coordinates in storage. 
-		 	// NB. KML wants LONGITUDE,LATITUDE
-		 	var addrhash = resultObj.Address; //str_md5( resultObj.Address );
-		 	var cachestr = resultObj.GeoPoint.Lon + ',' + resultObj.GeoPoint.Lat;
-		 	cacheMgr.setItem(addrhash, cachestr);
-		 	if (xscopeNS.flags.scrollOnGeocodeSuccess === true ){
-		 		xscopeNS.flags.scrollOnGeocodeSuccess = false;
-		 		map.panToLatLon(resultObj.YGeoPoint);
-		 	}
-		 } else {
-		 	// A wierd issue (race I think), trying to set the warning out here.
-			if(xscopeNS.flags.warnGeocodingError === true){
-				xscopeNS.flags.warnGeocodingError = false;
-				alert('Some addresses couldn\'t be geocoded to \ncoordinates and are not shown.');
+		var updateCache = false
+		for(key in xscopeNS.geoMarkers){
+			updateCache = true;
+			break;
+		}
+		if(updateCache ){
+			if( resultObj.success ){
+			 	// NB. KML wants LONGITUDE,LATITUDE
+			 	jsdump('Caching coordinates for ' + resultObj.Address );
+			 	var addrhash = resultObj.Address; //str_md5( resultObj.Address );
+			 	var cachestr = resultObj.GeoPoint.Lon + ',' + resultObj.GeoPoint.Lat;
+			 	cacheMgr.setItem(addrhash, cachestr);
+			} else {
+				// Geocoding didn't succeed.
+			 	// A wierd issue (race I think), doing the alert in here.
+				if(xscopeNS.flags.warnGeocodingError === true){
+					xscopeNS.flags.warnGeocodingError = false;
+					alert('Some addresses couldn\'t be geocoded to \ncoordinates and are not shown.');
+				}
+			 	domMgr.warningGeocodingError(true, resultObj.Address );
 			}
-		 	domMgr.warningGeocodingError(true, resultObj.Address );
-			$.each(xscopeNS.pointMarkers, function(key, mkr){
-				// Move ungeocoded makers to one side so that that it doesn't keep retrying.
+		}
+	});
+	
+	YEvent.Capture(map, EventsList.onEndGeoCode, function(resultObj) {
+		if(resultObj.success){
+			$.each( xscopeNS.geoMarkers, function(key, mkr){
+			/* Move successfully geocoded marker into hiddenMarkers and remove them from the map.
+			 */
+				jsdump('testing mkr.YGeoPoint.Lat & mkr.YGeoPoint.Lon for non zero:\n' + mkr.YGeoPoint.Lat +', '+ mkr.YGeoPoint.Lon );
+				if( mkr.YGeoPoint.Lat !== 0 && mkr.YGeoPoint.Lon !== 0){
+					jsdump('Moving marker ' + key + ' from geo to hiddenMarkers.');
+					xscopeNS.hiddenMarkers[key] = xscopeNS.geoMarkers[key];
+					map.removeOverlay(xscopeNS.geoMarkers[key]);
+					delete xscopeNS.geoMarkers[key];
+					return false; //break $.each() iteration
+				}
+			});
+		}else{
+			/* Move ungeocoded markers to one side so that that it doesn't keep retrying to geocode them.
+			 */
+			$.each(xscopeNS.geoMarkers, function(key, mkr){
 				if(typeof(mkr.on1map_geocodeAddress) !== 'undefined'){
 					if($.trim(mkr.on1map_geocodeAddress.toUpperCase() ) === $.trim(resultObj.Address.toUpperCase() ) ){
-						xscopeNS.errorMarkers[key] = xscopeNS.pointMarkers[key];
-						delete xscopeNS.pointMarkers[key];
+						jsdump('Moving marker ' + key + ' from geo to errorMarkers.');
+						xscopeNS.errorMarkers[key] = xscopeNS.geoMarkers[key];
+						delete xscopeNS.geoMarkers[key];
 						return false; //break $.each() iteration
 					}
 				}
-			})
-		 }
-	});
-	dataMgr.emptyObj( xscopeNS.pointMarkers );
-	dataMgr.emptyObj( xscopeNS.hiddenMarkers );
-	try{
-		markerMgr.createMarkersFromDom(xscopeNS.KML, xscopeNS.hiddenMarkers );
-	} catch(e){
-		jsdump('Exception:\n'+e);
-	}
-	
-	// Specifying the Map starting location and zoom level
-	var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
-	for(var key in xscopeNS.hiddenMarkers){
-		// They're all hidden at this point
-		if(xscopeNS.hiddenMarkers.YGeoPoint){
-			if( xscopeNS.hiddenMarkers.YGeoPoint.Lat !== 0 && xscopeNS.hiddenMarkers.YGeoPoint.Lon !== 0)
-			homeloc = xscopeNS.hiddenMarkers.YGeoPoint;
-			break; // Only want 1st good marker
+			});
 		}
-		
-	}
+	});
+	
+
+	var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
 	map.drawZoomAndCenter( homeloc, 7);
 	lastBounds = map.getBoundsLatLon();
-
-	// Trigger a clicked event to set the intial pin labels
-	$('#sel_change_pin_label').trigger( 'change');
-	
+	domMgr.drawInitMarkers(true);
+	domMgr.drawInitPointlessMarkers(true);
 });
