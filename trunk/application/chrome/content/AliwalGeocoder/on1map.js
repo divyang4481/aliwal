@@ -103,6 +103,7 @@ $(document).ready( function(){
 			lastBounds = currb;
 		}
 	});
+	
 	YEvent.Capture(map, EventsList.onEndGeoCode, function(resultObj) {
 		/* An event to  make the map update the address cache whenever it can.
 		 * Also notifies user of geoError
@@ -165,6 +166,14 @@ $(document).ready( function(){
 	var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
 	map.drawZoomAndCenter( homeloc, 7);
 	lastBounds = map.getBoundsLatLon();
-	domMgr.drawInitMarkers(true);
-	domMgr.drawInitPointlessMarkers(true);
+	domMgr.drawInitMarkers(true, function(){
+		return true;
+	});
+	
+	domMgr.drawInitPointlessMarkers(true, function(){
+		domMgr.drawMarkers( xscopeNS.pointMarkers, 
+							xscopeNS.hiddenMarkers, 
+							map.getBoundsLatLon() );
+		$('#sel_change_pin_label').trigger( 'change');
+	});
 });
