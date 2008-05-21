@@ -323,6 +323,7 @@ function toggleSidebar(){
 }
 
 function drawSidebarTree(){
+	return true;
 	xscopeNS.KML.firstChild.setAttribute('id', 'xscopeNS_KML');
 	try{
 		var dataEle = document.getElementById('xscopeNS_KML');

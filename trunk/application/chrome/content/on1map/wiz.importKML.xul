@@ -20,8 +20,9 @@
 
 	<wizardpage description="Geocoding columns"
 		onpageadvanced="impwiz.grabGeoSelections();" >
+		<label>Choose the columns with address data for geocoding.</label>
 		<description>
-			Choose the columns with address data for geocoding.
+
 			Geocoding turns addresses into latitude and longitude coordinates that can be shown on the map.
 			These are optional and only required if the data doesn't already have coordinates.
 			

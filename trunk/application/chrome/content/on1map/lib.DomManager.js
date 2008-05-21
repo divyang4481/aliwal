@@ -12,12 +12,14 @@ DomManager.prototype.warningPinCeiling = function( pSet ){
 		}
 		$('#feedback_pin_ceiling').fadeOut('fast');
 		$('#feedback_pin_ceiling').attr('src','icons/pin_ceiling_warn.png');
+		$('#feedback_pin_ceiling').attr('title','Too many pins');
 		$('#feedback_pin_ceiling').fadeIn('slow');
 		
 		
 	} else if ( $('#feedback_pin_ceiling').attr('src') !== 'icons/pin_ceiling_ok.png' ){
 		$('#feedback_pin_ceiling').fadeOut('fast');
 		$('#feedback_pin_ceiling').attr('src','icons/pin_ceiling_ok.png');
+		$('#feedback_pin_ceiling').attr('title','Number of pins OK');
 		$('#feedback_pin_ceiling').fadeIn('slow');
 	}
 }
@@ -25,11 +27,13 @@ DomManager.prototype.warningGeocodingError = function( pSet, pAddress ){
 	if(pSet){
 		$('#feedback_geocoding_err').fadeOut('fast');
 		$('#feedback_geocoding_err').attr('src','icons/geocoding_warn.png');
+		$('#feedback_geocoding_err').attr('title','Geocoding errors');
 		$('#feedback_geocoding_err').fadeIn('slow');
 		jsdump('Couldn\'t geocode address ' + pAddress );
 	} else if ( $('#feedback_geocoding_err').attr('src') !== 'icons/geocoding_ok.png' ){
 		$('#feedback_geocoding_err').fadeOut('fast');
 		$('#feedback_geocoding_err').attr('src','icons/geocoding_ok.png');
+		$('#feedback_geocoding_err').attr('title','Geocoding OK');
 		$('#feedback_geocoding_err').fadeIn('slow');
 	}
 }
@@ -232,11 +236,11 @@ DomManager.prototype.hideShow2 = function(pId){
 	if( ctl.attr('state') === 'HIDDEN'){
 		victims.slideDown(20);
 		ctl.attr('state','SHOWN');
-		ctl.find('.hideshowicon>img').attr('src','images/red_cross_circle.png');
+		ctl.find('.hideshowicon>img').attr('src','icons/minimize_option.png');
 	} else{ 
 		victims.slideUp(20);
 		ctl.attr('state','HIDDEN');
-		ctl.find('.hideshowicon>img').attr('src','images/green_tick_circle.png');
+		ctl.find('.hideshowicon>img').attr('src','icons/maximize_option.png');
 	}
 }
 DomManager.prototype.log = function( pMsg, pClass){
