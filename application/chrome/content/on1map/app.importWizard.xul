@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
-<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://AliwalGeocoder/skin/app.importWizard.css" type="text/css"?>
+
+
+
 <wizard id="importwizard" title="Import a text file" 
 	onload="impwiz.onWizardLoad();"
 	onwizardfinish="return impwiz.onWizardFinished()"
@@ -23,7 +26,11 @@
 
 	<wizardpage 
 		description="Layout Details"
+		onpageshow="document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabLayoutSelection();" >
+		
+		<label class="label_step">Step 1 of 6</label>
+		<spacer />
 	    <description>
 	      This wizard will gather the details needed to import a text file.
 	      
@@ -46,8 +53,11 @@
 		description="Delimiter details"
 		onpageshow="impwiz.checkDelimiter(); return true;"
 		onpageadvanced="impwiz.grabDelimiterSelection();" >
-<!--	    <description>How is the data delimited?</description>
--->
+		
+		<label class="label_step">Step 2 of 6</label>
+		<spacer />
+	    <description>How is the data delimited?</description>
+
 	    <hbox>
 			<groupbox flex="1" minwidth="200" >
 				<caption label="Delimiters" />
@@ -108,8 +118,11 @@
 	
 	
 	<wizardpage description="Coordinate columns"
+		onpageshow="document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabLonLatSelections();" >
-		<description>
+		<label class="label_step">Step 3 of 6</label>
+		<spacer />
+	    <description>
 			Choose the longitude and latitude columns with coordinate data.
 			These are optional. If none are provided, geocoding will be tried instead.
 			
@@ -137,8 +150,11 @@
 	</wizardpage>
 	
 	<wizardpage description="Geocoding columns"
+		onpageshow="document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabGeoSelections();" >
-		<description>
+		<label class="label_step">Step 4 of 6</label>
+		<spacer />
+	    <description>
 			Choose the columns with address data for geocoding.
 			Geocoding turns addresses into latitude and longitude coordinates that can be shown on the map.
 			These are optional and only required if the data doesn't already have coordinates.
@@ -166,8 +182,11 @@
 	</wizardpage>
 	
 	<wizardpage description="Pin Label &amp; Popup details"
+		onpageshow="document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabDataSelections();" >
-		<description>
+		<label class="label_step">Step 5 of 6</label>
+		<spacer />
+	    <description>
 			Choose the columns for pin labels and popup details.
 			This is the data that can be shown on the pop up of each pin in the map.
 		</description>
@@ -193,8 +212,11 @@
 	</wizardpage>
 	
 	<wizardpage description="Tag columns"
+		onpageshow="document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabTagSelections();" >
-		<description>
+		<label class="label_step">Step 6 of 6</label>
+		<spacer />
+	    <description>
 			Choose the columns that contain tag data.
 			These are used to hide and show pins on the map.
 		</description>

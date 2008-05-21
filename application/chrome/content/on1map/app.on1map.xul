@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://AliwalGeocoder/skin/app.on1map.css" type="text/css"?>
 
 <!DOCTYPE window SYSTEM "chrome://on1map/locale/on1map.dtd">
 
@@ -34,7 +34,7 @@
 	  <menu id="file-menu" label="File">
 	    <menupopup id="file-popup">
 			<menuitem id="mi_file_open" 		label="Open File..."		accesskey="o" 	command="cmd_open" 	/>
-<!-- 		<menuitem id="mi_file_importflat" 	label="Import Text File..."	accesskey="i" 	command="cmd_import_flat" 	/> -->
+ 			<menuitem id="mi_file_importflat" 	label="Import Text File..."	accesskey="i" 	command="cmd_import_flat" 	/> 
 <!--   		<menuitem id="mi_file_saveas" 		label="Save As" 			accesskey="s" 	command="cmd_saveas" 	disabled="true"	/> 		-->
 <!--      	<menuitem id="mi_file_save" 		label="Save"  								command="cmd_save" 		disabled="true"	/> 	-->
 	      	<menuitem id="mi_file_close" 		label="Close Map"  							command="cmd_close" 	disabled="true"	/>
