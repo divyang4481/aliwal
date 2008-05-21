@@ -7,9 +7,12 @@ var xscopeNS = {
 	pointMarkers : {},   // Hash of YMarker objects that are on the map, keyed by ymarker.id
 	hiddenMarkers: {}, 	// Hash of hidden/filtered etc. markers
 	errorMarkers : {}, 	// Hash of error markers.
+	geoMarkers 	 : {}, 	// Hash of markers that need to be geocoded
 	
-	flags		: { loadingData : false,
-					scrollOnGeocodeSuccess : false,
-					warnGeocodingError: true,
-					warnPinCountError: true} // Whole flags object should be passed because of pass by reference requirement
+	// Whole flags object should be passed because of pass by reference requirement
+	flags		: { loadingData 			: false,
+					scrollOnGeocodeSuccess 	: false,
+					warnGeocodingError 		: true,
+					warnPinCountError 		: true
+				   } 
 };
