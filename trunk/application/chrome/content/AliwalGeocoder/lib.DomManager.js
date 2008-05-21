@@ -48,6 +48,9 @@ DomManager.prototype.inBounds = function( pBounds, pLat, pLon ){
 	}
 	return false;
 }
+DomManager.prototype.drawGeocodingMarkers = function( pGeoMarkers, pErrorMarkers ){
+	
+}
 DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pBounds ){
 	/* Takes a hash of marker objects, to them and puts them on the map.
 	 */
@@ -123,7 +126,7 @@ DomManager.prototype.drawControls = function(){
 	
 	// Attach an event handler to the filter stuff
 	$('.tagset_filter').bind('change', function(e){
-		domMgr.drawMarkers( xscopeNS.domMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
+		domMgr.drawMarkers( xscopeNS.pointMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
 	});
 	
 	// Pin label stuff
@@ -134,7 +137,7 @@ DomManager.prototype.drawControls = function(){
 	}
 	domMgr.drawLabelSelector('pin_label_selector', labels );
 	$('#sel_change_pin_label').bind( 'change', function(e){
-		markerMgr.setPinLabels( xscopeNS.domMarkers, this.value );
+		markerMgr.setPinLabels( xscopeNS.pointMarkers, this.value );
 	});
 
 	// Popup Selectors	
