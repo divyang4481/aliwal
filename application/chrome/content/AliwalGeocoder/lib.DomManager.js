@@ -154,14 +154,14 @@ DomManager.prototype.initPan = function(){
 	if ( xscopeNS.flags.scrollOnGeocodeSuccess){
 		for(var key in xscopeNS.hiddenMarkers){
 			// They're all hidden at this point
-			if(xscopeNS.hiddenMarkers.YGeoPoint){
-				if( xscopeNS.hiddenMarkers.YGeoPoint.Lat !== 0 && xscopeNS.hiddenMarkers.YGeoPoint.Lon !== 0){
-					var homeloc = xscopeNS.hiddenMarkers.YGeoPoint;
+			if(xscopeNS.hiddenMarkers[key].YGeoPoint){
+				if( xscopeNS.hiddenMarkers[key].YGeoPoint.Lat !== 0 && xscopeNS.hiddenMarkers[key].YGeoPoint.Lon !== 0){
+					var homeloc = xscopeNS.hiddenMarkers[key].YGeoPoint;
 					xscopeNS.flags.scrollOnGeocodeSuccess = false;
 					map.drawZoomAndCenter( homeloc, 7);
 					break; // Only want 1st good marker
 				}
-			}	
+			}
 		}
 	}
 }
