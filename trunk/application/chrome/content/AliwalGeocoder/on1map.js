@@ -21,6 +21,7 @@ try{
 		errorMarkers: {}, 	// Hash of error markers.
 		
 		flags		: { loadingData 		: false, // Whole flags object should be passed because of pass by reference requirement
+						scrollOnGeocodeSuccess: false,
 					    warnGeocodingError 	: true,
 					    warnPinCountError 	: true
 					  }
@@ -109,6 +110,10 @@ $(document).ready( function(){
 		 	var addrhash = resultObj.Address; //str_md5( resultObj.Address );
 		 	var cachestr = resultObj.GeoPoint.Lon + ',' + resultObj.GeoPoint.Lat;
 		 	cacheMgr.setItem(addrhash, cachestr);
+		 	if (xscopeNS.flags.scrollOnGeocodeSuccess === true ){
+		 		xscopeNS.flags.scrollOnGeocodeSuccess = false;
+		 		map.panToLatLon(resultObj.YGeoPoint);
+		 	}
 		 } else {
 		 	// A wierd issue (race I think), trying to set the warning out here.
 			if(xscopeNS.flags.warnGeocodingError === true){
@@ -138,6 +143,15 @@ $(document).ready( function(){
 	
 	// Specifying the Map starting location and zoom level
 	var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
+	for(var key in xscopeNS.hiddenMarkers){
+		// They're all hidden at this point
+		if(xscopeNS.hiddenMarkers.YGeoPoint){
+			if( xscopeNS.hiddenMarkers.YGeoPoint.Lat !== 0 && xscopeNS.hiddenMarkers.YGeoPoint.Lon !== 0)
+			homeloc = xscopeNS.hiddenMarkers.YGeoPoint;
+			break; // Only want 1st good marker
+		}
+		
+	}
 	map.drawZoomAndCenter( homeloc, 7);
 	lastBounds = map.getBoundsLatLon();
 

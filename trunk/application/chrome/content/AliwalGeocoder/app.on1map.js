@@ -234,22 +234,22 @@ function fileQuit(){
 	appStartup.quit(quitSeverity);
 }
 function goAbout(){
-	window.openDialog("chrome://on1map/content/about.xul","aboutDialog","dialog" );
+	window.openDialog("chrome://AliwalGeocoder/content/about.xul","aboutDialog","dialog" );
 }
 function goWelcome(){
 	document.title = 'Aliwal Geocoder. Your data, on a map.';
 	var browser = document.getElementById("browser");
-	browser.loadURI("chrome://on1map/content/welcome.html", null, null);
+	browser.loadURI("chrome://AliwalGeocoder/content/welcome.html", null, null);
 }
 function goViewData(){
 	toggleSidebar();
 }
 function goMap(){
 	var browser = document.getElementById("browser");
-	browser.loadURI("chrome://on1map/content/on1map.html", null, null);
+	browser.loadURI("chrome://AliwalGeocoder/content/on1map.html", null, null);
 }
 function goPreferences(){
-	window.openDialog("chrome://on1map/content/connection.xul", "", "chrome,toolbar");
+	window.openDialog("chrome://AliwalGeocoder/content/connection.xul", "", "chrome,toolbar");
 	
 }
 function showConsole() {
@@ -316,7 +316,7 @@ function fileImportFlat(){
 				drawSidebarTree();
 			}
 		};
-		window.openDialog("chrome://on1map/content/app.importWizard.xul","importWizard","modal", params);
+		window.openDialog("chrome://AliwalGeocoder/content/app.importWizard.xul","importWizard","modal", params);
 	}
 }
 

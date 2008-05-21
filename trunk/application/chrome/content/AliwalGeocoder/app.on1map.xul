@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://AliwalGeocoder/skin/app.on1map.css" type="text/css"?>
 
-<!DOCTYPE window SYSTEM "chrome://on1map/locale/on1map.dtd">
+<!DOCTYPE window SYSTEM "chrome://AliwalGeocoder/locale/on1map.dtd">
 
 <window
   id     = "on1map"
