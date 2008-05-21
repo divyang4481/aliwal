@@ -25,6 +25,7 @@ MarkerManager.prototype.createMarkersFromDom = function( pKML, pDest ){
 			} else if ( $(pmark).is("Placemark:has('ExtendedData>GeocodeAddress')") ){
 				var geoaddr = $.trim( $(pmark).find('ExtendedData>GeocodeAddress:first').text() );
 				nm = new YMarker(geoaddr);
+				nm.on1map_geocodeAddress = geoaddr;
 			} else {
 				throw 'MarkerManager: No Point.coordinates or ExtendedData.GeocodeAddress on marker data';
 			}

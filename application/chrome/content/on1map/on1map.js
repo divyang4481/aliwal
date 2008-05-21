@@ -18,6 +18,7 @@ try{
 		KML 		: {},   // A KML DOM document
 		domMarkers  : {},   // Hash of YMarker objects that are on the map, keyed by ymarker.id
 		hiddenMarkers: {}, 	// Hash of hidden/filtered etc. markers
+		errorMarkers: {}, 	// Hash of error markers.
 		
 		flags		: { loadingData 		: false, // Whole flags object should be passed because of pass by reference requirement
 					    warnGeocodingError 	: true,
@@ -32,8 +33,9 @@ try{
    }
 	var req = new XMLHttpRequest();
 	req.overrideMimeType('text/xml');	
-	req.open("GET", "fake-jsm-data-980.o1m", false);
+	//req.open("GET", "fake-jsm-data-live-490.o1m", false); //All need geocoding
 	//req.open("GET", "fake-jsm-data-49.o1m", false);
+	req.open("GET", "fake-jsm-data-980.o1m", false);
 	//req.open("GET", "google-addresses.kml", false); 
 	req.send(null);
 	
@@ -114,7 +116,16 @@ $(document).ready( function(){
 				alert('Some addresses couldn\'t be geocoded to \ncoordinates and are not shown.');
 			}
 		 	domMgr.warningGeocodingError(true, resultObj.Address );
-
+			$.each(xscopeNS.domMarkers, function(key, mkr){
+				// Move ungeocoded makers to one side so that that it doesn't keep retrying.
+				if(typeof(mkr.on1map_geocodeAddress) !== 'undefined'){
+					if($.trim(mkr.on1map_geocodeAddress.toUpperCase() ) === $.trim(resultObj.Address.toUpperCase() ) ){
+						xscopeNS.errorMarkers[key] = xscopeNS.domMarkers[key];
+						delete xscopeNS.domMarkers[key];
+						return false; //break $.each() iteration
+					}
+				}
+			})
 		 }
 	});
 	dataMgr.emptyObj( xscopeNS.domMarkers );
