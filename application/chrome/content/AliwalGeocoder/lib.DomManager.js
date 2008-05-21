@@ -105,64 +105,66 @@ DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pB
 	$('#feedback_pincounts').text(visicount + ' / ' + totalcount);
 }
 
-
-DomManager.prototype.drawInitMarkers = function( pPoll){
+DomManager.prototype.drawInitMarkers = function( pPoll, pCallback){
 	var that = this;
 	if( pPoll){
 		if(xscopeNS.flags.loadingData){
-			setTimeout( that.drawInitMarkers,555, true );
+			setTimeout( that.drawInitMarkers,555, true, pCallback );
 		} else {
-			setTimeout( that.drawInitMarkers,1, false );
+			setTimeout( that.drawInitMarkers,1, false, pCallback );
 		}
 	} else {
 		dataMgr.emptyObj( xscopeNS.pointMarkers );
 		dataMgr.emptyObj( xscopeNS.hiddenMarkers );
-		dataMgr.emptyObj( xscopeNS.geoMarkers );
-		dataMgr.emptyObj( xscopeNS.errorMarkers );
 		try{
 			markerMgr.createDomPointMarkers(xscopeNS.KML, xscopeNS.hiddenMarkers );
-			markerMgr.createDomGeocodeMarkers(xscopeNS.KML, xscopeNS.geoMarkers );
 		} catch(e){
 			jsdump('Exception:\n'+e);
 		}
-
-		// Specifying the Map starting location and zoom level
-		var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
-		for(var key in xscopeNS.hiddenMarkers){
-			// They're all hidden at this point
-			if(xscopeNS.hiddenMarkers.YGeoPoint){
-				if( xscopeNS.hiddenMarkers.YGeoPoint.Lat !== 0 && xscopeNS.hiddenMarkers.YGeoPoint.Lon !== 0){
-					homeloc = xscopeNS.hiddenMarkers.YGeoPoint;
-					map.drawZoomAndCenter( homeloc, 7);
-					break; // Only want 1st good marker
-				}
-			}
-			
-		}
-
-		// Trigger a clicked event to set the intial pin labels
-		$('#sel_change_pin_label').trigger( 'change');
+		pCallback.call(that);
 	}
 }
-DomManager.prototype.drawInitPointlessMarkers = function( pPoll ){
+DomManager.prototype.drawInitPointlessMarkers = function( pPoll, pCallback ){
 	/* Markers without coordinates are plonked until the map and left there until
 	 * their geocoding comes back.
 	 */
 	var that = this;
 	if( pPoll){
 		if(xscopeNS.flags.loadingData){
-			setTimeout( that.drawInitPointlessMarkers,555, true );
+			setTimeout( that.drawInitPointlessMarkers,555, true, pCallback );
 		} else {
-			setTimeout( that.drawInitPointlessMarkers,1, false );
+			setTimeout( that.drawInitPointlessMarkers,1, false, pCallback );
 		}
 	} else {
+		dataMgr.emptyObj( xscopeNS.geoMarkers );
+		dataMgr.emptyObj( xscopeNS.errorMarkers );
+		try{
+			markerMgr.createDomGeocodeMarkers(xscopeNS.KML, xscopeNS.geoMarkers );
+		} catch(e){
+			jsdump('Exception:\n'+e);
+		}
 		$.each(xscopeNS.geoMarkers, function(key, mkr){
 			map.addOverlay(xscopeNS.geoMarkers[key]);
 		});
+		pCallback.call(that);
 	}
 }
-
-
+DomManager.prototype.initPan = function(){
+	// Specifying the Map starting location and zoom level
+	if ( xscopeNS.flags.scrollOnGeocodeSuccess){
+		for(var key in xscopeNS.hiddenMarkers){
+			// They're all hidden at this point
+			if(xscopeNS.hiddenMarkers.YGeoPoint){
+				if( xscopeNS.hiddenMarkers.YGeoPoint.Lat !== 0 && xscopeNS.hiddenMarkers.YGeoPoint.Lon !== 0){
+					var homeloc = xscopeNS.hiddenMarkers.YGeoPoint;
+					xscopeNS.flags.scrollOnGeocodeSuccess = false;
+					map.drawZoomAndCenter( homeloc, 7);
+					break; // Only want 1st good marker
+				}
+			}	
+		}
+	}
+}
 DomManager.prototype.drawControls = function( pPoll){
 	var that = this;
 	if( pPoll){

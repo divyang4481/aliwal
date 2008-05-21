@@ -43,7 +43,7 @@
 	      	<menuseparator/>
 	      	<!-- id must be menu_FileQuitItem for OSX -->
 	      	<!-- Thanks: http://blogs.activestate.com/shanec/2005/07/toolbar_magic.html -->
-			<menuitem id="menu_FileQuitItem" 	label="Quit"  								command="cmd_quit" 	disabled="true"	/>
+			<menuitem id="menu_FileQuitItem" 	label="Quit"  								command="cmd_quit" 	/>
 	      	
 	    </menupopup>
 	  </menu>
