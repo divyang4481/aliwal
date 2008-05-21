@@ -1,0 +1,10 @@
+/* global skin ------------------------------------------------------------- */
+@import url(chrome://global/skin/);
+
+/* local skin ------------------------------------------------------------- */
+.label_step{
+ font-weight: bold;
+ font-size: 13;
+ color: #C33;
+ display: inline;
+}
