@@ -40,7 +40,7 @@ WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Baudmap Ltd\Aliwal Geocoder" "" "$INSTD
 WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aliwal Geocoder" "DisplayName" "Aliwal Geocoder (remove only)"
 WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aliwal Geocoder" "UninstallString" '"$INSTDIR\uninst.exe"'
 ; write out uninstaller
-WriteUninstaller "$INSTDIR\uninst.exe"
+WriteUninstaller "$INSTDIR\uninstall.exe"
 SectionEnd ; end of default section
 
 
@@ -49,9 +49,9 @@ UninstallText "This will uninstall Aliwal Geocoder from your system"
 
 Section Uninstall
 ; add delete commands to delete whatever files/registry keys/etc you installed here.
-Delete "$INSTDIR\uninst.exe"
 DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Baudmap Ltd\Aliwal Geocoder"
 DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Aliwal Geocoder"
+Delete "$INSTDIR\uninstall.exe"
 RMDir /r "$INSTDIR"
 
 # second, remove the link from the start menu
