@@ -173,10 +173,12 @@ $(document).ready( function(){
 	
 	xscopeNS.flags.scrollOnGeocodeSuccess = true;
 	domMgr.drawInitPointlessMarkers(true, function(){
+		
+		// These are here coz it's the last thing to happen
 		domMgr.drawMarkers( xscopeNS.pointMarkers, 
 							xscopeNS.hiddenMarkers, 
 							map.getBoundsLatLon() );
-		// These are here coz it's last
+		// If any markers exist by now, pan to one
 		domMgr.initPan();
 		$('#sel_change_pin_label').trigger( 'change');
 	});

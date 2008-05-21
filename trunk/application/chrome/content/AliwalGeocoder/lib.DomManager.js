@@ -103,9 +103,12 @@ DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pB
 		totalcount++;
 	}
 	$('#feedback_pincounts').text(visicount + ' / ' + totalcount);
+	$('#sel_change_pin_label').trigger( 'change');
 }
 
 DomManager.prototype.drawInitMarkers = function( pPoll, pCallback){
+	/* If pPoll then wait until xscopeNS.flags.loadingData is finished.
+	 */
 	var that = this;
 	if( pPoll){
 		if(xscopeNS.flags.loadingData){
