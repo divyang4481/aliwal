@@ -166,14 +166,18 @@ $(document).ready( function(){
 	var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
 	map.drawZoomAndCenter( homeloc, 7);
 	lastBounds = map.getBoundsLatLon();
+	
 	domMgr.drawInitMarkers(true, function(){
 		return true;
 	});
 	
+	xscopeNS.flags.scrollOnGeocodeSuccess = true;
 	domMgr.drawInitPointlessMarkers(true, function(){
 		domMgr.drawMarkers( xscopeNS.pointMarkers, 
 							xscopeNS.hiddenMarkers, 
 							map.getBoundsLatLon() );
+		// These are here coz it's last
+		domMgr.initPan();
 		$('#sel_change_pin_label').trigger( 'change');
 	});
 });
