@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <?xml-stylesheet href="chrome://AliwalGeocoder/skin/wiz.importKML.css" type="text/css"?>
-<wizard id="importkmlwizard" title="Import a KML file" 
+<wizard id="importkmlwizard" title="Geocoding Details Wizard" 
 	onload="impwiz.onWizardLoad();"
 	onwizardfinish="return impwiz.onWizardFinished()"
 	xmlns:html="http://www.w3.org/1999/xhtml"
@@ -18,20 +18,17 @@
 	var impwiz = new ImportKMLWizard();
 </script>
 
-	<wizardpage description="Geocoding columns"
+	<wizardpage description="Choose Geocoding Columns"
 		onpageadvanced="impwiz.grabGeoSelections();" >
 		<label class="label_step">Step 1 of 1</label>
 		<spacer />
 	    <description>
-	    Choose the columns with address data for geocoding.
+	    Choose the columns with address data for geocoding by moving them to the list on the right.
 	    </description>
 	    <spacer />
 		<description>
-			Geocoding turns addresses into latitude and longitude coordinates that can be shown on the map.
-			
-			These are optional and only required if the data doesn't already have coordinates.
-			
-			Order should be like a regular address, from most specific to general eg. house number to country.
+			Geocoding turns addresses coordinates that can be shown on the map.
+			These are only required if the data doesn't already have coordinates.
 		</description>
 		<groupbox flex="1">
 			<hbox>
