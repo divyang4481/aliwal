@@ -74,7 +74,7 @@ DataManager.prototype.enrichWithGeocode = function( pDoc ){
 							KML: xscopeNS.KML,
 							callback : function(pGeocodeArgs){ geofields = pGeocodeArgs; }
 						 };
-			window.openDialog("chrome://on1map/content/wiz.importKML.xul","importWizard","modal", params);
+			window.openDialog("chrome://AliwalGeocoder/content/wiz.importKML.xul","importWizard","modal", params);
 		}
 		var geostr = '';
 		for(var idx2 in geofields){
