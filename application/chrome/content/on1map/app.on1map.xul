@@ -25,6 +25,7 @@
 	<command id="cmd_save" 		oncommand="fileSave();"/>
 	<command id="cmd_saveas" 	oncommand="fileSaveAs();"/>
 	<command id="cmd_close" 	oncommand="fileClose();"/>
+	<command id="cmd_quit" 		oncommand="fileQuit();"/>
 	<command id="cmd_viewdata" 	oncommand="goViewData();"/>
 	<command id="cmd_reload" 	oncommand="reload();"/>
 	<command id="cmd_preferences" oncommand="goPreferences();" />
@@ -37,7 +38,13 @@
  			<menuitem id="mi_file_importflat" 	label="Import Text File..."	accesskey="i" 	command="cmd_import_flat" 	/> 
 <!--   		<menuitem id="mi_file_saveas" 		label="Save As" 			accesskey="s" 	command="cmd_saveas" 	disabled="true"	/> 		-->
 <!--      	<menuitem id="mi_file_save" 		label="Save"  								command="cmd_save" 		disabled="true"	/> 	-->
-	      	<menuitem id="mi_file_close" 		label="Close Map"  							command="cmd_close" 	disabled="true"	/>
+			<menuseparator/>
+			<menuitem id="mi_file_close" 		label="Close Map"  							command="cmd_close" 	disabled="true"	/>
+	      	<menuseparator/>
+	      	<!-- id must be menu_FileQuitItem for OSX -->
+	      	<!-- Thanks: http://blogs.activestate.com/shanec/2005/07/toolbar_magic.html -->
+			<menuitem id="menu_FileQuitItem" 	label="Quit"  								command="cmd_quit" 	disabled="true"	/>
+	      	
 	    </menupopup>
 	  </menu>
 	  
@@ -48,13 +55,14 @@
 <!--		    <menuitem label="Unit Tests" 	accesskey="t" 	command="cmd_viewtests" /> --> 
 <!--			<menuitem label="View Data" 	accesskey="d" 	command="cmd_viewdata" 	type="checkbox" checked="false"/>  -->
 				<menuitem label="Reload Map" 	accesskey="r" 	command="cmd_reload" 	/>
-				<menuitem label="Preferences" 					command="cmd_preferences" />
+				<menuitem label="Preferences" 					command="cmd_preferences" id="menu_preferences" />
 			</menupopup>	      
 		</menu>
 
-		<menu id="about-menu" label="About">
+		<menu label="Help">
 			<menupopup id="about-popup">
-				<menuitem label="About Aliwal Geocoder" 			command="cmd_about" />
+				<!-- id must be aboutName for OSX -->
+				<menuitem id="aboutName" label="About Aliwal Geocoder" 			command="cmd_about" />
 			</menupopup>	
 		</menu>
 	</menubar>
