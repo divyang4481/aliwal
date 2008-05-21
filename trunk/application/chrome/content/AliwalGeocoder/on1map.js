@@ -116,7 +116,7 @@ $(document).ready( function(){
 		if(updateCache ){
 			if( resultObj.success ){
 			 	// NB. KML wants LONGITUDE,LATITUDE
-			 	jsdump('Caching coordinates for ' + resultObj.Address );
+			 	//jsdump('Caching coordinates for ' + resultObj.Address );
 			 	var addrhash = resultObj.Address; //str_md5( resultObj.Address );
 			 	var cachestr = resultObj.GeoPoint.Lon + ',' + resultObj.GeoPoint.Lat;
 			 	cacheMgr.setItem(addrhash, cachestr);
@@ -139,7 +139,7 @@ $(document).ready( function(){
 			 */
 				jsdump('testing mkr.YGeoPoint.Lat & mkr.YGeoPoint.Lon for non zero:\n' + mkr.YGeoPoint.Lat +', '+ mkr.YGeoPoint.Lon );
 				if( mkr.YGeoPoint.Lat !== 0 && mkr.YGeoPoint.Lon !== 0){
-					jsdump('Moving marker ' + key + ' from geo to hiddenMarkers.');
+					//jsdump('Moving marker ' + key + ' from geo to hiddenMarkers.');
 					xscopeNS.hiddenMarkers[key] = xscopeNS.geoMarkers[key];
 					map.removeOverlay(xscopeNS.geoMarkers[key]);
 					delete xscopeNS.geoMarkers[key];
@@ -152,7 +152,7 @@ $(document).ready( function(){
 			$.each(xscopeNS.geoMarkers, function(key, mkr){
 				if(typeof(mkr.on1map_geocodeAddress) !== 'undefined'){
 					if($.trim(mkr.on1map_geocodeAddress.toUpperCase() ) === $.trim(resultObj.Address.toUpperCase() ) ){
-						jsdump('Moving marker ' + key + ' from geo to errorMarkers.');
+						//jsdump('Moving marker ' + key + ' from geo to errorMarkers.');
 						xscopeNS.errorMarkers[key] = xscopeNS.geoMarkers[key];
 						delete xscopeNS.geoMarkers[key];
 						return false; //break $.each() iteration
