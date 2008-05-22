@@ -18,6 +18,9 @@
 	<script src="lib.SaxEvent.js" 		/>
 	<script src="lib.DataManager.js" 	/>
 	<script src="app.on1map.js" 		/>
+
+	<script src="WebProgressListener.js" />
+	
  
  	<command id="cmd_new" 		oncommand="fileNew();"/>
 	<command id="cmd_open" 		oncommand="fileOpen();"/>
@@ -30,6 +33,7 @@
 	<command id="cmd_reload" 	oncommand="reload();"/>
 	<command id="cmd_preferences" oncommand="goPreferences();" />
 	<command id="cmd_about" 	oncommand="goAbout();" />
+	<command id="cmd_viewstop" 	oncommand="goViewStop();" />
 	
 	<menubar id="on1map-menubar">
 	  <menu id="file-menu" label="File">
@@ -54,7 +58,9 @@
 <!--			<menuitem label="Debug" 		accesskey="d" 	command="cmd_viewdebug" />  -->
 <!--		    <menuitem label="Unit Tests" 	accesskey="t" 	command="cmd_viewtests" /> --> 
 <!--			<menuitem label="View Data" 	accesskey="d" 	command="cmd_viewdata" 	type="checkbox" checked="false"/>  -->
+				<menuitem label="Stop" 						 	command="cmd_viewstop" 	id="menu_viewstop" />
 				<menuitem label="Reload Map" 	accesskey="r" 	command="cmd_reload" 	/>
+				<menuseparator/>
 				<menuitem label="Preferences" 					command="cmd_preferences" id="menu_preferences" />
 			</menupopup>	      
 		</menu>
@@ -143,9 +149,8 @@
 	</hbox>
   	
   <statusbar>
-    <statusbarpanel id="status" label="" crop="end" flex="1"/>
+    <statusbarpanel id="sp_status" label="" crop="end" flex="1"/>
     <progressmeter id="progress" mode="determined" value="0%" style="display: none"/>
-    <statusbarpanel id="security" label="" style="display: none"/>
   </statusbar>
  
   

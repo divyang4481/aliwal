@@ -63,15 +63,15 @@ DataManager.prototype.enrichWithGeocode = function( pDoc ){
 	xscopeNS.flags.promptForGeocodeFields = true;
 	var geofields = [];
 	var dp = new DOMParser()
-	$(pDoc).find('Placemark').not('Placemark:has(Point>coordinates)')
-				.not('Placemark:has(ExtendedData>GeocodeAddress)')
-				.each( function(idx, pointless){
+	var pl = $(pDoc).find('Placemark').not('Placemark:has(Point>coordinates)')
+				.not('Placemark:has(ExtendedData>GeocodeAddress)');
+	$(pl).each( function(idx, pointless){
 			
 		if(xscopeNS.flags.promptForGeocodeFields){
 			// Pop up a wizard which can get the geocode fields from the user
 			// Wizard should also ask if these are to be remembered 
-			var params = {  
-							KML: xscopeNS.KML,
+			var params = {  KML: xscopeNS.KML,
+							pointlessCount: pl.length,
 							callback : function(pGeocodeArgs){ geofields = pGeocodeArgs; }
 						 };
 			window.openDialog("chrome://AliwalGeocoder/content/wiz.importKML.xul","importWizard","modal", params);
@@ -106,20 +106,13 @@ DataManager.prototype.enrichFromCache = function( pDoc){
 		}			
 	});
 }
-DataManager.prototype.loadFile = function(pFile, pCallback ){
+DataManager.prototype.loadFile = function(pFile, pProgressHandler, pErrorHandler, pCallback ){
 	var that = this;
 	var req = new XMLHttpRequest();			
 	req.overrideMimeType('text/xml');	
-	req.onProgress = function onProgress(e) {
-		var percentComplete = (e.position / e.totalSize)*100;
-		jsdump('Progress %:' + percentageComplete);
-	};
-	req.onError = function onError(e) {
-		alert("Error " + e.target.status + " occurred while receiving the document.");
-	}
-	req.onLoad = function(e){
-		jsdump('Onload:e' + e);
-	}
+	req.onprogress = pProgressHandler;
+	req.onerror = pErrorHandler;
+	req.onload = function(e){};
 	req.onreadystatechange = function (aEvt) {
 	  if (req.readyState == 4) {
 	     if(req.status == 200 || req.status == 0){
@@ -132,8 +125,3 @@ DataManager.prototype.loadFile = function(pFile, pCallback ){
 	req.open('GET', 'file://' + pFile, true);
 	req.send(null);
 }
-
-
-
-
-
