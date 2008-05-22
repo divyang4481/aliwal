@@ -16,19 +16,25 @@
 	
 <script>
 	var impwiz = new ImportKMLWizard();
+	impwiz.drawPointlessCount('vb_pointless_count');
 </script>
 
 	<wizardpage description="Choose Geocoding Columns"
 		onpageadvanced="impwiz.grabGeoSelections();" >
 		<label class="label_step">Step 1 of 1</label>
 		<spacer />
+		<vbox id="vb_pointless_count">
+			<description>
+			A number of pins don't have coordinates or geocoding information.
+			</description>
+		</vbox>
+		<spacer />
 	    <description>
 	    Choose the columns with address data for geocoding by moving them to the list on the right.
 	    </description>
 	    <spacer />
 		<description>
-			Geocoding turns addresses coordinates that can be shown on the map.
-			These are only required if the data doesn't already have coordinates.
+			Geocoding turns addresses into coordinates that can be shown on the map.
 		</description>
 		<groupbox flex="1">
 			<hbox>

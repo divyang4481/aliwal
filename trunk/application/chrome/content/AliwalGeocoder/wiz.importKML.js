@@ -6,6 +6,7 @@ function ImportKMLWizard(){
 	 */
 	if("arguments" in window && window.arguments.length > 0) {
 		this.impKML = window.arguments[0].KML;
+		this.impPointlessCount = window.arguments[0].pointlessCount;
 		this.callback = window.arguments[0].callback;
 	} else {
 		throw 'ImportKMLWizard constructor couldn\'t find window.arguments[0].KML';
@@ -88,7 +89,12 @@ ImportKMLWizard.prototype.drawMoveListItem = function(pSourceListBoxId, pDestLis
 	}
 }
 
-
+ImportKMLWizard.prototype.drawPointlessCount = function(pContainer, pPointless ){
+	return true;
+	var that = this;
+	$(pContainer).empty();
+	$(pContainer).append('<description>'+that.impPointlessCount+' pins don\'t have coordinates or geocoding information.</description>');
+}
 
 
 
