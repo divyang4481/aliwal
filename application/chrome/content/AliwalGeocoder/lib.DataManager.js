@@ -101,6 +101,8 @@ DataManager.prototype.enrichFromCache = function( pDoc){
 	});
 }
 DataManager.prototype.loadFile = function(pFile, pLoadHandler, pProgressHandler, pErrorHandler, pCallback ){
+/* Loads a KML File into a DOM document and passes that to pCallback
+ */
 	var that = this;
 	var req = new XMLHttpRequest();			
 	req.overrideMimeType('text/xml');	
@@ -122,4 +124,122 @@ DataManager.prototype.loadFile = function(pFile, pLoadHandler, pProgressHandler,
 	};				
 	req.open('GET', 'file://' + pFile, true);
 	req.send(null);
+}
+DataManager.prototype.importDelimitedFile = function(pFile,pIgnoreHeaderLines, pIgnoreFooterLines,
+													pColHeadings, 
+													pDataCols, pTagCols, pGeocodeAddressCols, pLonLatCols,
+													pLoadHandler, pProgressHandler, pErrorHandler, 
+													pCallback ){
+/* Loads a CSV file into a DOM document and passes that to pCallback 
+ */
+	var that = this;
+	var headerline={};
+	var dataline = {};
+	var hasmore = true;
+
+	//this.reCSV = /,(?=([^"]*"[^"]*")*(?![^"]*"))/g; 							// Thanks: http://blogs.infosupport.com/raimondb/archive/2005/04/27/199.aspx
+	//this.reCSV = /,(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))/g;   					// Thanks: http://weblogs.asp.net/prieck/archive/2004/01/16/59457.aspx
+	//this.reCSV = /("(?:[^"]|"")*"|[^",\r\n]*)(,|\r\n?|\n)?/g; 				// Thanks: http://www.bennadel.com/blog/978-Steven-Levithan-Rocks-Hardcore-Regular-Expression-Optimization-Case-Study-.htm
+	//this.reCSV = /\G(,|\r?\n|\r|^)(?:"([^"]*+(?>""[^"]*+)*)"|([^",\r\n]*+))/g; // Thanks: http://www.bennadel.com/blog/978-Steven-Levithan-Rocks-Hardcore-Regular-Expression-Optimization-Case-Study-.htm
+	var reCSV = /"?,"?(?=(?:[^"]*"[^"]*")*(?![^"]*"))"?/g; 						//Thanks:http://rebelnation.com/
+																				//Thanks: http://regexpal.com/
+	var regex = reCSV;							
+	
+/*	
+	jsdump('DataManager.prototype.importDelimitedFile');
+	jsdump('uneval(pFile): '+ uneval(pFile));
+	jsdump('uneval(pIgnoreHeaderLines): '+ uneval(pIgnoreHeaderLines));
+	jsdump('uneval(pIgnoreFooterLines): '+ uneval(pIgnoreFooterLines));
+	jsdump('uneval(pColHeadings): '+ uneval(pColHeadings));
+	jsdump('uneval(pDataCols): '+ uneval(pDataCols));
+	jsdump('uneval(pTagCols): '+ uneval(pTagCols));
+	jsdump('uneval(pGeocodeAddressCols): '+ uneval(pGeocodeAddressCols));
+	jsdump('uneval(pLonLatCols): '+ uneval(pLonLatCols));
+*/
+	try {
+		var file = Components.classes["@mozilla.org/file/local;1"]
+	                     .createInstance(Components.interfaces.nsILocalFile);
+		file.initWithPath(pFile);
+		// open an input stream from file
+		var istream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+		                        .createInstance(Components.interfaces.nsIFileInputStream);
+		istream.init(file, 0x01, 0444, 0);
+		istream.QueryInterface(Components.interfaces.nsILineInputStream);
+		for(var ign=0;ign<pIgnoreHeaderLines;ign++){
+			hasmore = istream.readLine(headerline);
+			if(!hasmore){
+				break;
+			}
+		}	
+
+		var doc = document.implementation.createDocument("","",null);
+		var docu = doc.createElementNS('http://earth.google.com/kml/2.2','kml');
+		
+		while(hasmore){
+			var placemark = doc.createElement('Placemark');
+			var extendedData = doc.createElement('ExtendedData');
+			hasmore = istream.readLine(dataline);
+			// Split the line up
+			linesplit = dataline.value.split( regex );
+			
+			// Create XML nodes for the data columns
+			$.each( pDataCols, function(idx,colid){
+				var nn1 = doc.createElement('Data');
+				nn1.setAttribute('name', pColHeadings[ colid ] );
+				var nn2 = doc.createElement('value');
+				var nn3 = doc.createTextNode( linesplit[colid] );
+				nn2.appendChild(nn3);
+				nn1.appendChild(nn2);
+				extendedData.appendChild(nn1);
+			});
+			
+			// Create XML nodes for the tag columns
+			$.each( pTagCols, function(idx,colid){
+				var nn1 = doc.createElement('TagSet');
+				nn1.setAttribute('name', pColHeadings[ colid ] );
+				var nn2 = doc.createElement('Tag');
+				var nn3 = doc.createTextNode( linesplit[colid] );
+				nn2.appendChild(nn3);
+				nn1.appendChild(nn2);
+				extendedData.appendChild(nn1);
+			});
+			
+			// Create XML nodes for the GeocodeAddress
+			var addrstr = '';
+			$.each( pGeocodeAddressCols, function(idx,colid){
+				if(addrstr.length > 0){ addrstr += ', '; }
+				addrstr += linesplit[colid];
+			});
+			if 	(addrstr){
+				var nn1 = doc.createElement('GeocodeAddress');
+				var nn2 = doc.createTextNode( addrstr );
+				nn1.appendChild(nn2);
+				extendedData.appendChild(nn1);
+			}
+	
+	
+			// Create XML node for Long&Latitude
+			if ( pLonLatCols.length === 2){
+				if( !(isNaN(parseFloat(linesplit[pLonLatCols[0]])) || isNaN(parseFloat(linesplit[pLonLatCols[1]]))) ) {
+					nn1 = doc.createElement('Point');
+					nn2 = doc.createElement('coordinates');
+					// Remember KML wants Lon then Lat.
+					nn3 = doc.createTextNode( linesplit[pLonLatCols[0]]+','+linesplit[pLonLatCols[1]] );
+					nn2.appendChild(nn3);
+					nn1.appendChild(nn2);
+					placemark.appendChild(nn1);
+				}
+			}
+			
+			placemark.appendChild(extendedData);
+			docu.appendChild(placemark);
+		};
+		
+		istream.close();
+		doc.appendChild(docu);		
+		pCallback(doc);
+	} catch(e){
+		jsdump(e);
+		throw e;
+	}
 }

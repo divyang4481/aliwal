@@ -12,24 +12,20 @@ function ImportWizard(){
 	this.impLayout 				= 'delimited';
 	this.impDelimiter 			= ',';
 	this.impHeaderRows 			= 1;
+	this.impFooterRows 			= 0;
 	this.impLonLatCols 			= [];
 	this.impGeocodeAddressCols 	= [];
 	this.impDataCols 			= [];
 	this.impTagCols 			= [];
 	
 	this._headerCache 			= undefined;
-	
-	//this.reCSV = /,(?=([^"]*"[^"]*")*(?![^"]*"))/g; 							// Thanks: http://blogs.infosupport.com/raimondb/archive/2005/04/27/199.aspx
-	//this.reCSV = /,(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))/g;   					// Thanks: http://weblogs.asp.net/prieck/archive/2004/01/16/59457.aspx
-	//this.reCSV = /("(?:[^"]|"")*"|[^",\r\n]*)(,|\r\n?|\n)?/g; 				// Thanks: http://www.bennadel.com/blog/978-Steven-Levithan-Rocks-Hardcore-Regular-Expression-Optimization-Case-Study-.htm
-	//this.reCSV = /\G(,|\r?\n|\r|^)(?:"([^"]*+(?>""[^"]*+)*)"|([^",\r\n]*+))/g; // Thanks: http://www.bennadel.com/blog/978-Steven-Levithan-Rocks-Hardcore-Regular-Expression-Optimization-Case-Study-.htm
-	this.reCSV = /"?,"?(?=(?:[^"]*"[^"]*")*(?![^"]*"))"?/g; 					//Thanks:http://rebelnation.com/
-																				//Thanks: http://regexpal.com/
-	this.impRegex 				= this.reCSV;							
-																				
 				
 }
-
+ImportWizard.prototype.checkCode = function(){
+	// Allow the wizard to advance
+	return true;
+	document.getElementById('importwizard').canAdvance = true;
+}
 //onwizardback, onwizardnext and onwizardcancel
 ImportWizard.prototype.onWizardLoad = function(){
 	var that = this;
@@ -38,15 +34,21 @@ ImportWizard.prototype.onWizardLoad = function(){
 	that.drawDataColumns();
 	that.drawTagColumns();
 }
-ImportWizard.prototype.checkCode = function(){
-	// Allow the wizard to advance
-	return true;
-	document.getElementById('importwizard').canAdvance = true;
-}
 ImportWizard.prototype.onWizardFinished = function(){
 	var that = this;
 	try{
-		that.doImport();
+		that.callback(
+			that.impFilename,
+			that.impLayout,
+			that.impDelimiter,
+			that.impHeaderRows,
+			that.impFooterRows,
+			that.importHeadings(),
+			that.impDataCols,
+			that.impTagCols,
+			that.impGeocodeAddressCols,
+			that.impLonLatCols
+		);
 		return true; // Allow the wizard to close
 	} catch(e){
 		jsdump(e);
@@ -63,6 +65,7 @@ ImportWizard.prototype.importHeadings = function(){
 	var hasmore = true;
 	var ret = [];
 	var headerline = {};
+	var reCSV = /"?,"?(?=(?:[^"]*"[^"]*")*(?![^"]*"))"?/g; 						//Thanks:http://rebelnation.com/
 	var istream = Components.classes["@mozilla.org/network/file-input-stream;1"]
 	                        .createInstance(Components.interfaces.nsIFileInputStream);
 	
@@ -86,7 +89,7 @@ ImportWizard.prototype.importHeadings = function(){
 			}
 			jsdump('Splitting headerline');
 			if(headerline.value){
-				ret = headerline.value.split( that.impRegex );
+				ret = headerline.value.split( reCSV );
 			}
 		}catch(e){
 			throw e;
@@ -319,100 +322,6 @@ ImportWizard.prototype.drawMoveListItem = function(pSourceListBoxId, pDestListBo
 	}
 }
 
-
-ImportWizard.prototype.doImport = function(){
-	var that = this;
-	var headerline={};
-	var dataline = {};
-	var hasmore = true;
-	var colheadings = [];
-	
-	try {
-		xscopeNS.flags.loadingData = true;
-		
-		if( that.impLayout !== 'delimited') {
-			throw 'Unrecognized import layout option: ' + that.impLayout;
-		}
-
-		colheadings = that.importHeadings();
-		
-		var file = Components.classes["@mozilla.org/file/local;1"]
-	                     .createInstance(Components.interfaces.nsILocalFile);
-		file.initWithPath(that.impFilename);
-		// open an input stream from file
-		var istream = Components.classes["@mozilla.org/network/file-input-stream;1"]
-		                        .createInstance(Components.interfaces.nsIFileInputStream);
-		istream.init(file, 0x01, 0444, 0);
-		istream.QueryInterface(Components.interfaces.nsILineInputStream);
-
-		var doc = document.implementation.createDocument("","",null);
-		var docu = doc.createElementNS('http://earth.google.com/kml/2.2','kml');
-		
-		do{
-			var placemark = doc.createElement('Placemark');
-			var extendedData = doc.createElement('ExtendedData');
-			hasmore = istream.readLine(dataline);
-			// Split the line up
-			linesplit = dataline.value.split( that.impRegex);
-			
-			// Create XML nodes for the data columns
-			$.each( that.impDataCols, function(idx,colid){
-				var nn1 = doc.createElement('Data');
-				nn1.setAttribute('name', colheadings[ colid ] );
-				var nn2 = doc.createElement('value');
-				var nn3 = doc.createTextNode( linesplit[colid] );
-				nn2.appendChild(nn3);
-				nn1.appendChild(nn2);
-				extendedData.appendChild(nn1);
-			});
-			
-			// Create XML nodes for the tag columns
-			$.each( that.impTagCols, function(idx,colid){
-				var nn1 = doc.createElement('TagSet');
-				nn1.setAttribute('name', colheadings[ colid ] );
-				var nn2 = doc.createElement('Tag');
-				var nn3 = doc.createTextNode( linesplit[colid] );
-				nn2.appendChild(nn3);
-				nn1.appendChild(nn2);
-				extendedData.appendChild(nn1);
-			});
-			
-			// Create XML nodes for the GeocodeAddress
-			var addrstr = '';
-			$.each( that.impGeocodeAddressCols, function(idx,colid){
-				if(addrstr.length > 0){ addrstr += ', '; }
-				addrstr += linesplit[colid];
-			});
-			if 	(addrstr){
-				var nn1 = doc.createElement('GeocodeAddress');
-				var nn2 = doc.createTextNode( addrstr );
-				nn1.appendChild(nn2);
-				extendedData.appendChild(nn1);
-			}
-	
-	
-			// Create XML node for Lat&Longitude
-			if ( that.impLonLatCols.length === 2){
-				nn1 = doc.createElement('Point');
-				nn2 = doc.createElement('coordinates');
-				nn3 = doc.createTextNode( linesplit[that.impLonLatCols[0]]+','+linesplit[that.impLonLatCols[1]] );
-				nn2.appendChild(nn3);
-				nn1.appendChild(nn2);
-				placemark.appendChild(nn1);
-			}
-			
-			placemark.appendChild(extendedData);
-			docu.appendChild(placemark);
-		} while(hasmore);
-		
-		istream.close();
-		doc.appendChild(docu);		
-		that.callback(doc);
-	} catch(e){
-		jsdump(e);
-		throw e;
-	}
-}
 
 ImportWizard.prototype.checkDelimiter = function(){
 	document.getElementById('importwizard').canAdvance = document.getElementById('cb_delimiter_comma').checked;
