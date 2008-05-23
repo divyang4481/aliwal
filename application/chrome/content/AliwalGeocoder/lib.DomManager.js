@@ -198,7 +198,7 @@ DomManager.prototype.drawControls = function( pPoll){
 		});
 		
 		// Pin label stuff
-		var pinItems = dataMgr.domLabelCensus( xscopeNS.KML );	
+		var pinItems = dataMgr.domDataCensus( xscopeNS.KML );	
 		var labels = [];
 		for (var pi in pinItems){
 			labels.push(pi);

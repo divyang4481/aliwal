@@ -42,9 +42,10 @@ DataManager.prototype.domTagSetCensus = function( pDoc ){
 	});
 	return ret;
 }
-DataManager.prototype.domLabelCensus = function( pDoc){
-	/* Scans a KML DOM document and returns a census of pin labels.
-	 * returned object is { labelname: count }
+DataManager.prototype.domDataCensus = function( pDoc){
+	/* Scans a KML DOM document and returns a census of Placemark>ExtendedData>Data elements, 
+	 * aka pin labels.
+	 * Returned object is { elementname: count }
 	 */
 	var ret = new Object();
 	$(pDoc).find('Placemark > ExtendedData > Data').each( function(idx, data_element ){
@@ -57,34 +58,27 @@ DataManager.prototype.domLabelCensus = function( pDoc){
 	});
 	return ret;
 }
-DataManager.prototype.enrichWithGeocode = function( pDoc ){
-	/* Scans a KML DOM document and adds a Geocode element if there is no Point.coordinates or GeocodeAddress
-	 */
-	xscopeNS.flags.promptForGeocodeFields = true;
-	var geofields = [];
-	var dp = new DOMParser()
-	var pl = $(pDoc).find('Placemark').not('Placemark:has(Point>coordinates)')
+DataManager.prototype.domMissingGeocode = function( pDoc ){
+	/* Takes a KML doc and returns the Placemark elements that don't have coordinates or GeocodeAddress elements */
+	return $(pDoc).find('Placemark').not('Placemark:has(Point>coordinates)')
 				.not('Placemark:has(ExtendedData>GeocodeAddress)');
-	$(pl).each( function(idx, pointless){
-			
-		if(xscopeNS.flags.promptForGeocodeFields){
-			// Pop up a wizard which can get the geocode fields from the user
-			// Wizard should also ask if these are to be remembered 
-			var params = {  KML: xscopeNS.KML,
-							pointlessCount: pl.length,
-							callback : function(pGeocodeArgs){ geofields = pGeocodeArgs; }
-						 };
-			window.openDialog("chrome://AliwalGeocoder/content/wiz.importKML.xul","importWizard","modal", params);
-		}
+}
+DataManager.prototype.enrichWithGeocode = function( pPlacemarks, pGeoElements ){
+	/* Scans a JQuery list of Placemarks from the DOM and adds a Geocode element if there is no Point.coordinates or GeocodeAddress
+	 */
+	var that = this;
+	var domp = new DOMParser()
+	$(pPlacemarks).each( function(idx, pointless){
 		var geostr = '';
-		for(var idx2 in geofields){
+		for(var idx2 in pGeoElements){
 			if( geostr ){
 				geostr +=', ';
 			}
-			geostr += $(pointless).find('ExtendedData>Data[@name="'+geofields[idx2]+'"]:first>value').text();
+			geostr += $(pointless).find('ExtendedData>Data[@name="'+pGeoElements[idx2]+'"]:first>value').text();
 		}
+
 		var fragstr = '<GeocodeAddress on1map_geocoding="generated_geocode_tag">' + geostr + '</GeocodeAddress>';
-		var frag = dp.parseFromString( fragstr,'text/xml');
+		var frag = domp.parseFromString( fragstr,'text/xml');
 		$(pointless).children('ExtendedData:first').append( $(frag.documentElement) );
 	});
 }
@@ -106,21 +100,25 @@ DataManager.prototype.enrichFromCache = function( pDoc){
 		}			
 	});
 }
-DataManager.prototype.loadFile = function(pFile, pProgressHandler, pErrorHandler, pCallback ){
+DataManager.prototype.loadFile = function(pFile, pLoadHandler, pProgressHandler, pErrorHandler, pCallback ){
 	var that = this;
 	var req = new XMLHttpRequest();			
 	req.overrideMimeType('text/xml');	
 	req.onprogress = pProgressHandler;
 	req.onerror = pErrorHandler;
-	req.onload = function(e){};
+	req.onload = pLoadHandler;
 	req.onreadystatechange = function (aEvt) {
-	  if (req.readyState == 4) {
-	     if(req.status == 200 || req.status == 0){
-			pCallback( req.responseXML );
-	     }else{
-	      jsdump("Error loading page\n");
-	     }
-	  }
+		if (req.readyState == 4) {
+	    	if(req.status == 200 || req.status == 0){
+
+				var inter = document.implementation.createDocument("","",null);
+				var clonedNode = inter.importNode( req.responseXML.firstChild , true );
+				inter.appendChild( clonedNode );
+				pCallback(inter);
+			}else{
+				throw 'DataManager: Error loading file.';
+			}
+		}
 	};				
 	req.open('GET', 'file://' + pFile, true);
 	req.send(null);

@@ -18,28 +18,38 @@ function fileOpen(){
 		document.title = 'Aliwal Geocoder - ' + fp.file.leafName;
 		try {
 			xscopeNS.flags.loadingData = true;
+			xscopeNS.flags.promptForGeocodeFields = true;
 			
+			
+			var fLoad = function(){}
 			var fProgress = function (e) {
 				var percentComplete = (e.position / e.totalSize)*100;
 				jsdump('Progress %:' + percentComplete);
 			};
-			
 			var fError = function(e) {
-				alert("Error " + e.target.status + " occurred while loading the document.");
+				jsdump("Error " + e.target.status + " occurred while loading the document.");
 			};
-			
 			var fCallback = function( pDoc ){
 				/* dataMgr.loadFile() is asyncronous. 
 				 * This is called when it's finished loading successfully.
 				 */
-
-				/* Scope issues mean that pDoc has to be copied back to xscopeNS in here. */
-				var inter = document.implementation.createDocument("","",null);
-				var clonedNode = inter.importNode( pDoc.firstChild , true );
-				inter.appendChild( clonedNode );
-				xscopeNS.KML = inter;
-				dataMgr.enrichWithGeocode(xscopeNS.KML);
-				dataMgr.enrichFromCache( xscopeNS.KML );
+		
+				if(xscopeNS.flags.promptForGeocodeFields){
+					// Pop up a wizard which can get the geocode fields from the user
+					var placemarks = dataMgr.domMissingGeocode(pDoc);
+					if (placemarks.length > 0){
+						var params = {  KML 			: pDoc,
+										pointlessCount 	: placemarks.length,
+										callback 		: function(pGeocodeArgs){ 
+															dataMgr.enrichWithGeocode(placemarks, pGeocodeArgs);
+														  }
+									 };
+						window.openDialog("chrome://AliwalGeocoder/content/wiz.importKML.xul","importWizard","modal", params);
+					}
+				}
+				// ToDo: What to do if user cancels wizard ???
+				dataMgr.enrichFromCache( pDoc );
+				xscopeNS.KML = pDoc;
 				xscopeNS.flags.loadingData = false;
 				
 				// Drop the Map drawing into it's own thread
@@ -48,14 +58,39 @@ function fileOpen(){
 			};
 			
 			var dataMgr = new DataManager();
-			dataMgr.emptyObj( xscopeNS.KML );
 			dataMgr.emptyObj( xscopeNS.pointMarkers );
 			dataMgr.emptyObj( xscopeNS.hiddenMarkers );
-			dataMgr.loadFile( fp.file.path, fProgress, fError, fCallback );
+			dataMgr.loadFile( fp.file.path, fLoad, fProgress, fError, fCallback );
 		} catch(e){
 			jsdump(e);
 		}				
 	}	
+}
+
+function fileImportFlat(){
+	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
+	var CC = Components.classes;
+	var CI = Components.interfaces;
+	var fp = CC["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	fp.init(window, "Import CVS Data File", nsIFilePicker.modeOpen);
+	fp.appendFilter("CSV Files","*.csv");
+	fp.appendFilter("TXT Files","*.txt");
+	var rv = fp.show();
+	if (rv == nsIFilePicker.returnOK ) {
+		document.title = 'Aliwal Geocoder - ' + fp.file.leafName;
+		xscopeNS.currentFile = fp.file.path;
+		var params = { 
+			filename: fp.file.path, 
+			callback: function(pDoc){
+
+				xscopeNS.flags.loadingData = false;				
+				// Drop the Map drawing into it's own thread
+				window.setTimeout( goMap, 1);
+				drawSidebarTree();
+			}
+		};
+		window.openDialog("chrome://AliwalGeocoder/content/app.importWizard.xul","importWizard","modal", params);
+	}
 }
 
 function fileSaveAs(){
@@ -169,42 +204,6 @@ function jsdump(str)
   Components.classes['@mozilla.org/consoleservice;1']
             .getService(Components.interfaces.nsIConsoleService)
             .logStringMessage(str);
-}
-
-function fileImportFlat(){
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
-	var CC = Components.classes;
-	var CI = Components.interfaces;
-	var fp = CC["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-	fp.init(window, "Import CVS Data File", nsIFilePicker.modeOpen);
-	fp.appendFilter("CSV Files","*.csv");
-	fp.appendFilter("TXT Files","*.txt");
-	var rv = fp.show();
-	if (rv == nsIFilePicker.returnOK ) {
-		document.title = 'Aliwal Geocoder - ' + fp.file.leafName;
-		xscopeNS.currentFile = fp.file.path;
-		var params = { 
-			filename: fp.file.path, 
-			callback: function(pDoc){
-				var dataMgr = new DataManager();
-				dataMgr.emptyObj( xscopeNS.KML );
-				dataMgr.emptyObj( xscopeNS.pointMarkers );
-				dataMgr.emptyObj( xscopeNS.hiddenMarkers );
-				var inter = document.implementation.createDocument("","",null);
-				var clonedNode = inter.importNode( pDoc.firstChild , true );
-				inter.appendChild( clonedNode );
-				xscopeNS.KML = inter;
-
-				dataMgr.enrichFromCache( xscopeNS.KML );
-				xscopeNS.flags.loadingData = false;
-				
-				// Drop the Map drawing into it's own thread
-				window.setTimeout( goMap, 1);
-				drawSidebarTree();
-			}
-		};
-		window.openDialog("chrome://AliwalGeocoder/content/app.importWizard.xul","importWizard","modal", params);
-	}
 }
 
 function toggleSidebar(){
