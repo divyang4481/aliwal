@@ -44,7 +44,8 @@ function fileOpen(){
 															dataMgr.enrichWithGeocode(placemarks, pGeocodeArgs);
 														  }
 									 };
-						window.openDialog("chrome://AliwalGeocoder/content/wiz.importKML.xul","importWizard","modal", params);
+						window.openDialog(	"chrome://AliwalGeocoder/content/wiz.importKML.xul",
+											"importWizard","modal", params );
 					}
 				}
 				// ToDo: What to do if user cancels wizard ???
@@ -63,7 +64,7 @@ function fileOpen(){
 			dataMgr.loadFile( fp.file.path, fLoad, fProgress, fError, fCallback );
 		} catch(e){
 			jsdump(e);
-		}				
+		}
 	}	
 }
 
@@ -78,18 +79,51 @@ function fileImportFlat(){
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnOK ) {
 		document.title = 'Aliwal Geocoder - ' + fp.file.leafName;
-		xscopeNS.currentFile = fp.file.path;
-		var params = { 
-			filename: fp.file.path, 
-			callback: function(pDoc){
+		try {
+			xscopeNS.flags.loadingData = true;
+			xscopeNS.flags.promptForGeocodeFields = true;
 
-				xscopeNS.flags.loadingData = false;				
-				// Drop the Map drawing into it's own thread
-				window.setTimeout( goMap, 1);
-				drawSidebarTree();
-			}
-		};
-		window.openDialog("chrome://AliwalGeocoder/content/app.importWizard.xul","importWizard","modal", params);
+			var fLoadHandler = function(){}
+			var fProgressHandler = function (e) {
+				var percentComplete = (e.position / e.totalSize)*100;
+				jsdump('Progress %:' + percentComplete);
+			};
+			var fErrorHandler = function(e) {
+				jsdump("Error " + e.target.status + " occurred while loading the document.");
+			};
+			var fDMCallback = function(pDoc){ 
+				xscopeNS.KML = pDoc;
+			};
+			var fWizCallback = function( pFilename,pLayout,
+										pDelimiter,pHeaderRows,pFooterRows,pColHeadings,
+										pDataCols,pTagCols,pGeocodeAddressCols,pLonLatCols){
+
+					if( pLayout === 'delimited'){
+						var dataMgr = new DataManager();
+						dataMgr.emptyObj( xscopeNS.pointMarkers );
+						dataMgr.emptyObj( xscopeNS.hiddenMarkers );
+						dataMgr.importDelimitedFile(pFilename,pHeaderRows, pFooterRows,pColHeadings,
+													pDataCols, pTagCols, pGeocodeAddressCols, pLonLatCols,
+													fLoadHandler, fProgressHandler, fErrorHandler, 
+													fDMCallback );
+					
+					} else {
+						throw 'fileImportFlat: unhandled delimiter';
+					}
+					xscopeNS.flags.loadingData = false;				
+					// Drop the Map drawing into it's own thread
+					window.setTimeout( goMap, 1);
+					drawSidebarTree();
+				}
+			xscopeNS.currentFile = fp.file.path;
+			var params = { 
+					filename: fp.file.path, 
+					callback: fWizCallback
+				};
+			window.openDialog("chrome://AliwalGeocoder/content/app.importWizard.xul","importWizard","modal", params);
+		} catch(e){
+			jsdump(e);
+		}
 	}
 }
 
