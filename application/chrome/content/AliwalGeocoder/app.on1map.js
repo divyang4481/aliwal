@@ -5,6 +5,7 @@ Components.utils.import("resource://app/modules/xscope.jsm");
 /* ***************************************************************************************************************************** */ 
 
 function fileOpen(){
+	
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
 	var CC = Components.classes;
 	var CI = Components.interfaces;
@@ -21,12 +22,11 @@ function fileOpen(){
 			xscopeNS.flags.promptForGeocodeFields = true;
 			
 			
-			var fLoad = function(){}
-			var fProgress = function (e) {
-				var percentComplete = (e.position / e.totalSize)*100;
-				jsdump('Progress %:' + percentComplete);
+			var fLoadHandler = function(){}
+			var fProgressHandler = function (e) {
+				drawFileProgress(e);
 			};
-			var fError = function(e) {
+			var fErrorHandler = function(e) {
 				jsdump("Error " + e.target.status + " occurred while loading the document.");
 			};
 			var fCallback = function( pDoc ){
@@ -61,7 +61,7 @@ function fileOpen(){
 			var dataMgr = new DataManager();
 			dataMgr.emptyObj( xscopeNS.pointMarkers );
 			dataMgr.emptyObj( xscopeNS.hiddenMarkers );
-			dataMgr.loadFile( fp.file.path, fLoad, fProgress, fError, fCallback );
+			dataMgr.loadFile( fp.file.path, fLoadHandler, fProgressHandler, fErrorHandler, fCallback );
 		} catch(e){
 			jsdump(e);
 		}
@@ -85,8 +85,7 @@ function fileImportFlat(){
 
 			var fLoadHandler = function(){}
 			var fProgressHandler = function (e) {
-				var percentComplete = (e.position / e.totalSize)*100;
-				jsdump('Progress %:' + percentComplete);
+				drawFileProgress(e);
 			};
 			var fErrorHandler = function(e) {
 				jsdump("Error " + e.target.status + " occurred while loading the document.");
@@ -270,6 +269,15 @@ function drawSidebarTree(){
 	var tree = document.getElementById("tr_raw_data");
 	tree.datasources="#xscopeNS_KML";
 }
+function drawFileProgress(e){
+	var percentComplete = (e.position / e.totalSize)*100;
+	var progress = document.getElementById("progress");
+	progress.setAttribute("style", "");
+    progress.setAttribute("mode", "determined");
+    progress.setAttribute("value", percentComplete + "%");
+    var status = document.getElementById("sp_status");
+    status.setAttribute("label", 'Reading file ...');
+};
 
 function onload() {
     listener = new WebProgressListener();
@@ -280,11 +288,6 @@ function onload() {
 	goWelcome();
 }
 
-function fileLoadProgress( pPct){
-	var progress = document.getElementById("progress");
-    progress.setAttribute("mode", "determined");
-    progress.setAttribute("value", pPct + "%")
-}
 addEventListener("load", onload, false);
 
 
