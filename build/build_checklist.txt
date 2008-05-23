@@ -1,3 +1,6 @@
+
+
+
 OSX
 ====================
 Make sure the debug box on on1map.html is commented out
@@ -10,4 +13,17 @@ tar & zip that up with a version number in the archive name. tar -czvf "Aliwal G
 upload that to http://code.google.com/p/aliwal/downloads/list 
 	with tags like 			"Featured,Type-Archive,OpSys-OSX,alpha"
 	description like 		"OSX Alpha release v003"
-deprecate the old release by adding the deprcated tag and removing the featured tag
+deprecate the old release by adding the deprecated tag and removing the featured tag
+
+
+
+WIN
+==========================
+From explorer, SVN update trunk
+cd into \src\trunk\build\win
+.\build.cmd and (A)l the two prompts.
+This will create  Aliwal Geocoder Install.exe
+Rename it to  Aliwal Geocoder v003 Install.exe
+Upload to code.google.com with tags like "Featured,Type-Installer,OpSys-Windows,alpha"
+		and description like "Win Alpha release v003"
+deprecate the old release by adding the deprecated tag and removing the featured tag
