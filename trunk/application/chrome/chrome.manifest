@@ -1,3 +1,3 @@
 content AliwalGeocoder 				file:content/AliwalGeocoder/
-locale  AliwalGeocoder 	en-US 		file:locale/en-US/on1map/
+locale  AliwalGeocoder 	en-US 		file:locale/en-US/
 skin    AliwalGeocoder  classic/1.0 file:skin/
