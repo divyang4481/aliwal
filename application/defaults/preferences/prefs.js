@@ -1,4 +1,4 @@
-pref("toolkit.defaultChromeURI", "chrome://AliwalGeocoder/content/app.on1map.xul");
+pref("toolkit.defaultChromeURI", "chrome://AliwalGeocoder/content/AliwalGeocoder.xul");
 pref("general.useragent.extra.AliwalGeocoder", "AliwalGeocoder/0.1");
 
 pref("browser.preferences.animateFadeIn", false);

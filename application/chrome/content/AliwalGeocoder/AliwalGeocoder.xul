@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://AliwalGeocoder/skin/app.on1map.css" type="text/css"?>
+<?xml-stylesheet href="chrome://AliwalGeocoder/skin/AliwalGeocoder.css" type="text/css"?>
 
 <!DOCTYPE window SYSTEM "chrome://AliwalGeocoder/locale/AliwalGeocoder.dtd">
 
 <window
-	id     = "on1map"
+	id     = "AliwalGeocoder"
 	title  = "Aliwal Geocoder. Your data, on a map."
 	style  = "width: 700px; height: 500px;"
 	persist= "screenX screenY width height sizemode"
@@ -18,7 +18,7 @@
 	<script src="lib.CacheManager.js" 	/>
 	<script src="lib.SaxEvent.js" 		/>
 	<script src="lib.DataManager.js" 	/>
-	<script src="app.on1map.js" 		/>
+	<script src="AliwalGeocoder.js" 		/>
 
 	<script src="WebProgressListener.js" />
 	
