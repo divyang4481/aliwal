@@ -1,0 +1,29 @@
+<!ENTITY title                 "Aliwal Geocoder">
+
+<!ENTITY file.label            "File">
+<!ENTITY fileOpen.label        "Open File...">
+<!ENTITY fileImportText.label  "Import Text File...">
+<!ENTITY fileSave.label        "Save">
+<!ENTITY fileSaveAs.label      "Save As...">
+<!ENTITY filePageSetup.label   "Page Setup...">
+<!ENTITY filePrint.label       "Print...">
+<!ENTITY filePrint.accesskey   "P">
+<!ENTITY filePrint.key         "P">
+<!ENTITY fileClose.label       "Close">
+<!ENTITY fileQuit.label        "Quit">
+
+
+<!ENTITY view.label            "View">
+<!ENTITY viewData.label        "Data">
+<!ENTITY viewReload.label      "Reload">
+<!ENTITY viewStop.label        "Stop">
+<!ENTITY viewPreferences.label "Preferences">
+
+
+<!ENTITY help.label            "Help">
+<!ENTITY helpAbout.label       "About Aliwal Geocoder...">
+
+
+<!ENTITY sidebar.label         "Sidebar">
+<!ENTITY sidebarClose.tooltip  "Close Sidebar">
+<!ENTITY page1Title.label      "Sidebar Page 1">

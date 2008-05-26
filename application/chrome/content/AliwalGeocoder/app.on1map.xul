@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://AliwalGeocoder/skin/app.on1map.css" type="text/css"?>
 
-<!DOCTYPE window SYSTEM "chrome://AliwalGeocoder/locale/on1map.dtd">
+<!DOCTYPE window SYSTEM "chrome://AliwalGeocoder/locale/AliwalGeocoder.dtd">
 
 <window
 	id     = "on1map"
@@ -38,43 +38,47 @@
 	<command id="cmd_about" 	oncommand="goAbout();" />
 	<command id="cmd_viewstop" 	oncommand="goViewStop();" />
 	
-	<menubar id="on1map-menubar">
-	  <menu id="file-menu" label="File">
+	<menubar>
+	  <menu id="file-menu" label="&file.label;">
 	    <menupopup id="file-popup">
-			<menuitem id="mi_file_open" 		label="Open File..."		accesskey="o" 	command="cmd_open" 	/>
- 			<menuitem id="mi_file_importflat" 	label="Import Text File..."	accesskey="i" 	command="cmd_import_flat" 	/> 
-<!--   		<menuitem id="mi_file_saveas" 		label="Save As" 			accesskey="s" 	command="cmd_saveas" 	disabled="true"	/> 		-->
-<!--      	<menuitem id="mi_file_save" 		label="Save"  								command="cmd_save" 		disabled="true"	/> 	-->
+			<menuitem id="mi_file_open" 		label="&fileOpen.label;"		command="cmd_open" 	/>
+ 			<menuitem id="mi_file_importflat" 	label="&fileImportText.label;"	command="cmd_import_flat" 	/> 
+<!--
+	      	<menuitem id="mi_file_save" 		label="&fileSave.label;"  		command="cmd_save" 		disabled="true"	/>
+	   		<menuitem id="mi_file_saveas" 		label="&fileSaveAs.label;" 		command="cmd_saveas" 	disabled="true"	/> 	
+-->
 			<menuseparator/>
-			<menuitem id="mi_page_setup" 		label="Page Setup..."  						command="cmd_page_setup" 	disabled="true"	/>
-			<menuitem id="mi_file_print" 		label="Print..."  							command="cmd_print" 	disabled="true"	/>
+			<menuitem id="mi_page_setup" 		label="&filePageSetup.label;"  	command="cmd_page_setup" disabled="true"	/>
+			<menuitem id="mi_file_print" 		label="&filePrint.label;"  		command="cmd_print" 	disabled="true"	/>
+			
 			<menuseparator/>
-			<menuitem id="mi_file_close" 		label="Close Map"  							command="cmd_close" 	disabled="true"	/>
+			
+			<menuitem id="mi_file_close" 		label="&fileClose.label;"  		command="cmd_close" 	disabled="true"	/>
 	      	<menuseparator/>
 	      	<!-- id must be menu_FileQuitItem for OSX -->
 	      	<!-- Thanks: http://blogs.activestate.com/shanec/2005/07/toolbar_magic.html -->
-			<menuitem id="menu_FileQuitItem" 	label="Quit"  								command="cmd_quit" 	/>
+			<menuitem id="menu_FileQuitItem" 	label="&fileQuit.label;"  		command="cmd_quit" 	/>
 	      	
 	    </menupopup>
 	  </menu>
 	  
-		<menu id="view-menu" label="View">
+		<menu id="view-menu" label="&view.label;">
 			<menupopup id="view-popup">
-<!--    	    <menuitem label="Map" 			accesskey="m" 	command="cmd_viewmap" 	/> 	-->
-<!--			<menuitem label="Debug" 		accesskey="d" 	command="cmd_viewdebug" />  -->
-<!--		    <menuitem label="Unit Tests" 	accesskey="t" 	command="cmd_viewtests" /> --> 
-<!--			<menuitem label="View Data" 	accesskey="d" 	command="cmd_viewdata" 	type="checkbox" checked="false"/>  -->
-				<menuitem label="Stop" 						 	command="cmd_viewstop" 	id="menu_viewstop" />
-				<menuitem label="Reload Map" 	accesskey="r" 	command="cmd_reload" 	/>
+<!--			<menuitem 						label="&viewData.label;" 	 	command="cmd_viewdata" 	type="checkbox" checked="false"/>  -->
+				<menuitem 						label="&viewStop.label;" 		command="cmd_viewstop" 	id="menu_viewstop" />
+				<menuitem 						label="&viewReload.label;" 		command="cmd_reload" 	/>
+				
 				<menuseparator/>
-				<menuitem label="Preferences" 					command="cmd_preferences" id="menu_preferences" />
+				
+				<menuitem 						label="&viewPreferences.label;" command="cmd_preferences" id="menu_preferences" />
+				
 			</menupopup>	      
 		</menu>
 
-		<menu label="Help">
+		<menu label="&help.label;">
 			<menupopup id="about-popup">
 				<!-- id must be aboutName for OSX -->
-				<menuitem id="aboutName" label="About Aliwal Geocoder" 			command="cmd_about" />
+				<menuitem id="aboutName" 		label="&helpAbout.label;" 		command="cmd_about" />
 			</menupopup>	
 		</menu>
 	</menubar>
