@@ -4,11 +4,11 @@
 <!DOCTYPE window SYSTEM "chrome://AliwalGeocoder/locale/on1map.dtd">
 
 <window
-  id     = "on1map"
-  title  = "Aliwal Geocoder. Your data, on a map."
-  width  = "800"
-  height = "600"
-  xmlns  = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
+	id     = "on1map"
+	title  = "Aliwal Geocoder. Your data, on a map."
+	style  = "width: 700px; height: 500px;"
+	persist= "screenX screenY width height sizemode"
+	xmlns  = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
   
 <!-- External libs -->
 	<script src="jquery-1.2.3.js" 		/>  
