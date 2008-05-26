@@ -185,6 +185,12 @@ function fileSaveAs(){
 		}
 	}
 }
+function filePageSetup(){
+	PrintUtils.showPageSetup();
+}
+function filePrint(){
+	PrintUtils.print(); 
+}
 function fileClose(){
 	goWelcome();
 }
