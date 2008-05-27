@@ -68,24 +68,30 @@
 						</columns>
 						<rows>
 							<row>
-								<checkbox id="cb_delimiter_comma" label="Comma"
+								<checkbox id="cb_delimiter_comma" 	class="cbImportDelimiter" 
+									label="Comma" 	value=","
 									src="images/betty_boop.xbm" 
-									oncommand="impwiz.impDelimiter = ',';impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
-								<checkbox label="Tab" disabled="true"
+									oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
+								<checkbox id="cb_delimiter_tab" 	class="cbImportDelimiter" 
+									label="Tab" 	value="\t"
 									src="images/betty_boop.xbm" 
-									oncommand="alert('');" />
-								<checkbox label="Semicolon"   disabled="true"
+									oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
+								<checkbox id="cb_delimiter_semicolon" class="cbImportDelimiter" 
+									label="Semicolon"   value=";"
 									src="images/betty_boop.xbm" 
-									oncommand="alert('');" />
+									oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
 
 							</row>
 							<row>
-								<checkbox label="Space"   disabled="true"
+								<checkbox id="cb_delimiter_space" class="cbImportDelimiter" 
+									label="Space"   value=" "
 									src="images/betty_boop.xbm" 
-									oncommand="alert('');" />
-								<checkbox label="Other"   disabled="true"
+									oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
+								<checkbox id="cb_delimiter_other" class="cbImportDelimiter"
+									label="RegExp"   value=""
 									src="images/betty_boop.xbm" 
-									oncommand="alert('');" />
+									oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
+								<textbox id="tb_delimiter_oth" value="" />
 							</row>
 						</rows>
 					</grid>
@@ -118,7 +124,7 @@
 	
 	
 	<wizardpage description="Coordinate columns"
-		onpageshow="document.getElementById('importwizard').canAdvance = true; return true;"
+		onpageshow="impwiz.drawLonLatColumns();document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabLonLatSelections();" >
 		<label class="label_step">Step 3 of 6</label>
 		<spacer />
@@ -150,7 +156,7 @@
 	</wizardpage>
 	
 	<wizardpage description="Geocoding columns"
-		onpageshow="document.getElementById('importwizard').canAdvance = true; return true;"
+		onpageshow="impwiz.drawGeoColumns();document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabGeoSelections();" >
 		<label class="label_step">Step 4 of 6</label>
 		<spacer />
@@ -182,7 +188,7 @@
 	</wizardpage>
 	
 	<wizardpage description="Pin Label &amp; Popup details"
-		onpageshow="document.getElementById('importwizard').canAdvance = true; return true;"
+		onpageshow="impwiz.drawDataColumns();document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabDataSelections();" >
 		<label class="label_step">Step 5 of 6</label>
 		<spacer />
@@ -212,7 +218,7 @@
 	</wizardpage>
 	
 	<wizardpage description="Tag columns"
-		onpageshow="document.getElementById('importwizard').canAdvance = true; return true;"
+		onpageshow="impwiz.drawTagColumns();document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabTagSelections();" >
 		<label class="label_step">Step 6 of 6</label>
 		<spacer />
