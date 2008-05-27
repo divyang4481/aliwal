@@ -94,14 +94,15 @@ function fileImportFlat(){
 				xscopeNS.KML = pDoc;
 			};
 			var fWizCallback = function( pFilename,pLayout,
-										pDelimiter,pHeaderRows,pFooterRows,pColHeadings,
+										pDelimiters,pHeaderRows,pFooterRows,pColHeadings,
 										pDataCols,pTagCols,pGeocodeAddressCols,pLonLatCols){
 
 					if( pLayout === 'delimited'){
 						var dataMgr = new DataManager();
 						dataMgr.emptyObj( xscopeNS.pointMarkers );
 						dataMgr.emptyObj( xscopeNS.hiddenMarkers );
-						dataMgr.importDelimitedFile(pFilename,pHeaderRows, pFooterRows,pColHeadings,
+						dataMgr.importDelimitedFile(pFilename,pDelimiters, 
+													pHeaderRows, pFooterRows,pColHeadings,
 													pDataCols, pTagCols, pGeocodeAddressCols, pLonLatCols,
 													fLoadHandler, fProgressHandler, fErrorHandler, 
 													fDMCallback );

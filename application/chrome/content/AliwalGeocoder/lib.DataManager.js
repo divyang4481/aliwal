@@ -125,7 +125,8 @@ DataManager.prototype.loadFile = function(pFile, pLoadHandler, pProgressHandler,
 	req.open('GET', 'file://' + pFile, true);
 	req.send(null);
 }
-DataManager.prototype.importDelimitedFile = function(pFile,pIgnoreHeaderLines, pIgnoreFooterLines,
+DataManager.prototype.importDelimitedFile = function(pFile,pDelimiters,
+													pIgnoreHeaderLines, pIgnoreFooterLines,
 													pColHeadings, 
 													pDataCols, pTagCols, pGeocodeAddressCols, pLonLatCols,
 													pLoadHandler, pProgressHandler, pErrorHandler, 
@@ -141,11 +142,24 @@ DataManager.prototype.importDelimitedFile = function(pFile,pIgnoreHeaderLines, p
 	//this.reCSV = /,(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))/g;   					// Thanks: http://weblogs.asp.net/prieck/archive/2004/01/16/59457.aspx
 	//this.reCSV = /("(?:[^"]|"")*"|[^",\r\n]*)(,|\r\n?|\n)?/g; 				// Thanks: http://www.bennadel.com/blog/978-Steven-Levithan-Rocks-Hardcore-Regular-Expression-Optimization-Case-Study-.htm
 	//this.reCSV = /\G(,|\r?\n|\r|^)(?:"([^"]*+(?>""[^"]*+)*)"|([^",\r\n]*+))/g; // Thanks: http://www.bennadel.com/blog/978-Steven-Levithan-Rocks-Hardcore-Regular-Expression-Optimization-Case-Study-.htm
-	var reCSV = /"?,"?(?=(?:[^"]*"[^"]*")*(?![^"]*"))"?/g; 						//Thanks:http://rebelnation.com/
+	var reCSV       = /"?,"?(?=(?:[^"]*"[^"]*")*(?![^"]*"))"?/g; 						//Thanks:http://rebelnation.com/
 																				//Thanks: http://regexpal.com/
-	var regex = reCSV;							
+	/* OR together all of the delimiters with regex syntax */
+	var ds = '';
+	$.each(pDelimiters, function(idx, val){
+		if(ds){
+			ds +='|';
+		}
+		ds += val;
+	});
+	if(ds){
+		ds = '(?:'+ds+')';
+	} else{
+		throw 'DataManager.importDelimitedFile. Missing delimiters.\nAborting file import.'
+	}
 	
-/*	
+	var regex = new RegExp( '"?'+ds+'"?(?=(?:[^"]*"[^"]*")*(?![^"]*"))"?', 'g');
+/*
 	jsdump('DataManager.prototype.importDelimitedFile');
 	jsdump('uneval(pFile): '+ uneval(pFile));
 	jsdump('uneval(pIgnoreHeaderLines): '+ uneval(pIgnoreHeaderLines));

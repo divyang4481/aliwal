@@ -10,7 +10,7 @@ function ImportWizard(){
 	}
 	
 	this.impLayout 				= 'delimited';
-	this.impDelimiter 			= ',';
+	this.impDelimiters 			= [];
 	this.impHeaderRows 			= 1;
 	this.impFooterRows 			= 0;
 	this.impLonLatCols 			= [];
@@ -29,10 +29,6 @@ ImportWizard.prototype.checkCode = function(){
 //onwizardback, onwizardnext and onwizardcancel
 ImportWizard.prototype.onWizardLoad = function(){
 	var that = this;
-	that.drawLonLatColumns();
-	that.drawGeoColumns();
-	that.drawDataColumns();
-	that.drawTagColumns();
 }
 ImportWizard.prototype.onWizardFinished = function(){
 	var that = this;
@@ -40,7 +36,7 @@ ImportWizard.prototype.onWizardFinished = function(){
 		that.callback(
 			that.impFilename,
 			that.impLayout,
-			that.impDelimiter,
+			that.impDelimiters,
 			that.impHeaderRows,
 			that.impFooterRows,
 			that.importHeadings(),
@@ -57,56 +53,75 @@ ImportWizard.prototype.onWizardFinished = function(){
 	
 }
 ImportWizard.prototype.importHeadings = function(){
-	/* Returns an array of column heading from cache or pFile.
-	 * Needs this.impFilename, this.impHeaderRows, this.regex to be set correctly
+	/* Returns an array of column heading from pFile.
+	 * Needs this.impFilename, this.impHeaderRows
 	 */
 
 	var that = this;
 	var hasmore = true;
 	var ret = [];
 	var headerline = {};
-	var reCSV = /"?,"?(?=(?:[^"]*"[^"]*")*(?![^"]*"))"?/g; 						//Thanks:http://rebelnation.com/
+	var ds = '';
+	
+	$.each(that.impDelimiters, function(idx, val){
+		if(ds){
+			ds +='|';
+		}
+		ds += val;
+	});
+	if(ds){
+		ds = '(?:'+ds+')';
+	} else{
+		throw 'app.importWizard.importHeadings. Missing delimiters.\nAborting file import.'
+	}
+	
+	var regex = new RegExp( '"?'+ds+'"?(?=(?:[^"]*"[^"]*")*(?![^"]*"))"?', 'g');
 	var istream = Components.classes["@mozilla.org/network/file-input-stream;1"]
 	                        .createInstance(Components.interfaces.nsIFileInputStream);
 	
-	if (typeof(ImportWizard.prototype._headerCache) === 'undefined'){
-		try{
-			var file = Components.classes["@mozilla.org/file/local;1"]
-		                     .createInstance(Components.interfaces.nsILocalFile);
-			file.initWithPath(that.impFilename);
-			// open an input stream from file
+	try{
+		var file = Components.classes["@mozilla.org/file/local;1"]
+	                     .createInstance(Components.interfaces.nsILocalFile);
+		file.initWithPath(that.impFilename);
+		// open an input stream from file
 
-			istream.init(file, 0x01, 0444, 0);
-			istream.QueryInterface(Components.interfaces.nsILineInputStream);
-			
-			
-			// Skip past header row(s), last one is headings
-			for(var rr = 0; rr < that.impHeaderRows; rr++){
-				hasmore = istream.readLine(headerline);
-				if(!hasmore){
-					break;
-				}
+		istream.init(file, 0x01, 0444, 0);
+		istream.QueryInterface(Components.interfaces.nsILineInputStream);
+					
+		// Skip past header row(s), last one is headings
+		for(var rr = 0; rr < that.impHeaderRows; rr++){
+			hasmore = istream.readLine(headerline);
+			if(!hasmore){
+				break;
 			}
-			jsdump('Splitting headerline');
-			if(headerline.value){
-				ret = headerline.value.split( reCSV );
-			}
-		}catch(e){
-			throw e;
-		} finally{
-			istream.close();
 		}
-		ImportWizard.prototype._headerCache = ret;
+		if(headerline.value){
+			ret = headerline.value.split( regex );
+			//jsdump('Split headerline: ' + uneval(ret));
+		}
+	}catch(e){
+		throw e;
+	} finally{
+		istream.close();
 	}
+	ImportWizard.prototype._headerCache = ret;
+
 	return ImportWizard.prototype._headerCache;
 }
 ImportWizard.prototype.grabLayoutSelection = function(){
-	jsdump('grabLayoutSelection not implemented ');
 	return 'delimited';
 }
 ImportWizard.prototype.grabDelimiterSelection = function(){
-	jsdump('grabDelimiterSelection not implemented');
-	return ',';
+	var that = this;
+	var ret = [];
+	if( $('#cb_delimiter_other:checked').length === 1 ){
+		$('#cb_delimiter_other').val( $('#tb_delimiter_oth').val() );
+	}
+	$('.cbImportDelimiter:checked').each(function(){
+		ret.push( $(this).attr('value') ); // $.val() doesn't work
+	});
+	jsdump('Selected delimiters = ' + uneval(ret));
+	that.impDelimiters = ret;
 }
 ImportWizard.prototype.grabLonLatSelections = function(){
 	/* Puts selected column numbers - from importHeadings() - into impXXX.
@@ -154,33 +169,37 @@ ImportWizard.prototype.grabTagSelections = function(){
 
 ImportWizard.prototype.drawHeaderPreview = function(){
 	var that = this;
-	var headers = that.importHeadings();
+	try{
+		var headers = that.importHeadings();
+		
+		var grid = document.getElementById("gd_header_preview");
+		var table = document.createElement('html:table');
+		table.setAttribute('style','border-width: 1px 1px 1px 1px;border-spacing: 2px;border-style: outset outset outset outset;');
+		var hrow = document.createElement('html:tr');
+		var erow = document.createElement('html:tr');
 	
-	var grid = document.getElementById("gd_header_preview");
-	var table = document.createElement('html:table');
-	table.setAttribute('style','border-width: 1px 1px 1px 1px;border-spacing: 2px;border-style: outset outset outset outset;');
-	var hrow = document.createElement('html:tr');
-	var erow = document.createElement('html:tr');
-
-	for(var idx in headers){
-		var txt1 = document.createTextNode(headers[idx]);
-		var th = document.createElement('html:th');
-		th.setAttribute('style','background-color:gray;font-style:bold;padding: 3px 3px 3px 3px;');
-		th.appendChild(txt1);
-		hrow.appendChild(th);
-		// Create and empty data row just to make table look better
-		var td = document.createElement('html:td');
-		td.setAttribute('style','background-color:white;');
-		var txt2 = document.createTextNode('&nbsp;FRED');
-		td.appendChild(txt2);
-		erow.appendChild(td);
+		for(var idx in headers){
+			var txt1 = document.createTextNode(headers[idx]);
+			var th = document.createElement('html:th');
+			th.setAttribute('style','background-color:gray;font-style:bold;padding: 3px 3px 3px 3px;');
+			th.appendChild(txt1);
+			hrow.appendChild(th);
+			// Create and empty data row just to make table look better
+			var td = document.createElement('html:td');
+			td.setAttribute('style','background-color:white;');
+			var txt2 = document.createTextNode('&nbsp;FRED');
+			td.appendChild(txt2);
+			erow.appendChild(td);
+		}
+		while(grid.hasChildNodes()){
+			grid.removeChild(grid.firstChild);
+		}	
+		table.appendChild(hrow);
+	//	table.appendChild(erow);
+		grid.appendChild(table);
+	} catch(e){
+		// No checkboxes = no delimiters so importHeadings() might throw e
 	}
-	while(grid.hasChildNodes()){
-		grid.removeChild(grid.firstChild);
-	}	
-	table.appendChild(hrow);
-//	table.appendChild(erow);
-	grid.appendChild(table);
 }
 ImportWizard.prototype.drawLonLatColumns = function(){
 	/* needs this.impLonLatCols */
@@ -324,13 +343,9 @@ ImportWizard.prototype.drawMoveListItem = function(pSourceListBoxId, pDestListBo
 
 
 ImportWizard.prototype.checkDelimiter = function(){
-	document.getElementById('importwizard').canAdvance = document.getElementById('cb_delimiter_comma').checked;
+	var that = this;
+	document.getElementById('importwizard').canAdvance = (that.impDelimiters.length > 0);
 }
-
-
-
-
-
 
 
 

@@ -25,16 +25,16 @@ DomManager.prototype.warningPinCeiling = function( pSet ){
 }
 DomManager.prototype.warningGeocodingError = function( pSet, pAddress ){
 	if(pSet){
-		$('#feedback_geocoding_err').fadeOut('fast');
-		$('#feedback_geocoding_err').attr('src','icons/geocoding_warn.png');
-		$('#feedback_geocoding_err').attr('title','Geocoding errors');
-		$('#feedback_geocoding_err').fadeIn('slow');
+		$('#feedback_geocoding').fadeOut('fast');
+		$('#feedback_geocoding').attr('src','icons/geocoding_warn.png');
+		$('#feedback_geocoding').attr('title','Geocoding errors');
+		$('#feedback_geocoding').fadeIn('slow');
 		jsdump('Couldn\'t geocode address ' + pAddress );
-	} else if ( $('#feedback_geocoding_err').attr('src') !== 'icons/geocoding_ok.png' ){
-		$('#feedback_geocoding_err').fadeOut('fast');
-		$('#feedback_geocoding_err').attr('src','icons/geocoding_ok.png');
-		$('#feedback_geocoding_err').attr('title','Geocoding OK');
-		$('#feedback_geocoding_err').fadeIn('slow');
+	} else if ( $('#feedback_geocoding').attr('src') !== 'icons/geocoding_ok.png' ){
+		$('#feedback_geocoding').fadeOut('fast');
+		$('#feedback_geocoding').attr('src','icons/geocoding_ok.png');
+		$('#feedback_geocoding').attr('title','Geocoding OK');
+		$('#feedback_geocoding').fadeIn('slow');
 	}
 }
 DomManager.prototype.inBounds = function( pBounds, pLat, pLon ){
@@ -49,7 +49,7 @@ DomManager.prototype.inBounds = function( pBounds, pLat, pLon ){
 	return false;
 }
 DomManager.prototype.drawMarkers = function( pVisibleMarkers, pHiddenMarkers, pBounds ){
-	/* Takes a hash of marker objects, to them and puts them on the map.
+	/* Takes a hash of marker objects and puts them on the map.
 	 */
 	var that = this;
 	var fils = that.getFilterSelection();
@@ -128,7 +128,7 @@ DomManager.prototype.drawInitMarkers = function( pPoll, pCallback){
 	}
 }
 DomManager.prototype.drawInitPointlessMarkers = function( pPoll, pCallback ){
-	/* Markers without coordinates are plonked until the map and left there until
+	/* Markers without coordinates are plonked onto the map and left there until
 	 * their geocoding comes back.
 	 */
 	var that = this;
