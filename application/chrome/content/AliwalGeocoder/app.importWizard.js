@@ -114,13 +114,13 @@ ImportWizard.prototype.grabLayoutSelection = function(){
 ImportWizard.prototype.grabDelimiterSelection = function(){
 	var that = this;
 	var ret = [];
+
 	if( $('#cb_delimiter_other:checked').length === 1 ){
-		$('#cb_delimiter_other').val( $('#tb_delimiter_oth').val() );
+		$('#cb_delimiter_other').attr( 'value', $('#tb_delimiter_oth').val() );
 	}
 	$('.cbImportDelimiter:checked').each(function(){
 		ret.push( $(this).attr('value') ); // $.val() doesn't work
 	});
-	jsdump('Selected delimiters = ' + uneval(ret));
 	that.impDelimiters = ret;
 }
 ImportWizard.prototype.grabLonLatSelections = function(){
