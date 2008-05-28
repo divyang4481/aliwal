@@ -1,0 +1,59 @@
+<project name="Aliwal Geocoder OSX Build" default="dist" basedir="../..">
+	<description>
+		simple example build file
+	</description>
+	
+	<property name="SHORTNAME" 		value="Aliwal Geocoder" />
+	
+	<property name="BASE.DIR" 		location="." />
+	<property name="SRC.DIR" 		location="application"              />
+	<property name="LIB.DIR"        location="build/osx/lib"            />
+		
+	<property name="BUILD.DIR" 		location="tmp.build/osx/build/${SHORTNAME}.app" />
+	
+	<property name="OSX.RESOURCES" 	location="${BUILD.DIR}/Contents/Resources"    />
+	<property name="OSX.MACOS"	 	location="${BUILD.DIR}/Contents/MacOS"       />
+	<property name="OSX.FRAMEWORKS" location="${BUILD.DIR}/Contents/Frameworks"  />
+	
+	<target name="clean" description="clean up" >		
+		<delete dir="${BUILD.DIR}" 	/>
+	</target>
+	
+	<target name="init" depends="clean">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<mkdir dir="${BUILD.DIR}"      />					
+		<tar tarfile="${BUILD.DIR}/lib.tar" basedir="${LIB.DIR}/" longfile="gnu" />
+		<untar src="${BUILD.DIR}/lib.tar"   dest="${BUILD.DIR}" overwrite="true" />
+		<delete file="${BUILD.DIR}/lib.tar" />
+	</target>
+
+	<target name="compile" depends="init"
+		description="copy across the application" >
+		<mkdir dir="${OSX.RESOURCES}"  />
+		<copy todir="${OSX.RESOURCES}" preservelastmodified="true">
+			<fileset dir="${SRC.DIR}" >
+				<include name="**/*" />
+				<exclude name=".DS_Store" />
+				<exclude name="**.svn" />
+				<exclude name=".project" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="${OSX.MACOS}"      />
+		<copy file="${LIB.DIR}/Contents/Frameworks/XUL.framework/Versions/Current/xulrunner" 
+			tofile="${OSX.MACOS}" preservelastmodified="true" />
+	</target>
+	
+	<target name="dist" depends="compile"
+		description="generate the distribution" >
+	</target>
+
+</project>
+
+
+<!--
+<exec executable="hdiutil">
+<arg line="create -srcfolder ${folder.containing.your.app} ${dist.dmg.file}"/>
+</exec>
+-->
