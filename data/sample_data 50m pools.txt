@@ -1,0 +1,21 @@
+Pool	Type	Country	Town	Lane	Address	Tel. #
+John Charles Centre for Sport	Olympic	England	Leeds	10 Lane	"John Charles centre for sport, Middleton Grove, Leeds, LS11 5DJ"	0113 2475222
+Ponds Forge International Sports Centre	Olympic	England	Sheffield	10 Lane	"Ponds Forge International Sports Centre, Sheaf Street, Sheffield, S1 2BP"	01142233400
+Sunderland Aquatic Centre	Olympic	England	Sunderland	10 Lane	"Sunderland City Council, Civic Centre, Burdon Road, Sunderland, SR2 7DN"	(0191) 520 5555
+Aldershot Garrison Sports Centre	Regular	England	Aldershot	8 Lane	"Princes Avenue, North Camp, Hampshire, Aldershot, GU11 2LQ"	01252 347724
+University Of Bath Sports Training Village	Regular	England	Bath	8 Lane	"University of Bath, Bath, BA2 7AY, UK"	01225 386339
+Coventry Sports And Leisure Centre	Regular	England	Coventry	8 Lane	"Fairfax Street, Coventry CV1 5RY"	024 7625 2525
+K2 Centre	Regular	England	Crawley	8 Lane	"K2 Crawley, Pease Pottage Hill, Crawley, RH11 9BQ"	01293 585300
+Gurnell Leisure Centre	Regular	England	Ealing		"Ruislip Road East, Ealing, London, W13 0AL"	 020 8998 3241
+Picton Leisure Centre	Regular	England	Liverpool	8 Lane	"Wellington Road, Liverpool, L15 4LE"	+44 151 734 2294
+London Fields Lido	Regular	England	London Borough of Hackney	8 Lane	"London Fields Lido, London Fields Westside, E8 3EU"	020 7254 9038
+Loughborough Pool	Regular	England	Loughborough	8 Lane	"Sports Development Centre, Loughborough University, Leicestershire, LE11 3TU"	01509 226200
+Manchester Aquatics Centre	Regular	England	Manchester	8 Lane	"2 Booth Street East,  Ardwick;, Manchester, M13 9SS"	0161 275 9450
+UEA Sports Centre	Regular	England	Norwich	8 Lane	"UEA Sportspark, University of East Anglia, Norwich, Norfolk, NR4 7TJ"	(01603) 592398
+Grand Central Pools	Regular	England	Stockport	8 Lane	"12 Grand Central Square,, Wellington Road South,, Stockport,, SK1 3TA"	0161 474 7766
+Millfield	Regular	England	Somerset	8 Lane		
+Wigan International Pool	Regular	England	Wigan	8 Lane	"Library St, Wigan, WN1 1NN"	01942 243345
+The Dollan Aqua Centre	Regular	Scotland	East Kilbride	6 Lane	"Town Centre Park, Brouster Hill, East Kilbride, South Lanarkshire, G74 1AF, Scotland"	+44 (1355) 260000
+Royal Commonwealth Pool	Regular	Scotland	Edinburgh	8 Lane	"Royal Commonwealth Pool, 21 Dalkeith Road, Edinburgh EH16 5BB"	0131 667 7211
+Robertson Trust Swimming Pool	Regular	Scotland	Stirling	8 Lane	"University of Stirling, Stirling , Scotland , FK9 4LA, UK"	(01786) 466500
+Wales National Pool	Regular	Wales	Swansea	8 Lane	"Wales National Pool Swansea, Sketty Lane, Swansea, SA2 8QG"	01792 513513
