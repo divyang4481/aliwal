@@ -38,6 +38,11 @@
 	<command id="cmd_about" 	oncommand="goAbout();" />
 	<command id="cmd_viewstop" 	oncommand="goViewStop();" />
 	
+	<keyset id="mainKeyset">
+		<key id="key_quitApplication" key="q" command="cmd_quit" modifiers="accel"/>
+	</keyset>
+	 
+	
 	<menubar>
 	  <menu id="file-menu" label="&file.label;">
 	    <menupopup id="file-popup">
@@ -57,7 +62,7 @@
 	      	<menuseparator/>
 	      	<!-- id must be menu_FileQuitItem for OSX -->
 	      	<!-- Thanks: http://blogs.activestate.com/shanec/2005/07/toolbar_magic.html -->
-			<menuitem id="menu_FileQuitItem" 	label="&fileQuit.label;"  		command="cmd_quit" 	/>
+			<menuitem id="menu_FileQuitItem" 	label="&fileQuit.label;"  		key="key_quitApplication" 	/>
 	      	
 	    </menupopup>
 	  </menu>

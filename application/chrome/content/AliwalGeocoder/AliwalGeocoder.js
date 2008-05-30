@@ -13,7 +13,6 @@ function fileOpen(){
 	fp.init(window, "Pin Data File", nsIFilePicker.modeOpen);
 	fp.appendFilter("On1Map Files","*.o1m");
 	fp.appendFilter("Keyhole Files","*.KML");
-	fp.appendFilters(nsIFilePicker.filterAll);	
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnOK ) {			
 		document.title = 'Aliwal Geocoder - ' + fp.file.leafName;
