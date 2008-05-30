@@ -3,23 +3,44 @@
 		simple example build file
 	</description>
 	
-	<property name="SHORTNAME" 		value="Aliwal Geocoder" />
+	<property name="NAME.SHORT" 	value="Aliwal Geocoder" />
+	<property name="NAME.APP" 		value="${NAME.SHORT}.app" />
 	
 	<property name="BASE.DIR" 		location="." />
 	<property name="SRC.DIR" 		location="application"              />
 	<property name="LIB.DIR"        location="build/osx/lib"            />
 		
-	<property name="BUILD.DIR" 		location="tmp.build/osx/build/${SHORTNAME}.app" />
+	<property name="BUILD.DIR" 		location="build/osx/tmp.build/${NAME.APP}" />
 	
 	<property name="OSX.RESOURCES" 	location="${BUILD.DIR}/Contents/Resources"    />
 	<property name="OSX.MACOS"	 	location="${BUILD.DIR}/Contents/MacOS"       />
 	<property name="OSX.FRAMEWORKS" location="${BUILD.DIR}/Contents/Frameworks"  />
 	
-	<target name="clean" description="clean up" >		
+	<property name="DIST.DIR"       location="build/osx/dist" />
+	<property name="DIST.MOUNT"     location="${DIST.DIR}/mnt" />
+	<property name="DIST.TEMPLATE_DMG"   location="${DIST.DIR}/template.dmg" />
+	<property name="DIST.TMP_DMG"   location="${DIST.DIR}/temporary.dmg" />
+	<property name="DIST.DMG"       location="${DIST.DIR}/${NAME.SHORT}.dmg" />
+		
+	<target name="clean_dist" description="Clean up for dist target">
+		<delete file="${DIST.DMG}"  />
+		<delete file="${DIST.TMP_DMG}"  />
+		<exec executable="hdiutil" failonerror="false">
+			<arg value="detach" />
+			<arg value="${DIST.MOUNT}" />
+		</exec>
+		<delete dir="${DIST.MOUNT}" />
+	</target>
+		
+	<target name="clean_compile" description="Clean up for compile target">
 		<delete dir="${BUILD.DIR}" 	/>
 	</target>
+		
+	<target name="clean" description="clean up" 
+		depends="clean_dist,clean_compile">		
+	</target>
 	
-	<target name="init" depends="clean">
+	<target name="init" depends="">
 		<!-- Create the time stamp -->
 		<tstamp/>
 		<mkdir dir="${BUILD.DIR}"      />					
@@ -28,7 +49,7 @@
 		<delete file="${BUILD.DIR}/lib.tar" />
 	</target>
 
-	<target name="compile" depends="init"
+	<target name="compile" depends="clean_compile,init"
 		description="copy across the application" >
 		<mkdir dir="${OSX.RESOURCES}"  />
 		<copy todir="${OSX.RESOURCES}" preservelastmodified="true">
@@ -42,18 +63,58 @@
 
 		<mkdir dir="${OSX.MACOS}"      />
 		<copy file="${LIB.DIR}/Contents/Frameworks/XUL.framework/Versions/Current/xulrunner" 
-			tofile="${OSX.MACOS}" preservelastmodified="true" />
+			todir="${OSX.MACOS}" preservelastmodified="true" />
+		<echo>Changing permission of ${OSX.MACOS}/xulrunner</echo>
+		<chmod file="${OSX.MACOS}/xulrunner" perm="ugo+rx" verbose="true" />
+
+
 	</target>
 	
-	<target name="dist" depends="compile"
+	<target name="dist" depends="clean_dist,compile"
 		description="generate the distribution" >
-	</target>
+		<copy file="${DIST.TEMPLATE_DMG}" tofile="${DIST.TMP_DMG}" />
 
+		<exec executable="hdiutil" failonerror="true" >
+			<arg value="resize" />
+			<arg value="-size" />
+			<arg value="120m" />
+			<arg value="-growonly" />
+			<arg value="-verbose" />
+			<arg value="${DIST.TMP_DMG}" />
+		</exec>
+
+		<mkdir dir="${DIST.MOUNT}" />
+
+		<exec executable="hdiutil" failonerror="true" >
+			<arg value="attach" />
+			<arg value="${DIST.TMP_DMG}" />
+			<arg value="-noautoopen" />
+			<arg value="-verbose" />
+			<arg value="-mountpoint" />
+			<arg value="${DIST.MOUNT}" />
+		</exec>
+
+		<copy todir="${DIST.MOUNT}/${NAME.APP}" preservelastmodified="true">
+			<fileset dir="${BUILD.DIR}"/>
+		</copy>
+
+		<exec executable="hdiutil" failonerror="true">
+			<arg value="detach" />
+			<arg value="${DIST.MOUNT}" />
+		</exec>
+
+		<exec executable="hdiutil" failonerror="true">
+			<arg value="convert" />
+			<arg value="${DIST.TMP_DMG}" />
+			<arg value="-quiet" />
+			<arg value="-format" />
+			<arg value="UDZO" />
+			<arg value="-imagekey" />
+			<arg value="zlib-level=9" />
+			<arg value="-o" />
+			<arg value="${DIST.DMG}" />
+		</exec>
+
+	</target>
 </project>
 
-
-<!--
-<exec executable="hdiutil">
-<arg line="create -srcfolder ${folder.containing.your.app} ${dist.dmg.file}"/>
-</exec>
--->
