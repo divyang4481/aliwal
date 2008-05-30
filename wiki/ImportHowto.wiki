@@ -1,9 +1,9 @@
-#summary Howto: Import a text file.
+#summary How to import a text file.
 #labels Howto,Featured,screenshot
 
 = Aliwal Geocoder Import =
 
-A walkthrough showing how to get your data on and Excel spreadsheet and into Aliwal Geocder.
+A walkthrough showing how to get your data from an Excel spreadsheet into Aliwal Geocoder.
 
 = Step by Step Guide =
 
