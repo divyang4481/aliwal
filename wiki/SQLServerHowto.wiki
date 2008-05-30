@@ -6,23 +6,30 @@
 A walkthrough showing how to get your data from SQL Server into Aliwal Geocoder.
 	
 == About ==
+The file format for Aliwal Geocoder is [http://code.google.com/apis/kml/documentation/ KML] with a few conventions.
+Use SQLCMD or an SSIS package to run the query below and put the results into an XML file named _something.*o1m*_ .
+
+  # Addresses which need to be geocoded are put into an _<ExtendedData>_ child called _<GeocodeAddress>_
+  # Columns which could be used for pin labels or in the pin popups are _<ExtendedData>_ children called _<Data>_
+  # Columns for tags are _<ExtendedData>_ children called _<TagSet>_ with Children for the tags called _<Tag>_
+
 This query only produces an XML fragment, not the full document.
-To turn this fragment into a proper .o1m file, add these two opening tags:
+To turn this fragment into a proper _*.o1m*_ file, add these two opening tags:
 {{{
          <kml xmlns="http://earth.google.com/kml/2.2">
                  <Document>
 }}}
-  to the very beginning of the results. 
-  Then close those tags at the end of the document with:
+to the very beginning of the results. 
+Then close those tags at the end of the document with:
 {{{
                  </Document>
           </kml>
 }}}
 Remember, case is important for XML tags.
-Use SQLCMD or an SSIS package to run the query and put the results into an XML file named _something.*o1m*_ .
+
 
 == Source Table or View ==
-Assuming the database doesn't have coordinate data, an element called _GoecodeAddress_ is built up from the address fields available.
+Assuming the database doesn't have coordinate data, an element called _GeocodeAddress_ is built up from the address fields available.
 Source data in a table or view like this, one row per record / map pin:
 {{{
 CREATE TABLE vwSalesData(
@@ -33,7 +40,8 @@ CREATE TABLE vwSalesData(
   CountryCode       varchar(64) NOT NULL,
   CompanyName       varchar(64) NOT NULL,
   SalesPerson       varchar(64) NOT NULL,
-  CompanyType       varchar(64) NOT NULL 
+  CompanyType       varchar(64) NOT NULL,
+  SomethingElse     varchar(64) NOT NULL
 )
 go
 }}}
