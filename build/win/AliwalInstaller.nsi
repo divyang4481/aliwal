@@ -23,6 +23,7 @@ InstallDirRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Aliwal Geocoder" ""
 ;DirShow show ; (make this hide to not let the user change it)
 ;DirText "Select the directory to install myApp in:"
 
+
 Section "" ; (default section)
 SetOutPath "$INSTDIR"
 
@@ -33,8 +34,7 @@ createDirectory "$SMPROGRAMS\Aliwal Geocoder"
 createShortCut  "$SMPROGRAMS\Aliwal Geocoder\Aliwal Geocoder.lnk" "$INSTDIR\Aliwal Geocoder.exe"
 createShortCut  "$SMPROGRAMS\Aliwal Geocoder\Uninstall Aliwal Geocoder.lnk" "$INSTDIR\uninstall.exe"
 
-# Define which files to install
-file /r ".\Aliwal Geocoder\*.*"
+file /r ".\tmp.build\Aliwal Geocoder\*.*"
 
 WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Baudmap Ltd\Aliwal Geocoder" "" "$INSTDIR"
 WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aliwal Geocoder" "DisplayName" "Aliwal Geocoder (remove only)"
