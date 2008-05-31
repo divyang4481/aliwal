@@ -1,0 +1,65 @@
+<project name="Aliwal Geocoder Win32 Build" default="dist" basedir="../..">
+	<description>
+		Win32 build file
+	</description>
+	
+	<property name="NAME.SHORT" 	value="Aliwal Geocoder" />
+	<property name="NAME.APP" 	value="${NAME.SHORT}.exe" />
+	
+	<property name="BASE.DIR" 	location="build/win" />
+	<property name="SRC.DIR" 	location="application"              />
+	<property name="LIB.DIR"        location="build/win/lib"            />
+		
+	<property name="BUILD.DIR" 	location="build/win/tmp.build/${NAME.SHORT}" />
+	
+	
+	<property name="DIST.DIR"       location="build/win/dist" />
+		
+	<target name="clean_dist" description="Clean up for dist target">
+		<delete dir="${DIST.DIR}"  />
+	</target>
+		
+	<target name="clean_compile" description="Clean up for compile target">
+		<delete dir="${BUILD.DIR}" 	/>
+	</target>
+		
+	<target name="clean" description="clean up" 
+		depends="clean_dist,clean_compile">		
+	</target>
+	
+	<target name="init" depends="">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<mkdir dir="${BUILD.DIR}"      />					
+		<tar tarfile="${BUILD.DIR}/lib.tar" basedir="${LIB.DIR}/" longfile="gnu" />
+		<untar src="${BUILD.DIR}/lib.tar"   dest="${BUILD.DIR}" overwrite="true" />
+		<delete file="${BUILD.DIR}/lib.tar" />
+		
+		<mkdir dir="${DIST.DIR}" />
+	</target>
+
+	<target name="compile" depends="clean_compile,init"
+		description="copy across the application" >
+		<copy todir="${BUILD.DIR}" preservelastmodified="true">
+			<fileset dir="${SRC.DIR}" >
+				<include name="**/*" />
+				<exclude name="**.svn" />
+				<exclude name=".project" />
+			</fileset>
+		</copy>
+		<echo>Need to sort out the icon. CMDline Resource editor ?</echo>
+		<copy file="${BUILD.DIR}\xulrunner\xulrunner-stub.exe" tofile="${BUILD.DIR}\${NAME.APP}" />
+
+	</target>
+	
+	<target name="dist" depends="clean_dist,compile"
+		description="generate the distribution" >
+		
+
+		<exec executable="c:\Program Files\NSIS\makensis.exe" failonerror="true" >
+			<arg value="/V3" />
+			<arg value="${BASE.DIR}\AliwalInstaller.nsi" />
+		</exec>
+	</target>
+</project>
+
