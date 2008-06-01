@@ -1,4 +1,4 @@
-<project name="Aliwal Geocoder OSX Build" default="dist" basedir="../..">
+<project name="Aliwal Geocoder OSX Build" default="dist" basedir="../">
 	<description>
 		simple example build file
 	</description>
