@@ -174,14 +174,14 @@ ImportWizard.prototype.drawHeaderPreview = function(){
 		
 		var grid = document.getElementById("gd_header_preview");
 		var table = document.createElement('html:table');
-		table.setAttribute('style','border-width: 1px 1px 1px 1px;border-spacing: 2px;border-style: outset outset outset outset;');
+		table.setAttribute('style','border-width: 1px 1px 1px 1px;border-spacing: 1px;');
 		var hrow = document.createElement('html:tr');
 		var erow = document.createElement('html:tr');
 	
 		for(var idx in headers){
 			var txt1 = document.createTextNode(headers[idx]);
 			var th = document.createElement('html:th');
-			th.setAttribute('style','background-color:gray;font-style:bold;padding: 3px 3px 3px 3px;');
+			th.setAttribute('style','background-color:gray;font-style:bold;border-style: outset outset inset inset;');
 			th.appendChild(txt1);
 			hrow.appendChild(th);
 			// Create and empty data row just to make table look better
