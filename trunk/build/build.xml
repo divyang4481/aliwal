@@ -43,10 +43,21 @@
 		</copy>
 	</target>
 	
-	<target name="clean"   depends="clean_common,clean_osx,clean_win32" description="Clean for all arches" />
-	<target name="init"    depends="" description="This target is here just for completeness"/>
-	<target name="compile" depends="patch_number,compile_common,compile_osx,compile_win32" description="Compile for all arches. Doesn't do dist targets" />
+	<target name="dist_common" description="Dist target for common arch">
+		<echo>ToDo: http://aliwal.googlecode.com/ uploads</echo>
+		<echo>ToDo: Freshmeat announcement</echo>
+	</target>
 	
+	<target name="clean"   depends="clean_common,clean_osx,clean_win32"       description="Clean for all arches" />
+	<target name="init"    depends=""                                         description="This target is here just for completeness"/>
+	<target name="compile" depends="compile_common,compile_osx,compile_win32" description="Compile for all arches. Doesn't do dist targets" />
+	<target name="dist"    depends="patch_number,dist_common,dist_osx"        description="Dist for all arches. Does version.patch number too" >	
+		<echo>
+			*********************************************************
+			Todo: commit build/version.properties and do a dist_win32 build on suitable machine
+			*********************************************************
+		</echo>
+	</target>
 	
 <!-- ******************** WIN32 BUILD **************************************************************** -->	
 		<target name="clean_dist_win32" description="Clean up for dist target">
@@ -54,11 +65,12 @@
 		</target>
 			
 		<target name="clean_win32" description="Clean up for win32 compile target">	
+			<echo>ToDo: clean out old versions too</echo>
 			<delete dir="${WIN32.BUILD.DIR}" includeEmptyDirs="true" verbose="true" />
 		</target>
 		
 		<target name="init_win32" depends="">
-			<mkdir dir="${WIN32.BUILD.DIR}"      />					
+			<mkdir dir="${WIN32.BUILD.DIR}"      />			
 			<tar tarfile="${WIN32.BUILD.DIR}/lib.tar" basedir="${WIN32.LIB.DIR}/" longfile="gnu" />
 			<untar src="${WIN32.BUILD.DIR}/lib.tar"   dest="${WIN32.BUILD.DIR}" overwrite="true" />
 			<delete file="${WIN32.BUILD.DIR}/lib.tar" />
@@ -98,6 +110,7 @@
 		</target>
 						
 		<target name="clean_osx" description="Clean OSX compile" >
+			<echo>ToDo: clean out old versions too</echo>
 			<delete dir="${OSX.BUILD.DIR}"  verbose="true"	/>
 		</target>
 		
