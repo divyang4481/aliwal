@@ -1,4 +1,4 @@
-<project name="Aliwal Geocoder Win32 Build" default="dist" basedir="../..">
+<project name="Aliwal Geocoder Win32 Build" default="dist" basedir="../">
 	<description>
 		Win32 build file
 	</description>
