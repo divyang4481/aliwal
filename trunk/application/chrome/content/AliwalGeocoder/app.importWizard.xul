@@ -2,7 +2,7 @@
 
 <?xml-stylesheet href="chrome://AliwalGeocoder/skin/app.importWizard.css" type="text/css"?>
 
-
+<!DOCTYPE window SYSTEM "chrome://AliwalGeocoder/locale/app.importWizard.dtd">
 
 <wizard id="importwizard" title="Import a text file" 
 	onload="impwiz.onWizardLoad();"
@@ -37,93 +37,95 @@
 	    </description>
 	    <groupbox flex="1">
 			<radiogroup flex="1">
-				<description value="How is the file layout best described?"/>
-				<radio id="rb_layout_delimited" label="Delimited columns"
+				<description value="&impwiz.chooselayout;"/>
+				<radio id="rb_layout_delimited" label="&impwiz.delimited;"
 					checked="true"
 					src="icons/importwiz-delimited.png" />
 					
-				<radio label="Fixed width columns" disabled="true"
+				<radio label="&impwiz.fixedwidth;" disabled="true"
 					src="icons/importwiz-fixedwidth.png" 
-					oncommand="alert('Fixed');" />
+					oncommand="" />
 			</radiogroup>
 		</groupbox>
 	</wizardpage>
 	
 	<wizardpage 
-		description="Delimiter details"
+		description="&impwiz.delimdetails;"
 		onpageshow="impwiz.checkDelimiter(); return true;"
 		onpageadvanced="impwiz.grabDelimiterSelection();" >
 		
 		<label class="label_step">Step 2 of 6</label>
 		<spacer />
 	    <description>How is the data delimited?</description>
-
-	    <hbox>
-			<groupbox flex="1" minwidth="200" >
-				<caption label="Delimiters" />
-					<grid>
-						<columns>
-							<col />
-							<col />
-						</columns>
-						<rows>
-							<row>
-								<checkbox id="cb_delimiter_comma" 	class="cbImportDelimiter" 
-									label="Comma" 	value=","
-									src="images/betty_boop.xbm" 
-									oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
-								<checkbox id="cb_delimiter_tab" 	class="cbImportDelimiter" 
-									label="Tab" 	value="\t"
-									src="images/betty_boop.xbm" 
-									oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
-								<checkbox id="cb_delimiter_semicolon" class="cbImportDelimiter" 
-									label="Semicolon"   value=";"
-									src="images/betty_boop.xbm" 
-									oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
-
-							</row>
-							<row>
-								<checkbox id="cb_delimiter_space" class="cbImportDelimiter" 
-									label="Space"   value=" "
-									src="images/betty_boop.xbm" 
-									oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
-								<checkbox id="cb_delimiter_other" class="cbImportDelimiter"
-									label="RegExp"   value=""
-									src="images/betty_boop.xbm" 
-									oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
-								<textbox id="tb_delimiter_oth" value="" />
-							</row>
-						</rows>
-					</grid>
-
-
+		<vbox>
+		    <hbox>
+				<groupbox flex="1" minwidth="200" >
+					<caption label="&impwiz.delimiters;" />
+						<grid>
+							<columns>
+								<column />
+								<column />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<checkbox id="cb_delimiter_comma" 	class="cbImportDelimiter" 
+										label="&impwiz.comma;" 	value=","
+										src="" 
+										oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
+									<checkbox id="cb_delimiter_tab" 	class="cbImportDelimiter" 
+										label="Tab" 	value="\t"
+										src="images/betty_boop.xbm" 
+										oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
+									<checkbox id="cb_delimiter_semicolon" class="cbImportDelimiter" 
+										label="&impwiz.semicolon;"   value=";"
+										src="" 
+										oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
+								</row>
+								<row>
+									<checkbox id="cb_delimiter_space" class="cbImportDelimiter" 
+										label="&impwiz.space;"   value=" "
+										src="" 
+										oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
+									<checkbox id="cb_delimiter_other" class="cbImportDelimiter"
+										label="&impwiz.regexp;"   value=""
+										src="" 
+										oncommand="impwiz.grabDelimiterSelection(); impwiz.drawHeaderPreview();impwiz.checkDelimiter()" />							
+									<textbox id="tb_delimiter_oth" value="" size="8" />
+								</row>
+							</rows>
+						</grid>
+	
+	
+				</groupbox>
+				<groupbox>
+					<caption label="&impwiz.headerrows;" />
+					<checkbox label="&impwiz.firstrow;"  checked="true"  disabled="true"
+						src="" 
+						oncommand="" />
+				</groupbox>
+			</hbox>
+			
+			<groupbox flex="1" >
+				<caption label="&impwiz.datapreview;" />
+				<grid id="gd_header_preview" maxwidth="400">
+					<html:table>
+						<html:tr>
+							<html:th>&impwiz.col1;</html:th>
+							<html:th>&impwiz.col2;</html:th>
+							<html:th>&impwiz.col3;</html:th>
+							<html:th>&impwiz.col4;</html:th>
+							<html:th>&impwiz.col5;</html:th>
+							<html:th>&impwiz.col6;</html:th>
+						</html:tr>
+					</html:table>
+				</grid>
 			</groupbox>
-			<groupbox>
-				<caption label="Header rows" />
-				<checkbox label="1st row is column headings"  checked="true"  disabled="true"
-					src="images/betty_boop.xbm" 
-					oncommand="alert('');" />
-			</groupbox>
-		</hbox>
-		
-		<groupbox flex="1" maxwidth="200" >
-			<caption label="Data preview" />
-			<grid id="gd_header_preview" >
-				<html:table>
-					<html:tr>
-						<html:th>Col 1</html:th>
-						<html:th>Col 2</html:th>
-						<html:th>Col 3</html:th>
-						<html:th>Col 4</html:th>
-						<html:th>Col 5</html:th>
-					</html:tr>
-				</html:table>
-			</grid>
-		</groupbox>
+		</vbox>
 	</wizardpage>
 	
 	
-	<wizardpage description="Coordinate columns"
+	<wizardpage description="&impwiz.coordcolumns;"
 		onpageshow="impwiz.drawLonLatColumns();document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabLonLatSelections();" >
 		<label class="label_step">Step 3 of 6</label>
@@ -217,7 +219,7 @@
 
 	</wizardpage>
 	
-	<wizardpage description="Tag columns"
+	<wizardpage description="&impwiz.tagcolumns;"
 		onpageshow="impwiz.drawTagColumns();document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabTagSelections();" >
 		<label class="label_step">Step 6 of 6</label>
