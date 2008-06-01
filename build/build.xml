@@ -1,51 +1,63 @@
-<project name="Aliwal Geocoder All Arches Build" default="all" basedir="../">
-	
+<project name="Aliwal Geocoder All Arches Build" default="compile" basedir="../">
+	<property file="build/version.properties"/>
 	<property file="build/build.properties"/>
-		
+	
+			
 	<description>
-		Mulitple architecture Build process for ${NAME.SHORT}
+		Muli-Architecture build process for ${NAME.SHORT}
 	</description>
 	
-	<target name="patch_number">
-		<!-- 
-			Thanks: http://blog.nirav.name/2008/02/how-to-auto-increament-version-build-id.html
-		-->
-		<propertyfile file="build/build.properties" comment="VERSION.PATCH incremented by ANT build. Edit not!">
+<!-- ******************** ARCH INDEPENDENT **************************************************** -->	
+	<target name="diagnostics" description="diagnostics">
+		<diagnostics/>
+	</target>
+	
+	<target name="patch_number" description="Increments VERSION.PATCH in the version.properties file" >
+		<!-- Thanks: http://blog.nirav.name/2008/02/how-to-auto-increament-version-build-id.html -->
+		<propertyfile file="build/version.properties" comment="VERSION.PATCH incremented by ANT build. Edit not!">
 			<entry key="VERSION.PATCH" type="int" operation="+" default="1" />
 		</propertyfile>
 	</target>
+		
+	<target name="clean_common" description="Reset for target compile_common.">
+		<delete includeEmptyDirs="true" verbose="true">
+			<fileset dir="${COMMON.BUILD.DIR}" includes="**/*" />
+		</delete>
+	</target>
 	
-	<target name="all" depends="patch_number,dist_osx,dist_win32" description="Build everything. " />
+	<target name="init_common" depends="" description="Init for target compile_common.">
+		<mkdir dir="${COMMON.TARGET}" />
+	</target>
+	
+	<target name="compile_common" depends="init_common"
+		description="Compile the arch independent stuff. Pretty much an XPI at this stage" >
+		<echo>ToDo: JAR the chrome directory and (re)do the manifest</echo>
+		<copy todir="${COMMON.TARGET}" preservelastmodified="false">
+			<fileset dir="./application" >
+				<include name="**/*" />
+				<exclude name="**/.DS_Store" />
+				<exclude name="**/.svn" />
+				<exclude name="**/.project" />
+				<exclude name="**/*.bak" />	
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="clean"   depends="clean_common,clean_osx,clean_win32" description="Clean for all arches" />
+	<target name="init"    depends="" description="This target is here just for completeness"/>
+	<target name="compile" depends="patch_number,compile_common,compile_osx,compile_win32" description="Compile for all arches. Doesn't do dist targets" />
 	
 	
 <!-- ******************** WIN32 BUILD **************************************************************** -->	
-		
-		<property name="WIN32.NAME.ARCH" 	value="${NAME.SHORT}.exe" />		
-		<property name="WIN32.BASE.DIR" 	location="build/win" />
-		<property name="WIN32.LIB.DIR"        location="build/win/lib"            />
-			
-		<property name="WIN32.BUILD.DIR" 	location="build/win/tmp.build/${NAME.SHORT}" />
-		
-		<property name="WIN32.DIST.DIR"       location="build/win/dist" />
-
-		
-		
-		
 		<target name="clean_dist_win32" description="Clean up for dist target">
 			<delete dir="${WIN32.DIST.DIR}"  />
 		</target>
 			
-		<target name="clean_compile_win32" description="Clean up for compile target">
-			<delete dir="${WIN32.BUILD.DIR}" 	/>
-		</target>
-			
-		<target name="clean_win32" description="clean up" 
-			depends="clean_dist_win32,clean_compile_win32">		
+		<target name="clean_win32" description="Clean up for win32 compile target">	
+			<delete dir="${WIN32.BUILD.DIR}" includeEmptyDirs="true" verbose="true" />
 		</target>
 		
 		<target name="init_win32" depends="">
-			<!-- Create the time stamp -->
-			<tstamp/>
 			<mkdir dir="${WIN32.BUILD.DIR}"      />					
 			<tar tarfile="${WIN32.BUILD.DIR}/lib.tar" basedir="${WIN32.LIB.DIR}/" longfile="gnu" />
 			<untar src="${WIN32.BUILD.DIR}/lib.tar"   dest="${WIN32.BUILD.DIR}" overwrite="true" />
@@ -54,17 +66,13 @@
 			<mkdir dir="${WIN32.DIST.DIR}" />
 		</target>
 
-		<target name="compile_win32" depends="clean_compile_win32,init_win32"
-			description="copy across the application" >
-			<copy todir="${WIN32.BUILD.DIR}" preservelastmodified="true">
-				<fileset dir="${SRC.DIR}" >
-					<include name="**/*" />
-					<exclude name="**.svn" />
-					<exclude name=".project" />
-				</fileset>
+		<target name="compile_win32" depends="init_win32,compile_common"
+			description="Copy across the application" >
+			<copy todir="${WIN32.BUILD.DIR}" preservelastmodified="true" includeEmptyDirs="true" >
+				<fileset dir="${COMMON.TARGET}" />
 			</copy>
 			<echo>Need to sort out the icon. CMDline Resource editor ?</echo>
-			<copy file="${WIN32.BUILD.DIR}\xulrunner\xulrunner-stub.exe" tofile="${WIN32.BUILD.DIR}\${WIN32.NAME.ARCH}" />
+			<copy file="${WIN32.BUILD.DIR}\xulrunner\xulrunner-stub.exe" tofile="${WIN32.BUILD.DIR}\${WIN32.TARGET}" />
 
 		</target>
 		
@@ -79,26 +87,6 @@
 		</target>
 
 <!-- ******************** OSX BUILD **************************************************************** -->	
-	<property name="OSX.NAME.ARCH" 	value="${NAME.SHORT}.app" />		
-		<property name="OSX.BASE.DIR" 		location="build.osx" />
-
-		<property name="OSX.LIB.DIR"        location="build/osx/lib"            />
-			
-		<property name="OSX.BUILD.DIR" 		location="build/osx/tmp.build/${OSX.NAME.ARCH}" />
-		
-		<property name="OSX.RESOURCES" 	location="${OSX.BUILD.DIR}/Contents/Resources"    />
-		<property name="OSX.MACOS"	 	location="${OSX.BUILD.DIR}/Contents/MacOS"       />
-		<property name="OSX.FRAMEWORKS" location="${OSX.BUILD.DIR}/Contents/Frameworks"  />
-		
-		<property name="OSX.DIST.DIR"       location="build/osx/dist" />
-		<property name="OSX.DIST.MOUNT"     location="${OSX.DIST.DIR}/mnt" />
-		<property name="OSX.DIST.TEMPLATE_DMG"   location="${OSX.DIST.DIR}/template.dmg" />
-		<property name="OSX.DIST.TMP_DMG"   location="${OSX.DIST.DIR}/temporary.dmg" />
-		<property name="OSX.DIST.TARGET"       location="${OSX.DIST.DIR}/${NAME.SHORT}.dmg" />
-
-		
-		
-		
 		<target name="clean_dist_osx" description="Clean up for dist target">
 			<delete file="${OSX.DIST.TARGET}"  />
 			<delete file="${OSX.DIST.TMP_DMG}"  />
@@ -108,13 +96,9 @@
 			</exec>
 			<delete dir="${OSX.DIST.MOUNT}" />
 		</target>
-			
-		<target name="clean_compile_osx" description="Clean up for compile target">
-			<delete dir="${OSX.BUILD.DIR}" 	/>
-		</target>
-			
-		<target name="clean_osx" description="clean up" 
-			depends="clean_dist_osx,clean_compile_osx">		
+						
+		<target name="clean_osx" description="Clean OSX compile" >
+			<delete dir="${OSX.BUILD.DIR}"  verbose="true"	/>
 		</target>
 		
 		<target name="init_osx" depends="">
@@ -126,19 +110,15 @@
 			<delete file="${OSX.BUILD.DIR}/lib.tar" />
 		</target>
 
-		<target name="compile_osx" depends="clean_compile_osx,init_osx"
+		<target name="compile_osx" depends="init_osx"
 			description="copy across the application" >
 			<mkdir dir="${OSX.RESOURCES}"  />
-			<copy todir="${OSX.RESOURCES}" preservelastmodified="true">
-				<fileset dir="${SRC.DIR}" >
-					<include name="**/*" />
-					<exclude name=".DS_Store" />
-					<exclude name="**.svn" />
-					<exclude name=".project" />
-				</fileset>
+			<copy todir="${OSX.RESOURCES}" preservelastmodified="true" includeEmptyDirs="true">
+				<fileset dir="${COMMON.TARGET}" />
 			</copy>
 
 			<mkdir dir="${OSX.MACOS}"      />
+			<echo>rename XULRunner executable and do plist etc.</echo>
 			<copy file="${OSX.LIB.DIR}/Contents/Frameworks/XUL.framework/Versions/Current/xulrunner" 
 				todir="${OSX.MACOS}" preservelastmodified="true" />
 			<echo>Changing permission of ${OSX.MACOS}/xulrunner</echo>
@@ -171,7 +151,7 @@
 				<arg value="${OSX.DIST.MOUNT}" />
 			</exec>
 
-			<copy todir="${OSX.DIST.MOUNT}/${OSX.NAME.ARCH}" preservelastmodified="true">
+			<copy todir="${OSX.DIST.MOUNT}/${OSX.TARGET}" preservelastmodified="true">
 				<fileset dir="${OSX.BUILD.DIR}"/>
 			</copy>
 
