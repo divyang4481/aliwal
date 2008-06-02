@@ -1,0 +1,630 @@
+<kml xmlns="http://earth.google.com/kml/2.2">
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>John Charles Centre for Sport</value>
+			</Data>
+			<Data name="Type">
+				<value>Olympic</value>
+			</Data>
+			<Data name="Lane">
+				<value>10 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>0113 2475222</value>
+			</Data>
+			<Data name="Town">
+				<value>Leeds</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Olympic</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>10 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				John Charles centre for sport, Middleton Grove, Leeds,
+				LS11 5DJ
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Ponds Forge International Sports Centre</value>
+			</Data>
+			<Data name="Type">
+				<value>Olympic</value>
+			</Data>
+			<Data name="Lane">
+				<value>10 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>01142233400</value>
+			</Data>
+			<Data name="Town">
+				<value>Sheffield</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Olympic</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>10 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				Ponds Forge International Sports Centre, Sheaf Street,
+				Sheffield, S1 2BP
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Sunderland Aquatic Centre</value>
+			</Data>
+			<Data name="Type">
+				<value>Olympic</value>
+			</Data>
+			<Data name="Lane">
+				<value>10 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>(0191) 520 5555</value>
+			</Data>
+			<Data name="Town">
+				<value>Sunderland</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Olympic</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>10 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				Sunderland City Council, Civic Centre, Burdon Road,
+				Sunderland, SR2 7DN
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Aldershot Garrison Sports Centre</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>01252 347724</value>
+			</Data>
+			<Data name="Town">
+				<value>Aldershot</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				Princes Avenue, North Camp, Hampshire, Aldershot, GU11
+				2LQ
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>
+					University Of Bath Sports Training Village
+				</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>01225 386339</value>
+			</Data>
+			<Data name="Town">
+				<value>Bath</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				University of Bath, Bath, BA2 7AY, UK
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Coventry Sports And Leisure Centre</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>024 7625 2525</value>
+			</Data>
+			<Data name="Town">
+				<value>Coventry</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				Fairfax Street, Coventry CV1 5RY
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>K2 Centre</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>01293 585300</value>
+			</Data>
+			<Data name="Town">
+				<value>Crawley</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				K2 Crawley, Pease Pottage Hill, Crawley, RH11 9BQ
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Gurnell Leisure Centre</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value></value>
+			</Data>
+			<Data name="Tel. #">
+				<value>�020 8998 3241</value>
+			</Data>
+			<Data name="Town">
+				<value>Ealing</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag></Tag>
+			</TagSet>
+			<GeocodeAddress>
+				Ruislip Road East, Ealing, London, W13 0AL
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Picton Leisure Centre</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>+44 151 734 2294</value>
+			</Data>
+			<Data name="Town">
+				<value>Liverpool</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				Wellington Road, Liverpool, L15 4LE
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>London Fields Lido</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>020 7254 9038</value>
+			</Data>
+			<Data name="Town">
+				<value>London Borough of Hackney</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				London Fields Lido, London Fields Westside, E8 3EU
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Loughborough Pool</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>01509 226200</value>
+			</Data>
+			<Data name="Town">
+				<value>Loughborough</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				Sports Development Centre, Loughborough University,
+				Leicestershire, LE11 3TU
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Manchester Aquatics Centre</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>0161 275 9450</value>
+			</Data>
+			<Data name="Town">
+				<value>Manchester</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				2 Booth Street East,� Ardwick;, Manchester, M13 9SS
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>UEA Sports Centre</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>(01603) 592398</value>
+			</Data>
+			<Data name="Town">
+				<value>Norwich</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				UEA Sportspark, University of East Anglia, Norwich,
+				Norfolk, NR4 7TJ
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Grand Central Pools</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>0161 474 7766</value>
+			</Data>
+			<Data name="Town">
+				<value>Stockport</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				12 Grand Central Square,, Wellington Road South,,
+				Stockport,, SK1 3TA
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Millfield</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value></value>
+			</Data>
+			<Data name="Town">
+				<value>Somerset</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Wigan International Pool</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>01942 243345</value>
+			</Data>
+			<Data name="Town">
+				<value>Wigan</value>
+			</Data>
+			<Data name="Country">
+				<value>England</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>Library St, Wigan, WN1 1NN</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>The Dollan Aqua Centre</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>6 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>+44 (1355) 260000</value>
+			</Data>
+			<Data name="Town">
+				<value>East Kilbride</value>
+			</Data>
+			<Data name="Country">
+				<value>Scotland</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>6 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				Town Centre Park, Brouster Hill, East Kilbride, South
+				Lanarkshire, G74 1AF, Scotland
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Royal Commonwealth Pool</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>0131 667 7211</value>
+			</Data>
+			<Data name="Town">
+				<value>Edinburgh</value>
+			</Data>
+			<Data name="Country">
+				<value>Scotland</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				Royal Commonwealth Pool, 21 Dalkeith Road, Edinburgh
+				EH16 5BB
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Robertson Trust Swimming Pool</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>(01786) 466500</value>
+			</Data>
+			<Data name="Town">
+				<value>Stirling</value>
+			</Data>
+			<Data name="Country">
+				<value>Scotland</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				University of Stirling, Stirling , Scotland , FK9 4LA,
+				UK
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+	<Placemark xmlns="">
+		<ExtendedData>
+			<Data name="Pool">
+				<value>Wales National Pool</value>
+			</Data>
+			<Data name="Type">
+				<value>Regular</value>
+			</Data>
+			<Data name="Lane">
+				<value>8 Lane</value>
+			</Data>
+			<Data name="Tel. #">
+				<value>01792 513513</value>
+			</Data>
+			<Data name="Town">
+				<value>Swansea</value>
+			</Data>
+			<Data name="Country">
+				<value>Wales</value>
+			</Data>
+			<TagSet name="Type">
+				<Tag>Regular</Tag>
+			</TagSet>
+			<TagSet name="Lane">
+				<Tag>8 Lane</Tag>
+			</TagSet>
+			<GeocodeAddress>
+				Wales National Pool Swansea, Sketty Lane, Swansea, SA2
+				8QG
+			</GeocodeAddress>
+		</ExtendedData>
+	</Placemark>
+</kml>
