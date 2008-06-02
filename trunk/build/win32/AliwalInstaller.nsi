@@ -4,7 +4,14 @@
 ; NOTE: this .NSI script is designed for NSIS v1.8+
 
 Name "Aliwal Geocoder"
-OutFile "Aliwal Geocoder Install.exe"
+!ifdef INST_NAME
+  OutFile "${INST_NAME}"
+!else
+  OutFile "Aliwal Geocoder Install.exe"
+!endif
+
+
+
 
 ; Some default compiler settings (uncomment and change at will):
 ; SetCompress auto ; (can be off or force)
@@ -34,7 +41,13 @@ createDirectory "$SMPROGRAMS\Aliwal Geocoder"
 createShortCut  "$SMPROGRAMS\Aliwal Geocoder\Aliwal Geocoder.lnk" "$INSTDIR\Aliwal Geocoder.exe"
 createShortCut  "$SMPROGRAMS\Aliwal Geocoder\Uninstall Aliwal Geocoder.lnk" "$INSTDIR\uninstall.exe"
 
-file /r ".\tmp.build\Aliwal Geocoder\*.*"
+!ifdef SRC_DIR
+  file /r "${SRC_DIR}\*.*"
+!else
+  !warning "ABORT. Missing argument /DSRC_DIR="
+  file /r "X:\.."
+!endif
+
 
 WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Baudmap Ltd\Aliwal Geocoder" "" "$INSTDIR"
 WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aliwal Geocoder" "DisplayName" "Aliwal Geocoder (remove only)"
