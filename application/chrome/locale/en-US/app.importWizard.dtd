@@ -1,0 +1,24 @@
+<!ENTITY impwiz.chooselayout     "How is the file layout best described?">
+<!ENTITY impwiz.delimited        "Delimited columns">
+<!ENTITY impwiz.fixedwidth       "Fixed width columns">
+
+<!ENTITY impwiz.delimdetails     "Delimiter Details">
+<!ENTITY impwiz.delimiters       "Delimiters">
+<!ENTITY impwiz.headerrows       "Header rows">
+<!ENTITY impwiz.datapreview      "Data preview">
+<!ENTITY impwiz.firstrow         "1st Row">
+
+<!ENTITY impwiz.comma            "Comma">
+<!ENTITY impwiz.tab              "Tab">
+<!ENTITY impwiz.semicolon        "Semicolon">
+<!ENTITY impwiz.space            "Space">
+<!ENTITY impwiz.regexp           "RegExp">
+<!ENTITY impwiz.col1             "Col 1">
+<!ENTITY impwiz.col2             "Col 2">
+<!ENTITY impwiz.col3             "Col 3">
+<!ENTITY impwiz.col4             "Col 4">
+<!ENTITY impwiz.col5             "Col 5">
+<!ENTITY impwiz.col6             "Col 6">
+
+<!ENTITY impwiz.coordcolumns     "Coordinate columns">
+<!ENTITY impwiz.tagcolumns       "Tag columns">
