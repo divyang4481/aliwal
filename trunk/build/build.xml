@@ -122,9 +122,26 @@
 			<tstamp/>
 			<mkdir dir="${OSX.BUILD.DIR}"      />				
 			<delete file="${java.io.tmpdir}/xxx_lib_321.tar" />
-			<tar tarfile="${java.io.tmpdir}/xxx_lib_321.tar" basedir="${OSX.LIB.DIR}/" longfile="gnu" />
-			<untar   src="${java.io.tmpdir}/xxx_lib_321.tar"   dest="${OSX.BUILD.DIR}" overwrite="true" />
+			<exec executable="tar" dir="${OSX.LIB.DIR}" >
+				<!-- Ant tar not aware of symbolic links -->
+				<arg value="-cf" />
+				<arg value="${java.io.tmpdir}/xxx_lib_321.tar" />
+				<arg value="--exclude=.svn" />
+				<arg value="." />			
+			</exec>
+			<exec executable="tar" dir="${OSX.BUILD.DIR}">
+				<!-- Ant tar not aware of symbolic links -->
+				<arg value="-xvf" />
+				<arg value="${java.io.tmpdir}/xxx_lib_321.tar" />
+			</exec>
 			<delete file="${java.io.tmpdir}/xxx_lib_321.tar" />
+			
+			<mkdir dir="${OSX.MACOS}"      />
+			<echo>rename XULRunner executable and do plist etc.</echo>
+			<copy file="${OSX.LIB.DIR}/Contents/Frameworks/XUL.framework/Versions/Current/xulrunner" 
+				todir="${OSX.MACOS}" preservelastmodified="true" />
+			<echo>Changing permission of ${OSX.MACOS}/xulrunner</echo>
+			<chmod file="${OSX.MACOS}/xulrunner" perm="ugo+rx" verbose="true" />
 		</target>
 
 		<target name="compile_osx" depends="init_osx,compile_common"
@@ -133,15 +150,6 @@
 			<copy todir="${OSX.RESOURCES}" preservelastmodified="true" includeEmptyDirs="true">
 				<fileset dir="${COMMON.TARGET}" />
 			</copy>
-
-			<mkdir dir="${OSX.MACOS}"      />
-			<echo>rename XULRunner executable and do plist etc.</echo>
-			<copy file="${OSX.LIB.DIR}/Contents/Frameworks/XUL.framework/Versions/Current/xulrunner" 
-				todir="${OSX.MACOS}" preservelastmodified="true" />
-			<echo>Changing permission of ${OSX.MACOS}/xulrunner</echo>
-			<chmod file="${OSX.MACOS}/xulrunner" perm="ugo+rx" verbose="true" />
-
-
 		</target>
 		
 		<target name="dist_osx" depends="clean_dist_osx,compile_osx"
@@ -151,7 +159,7 @@
 			<exec executable="hdiutil" failonerror="true" >
 				<arg value="resize" />
 				<arg value="-size" />
-				<arg value="120m" />
+				<arg value="55m" />
 				<arg value="-growonly" />
 				<arg value="-verbose" />
 				<arg value="${OSX.DIST.TMP_DMG}" />
@@ -167,13 +175,21 @@
 				<arg value="-mountpoint" />
 				<arg value="${OSX.DIST.MOUNT}" />
 			</exec>
-
-			<copy todir="${OSX.DIST.MOUNT}/${OSX.TARGET}" preservelastmodified="true">
-				<fileset dir="${OSX.BUILD.DIR}"/>
-			</copy>
-			<echo>Changing permission of ${OSX.DIST.EXECUTABLE}</echo>
-			<chmod file="${OSX.DIST.EXECUTABLE}" perm="ugo+rx" verbose="true" />
-
+			
+			<delete file="${java.io.tmpdir}/xxx_osxdist_321.tar" />
+			<exec executable="tar" dir="${OSX.BASE.DIR}" >
+				<!-- Ant copy not aware of symbolic links so tar up -->
+				<arg value="-cf" />
+				<arg value="${java.io.tmpdir}/xxx_osxdist_321.tar" />
+				<arg value="--exclude=.svn" />
+				<arg value="${OSX.TARGET}" />			
+			</exec>
+			<exec executable="tar" dir="${OSX.DIST.MOUNT}">
+				<!-- Ant tar not aware of symbolic links -->
+				<arg value="-xvf" />
+				<arg value="${java.io.tmpdir}/xxx_osxdist_321.tar" />
+			</exec>
+			<delete file="${java.io.tmpdir}/xxx_osxdist_321.tar" />
 
 			<exec executable="hdiutil" failonerror="true">
 				<arg value="detach" />
