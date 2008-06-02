@@ -95,6 +95,8 @@
 
 			<exec executable="c:\Program Files\NSIS\makensis.exe" failonerror="true" >
 				<arg value="/V3" />
+				<arg value="/DSRC_DIR=${WIN32.BUILD.DIR}" />
+				<arg value="/DINST_NAME=${NAME.FULL} Installer.exe" />
 				<arg value="${WIN32.BASE.DIR}\AliwalInstaller.nsi" />
 			</exec>
 		</target>
