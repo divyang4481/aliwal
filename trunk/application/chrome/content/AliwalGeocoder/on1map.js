@@ -161,6 +161,13 @@ $(document).ready( function(){
 			});
 		}
 	});
+
+	YEvent.Capture(map, EventsList.onEndGeoCode, function(resultObj) {
+		/* To keep the marker counters up to date & draw newly geocded markers */
+		if(resultObj.success){
+			domMgr.drawMarkers(xscopeNS.pointMarkers, xscopeNS.hiddenMarkers, map.getBoundsLatLon() );
+		}
+	});
 	
 
 	var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
