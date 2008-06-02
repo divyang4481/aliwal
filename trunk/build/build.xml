@@ -70,10 +70,11 @@
 		</target>
 		
 		<target name="init_win32" depends="">
-			<mkdir dir="${WIN32.BUILD.DIR}"      />			
-			<tar tarfile="${WIN32.BUILD.DIR}/lib.tar" basedir="${WIN32.LIB.DIR}/" longfile="gnu" />
-			<untar src="${WIN32.BUILD.DIR}/lib.tar"   dest="${WIN32.BUILD.DIR}" overwrite="true" />
-			<delete file="${WIN32.BUILD.DIR}/lib.tar" />
+			<mkdir dir="${WIN32.BUILD.DIR}"      />	
+			<delete file="${java.io.tmpdir}/xxx_lib_321.tar" />
+			<tar tarfile="${java.io.tmpdir}/xxx_lib_321.tar" basedir="${WIN32.LIB.DIR}/" longfile="gnu" />
+			<untar   src="${java.io.tmpdir}/xxx_lib_321.tar"   dest="${WIN32.BUILD.DIR}" overwrite="true" />
+			<delete file="${java.io.tmpdir}/xxx_lib_321.tar" />
 			
 			<mkdir dir="${WIN32.DIST.DIR}" />
 		</target>
@@ -117,13 +118,14 @@
 		<target name="init_osx" depends="">
 			<!-- Create the time stamp -->
 			<tstamp/>
-			<mkdir dir="${OSX.BUILD.DIR}"      />					
-			<tar tarfile="${OSX.BUILD.DIR}/lib.tar" basedir="${OSX.LIB.DIR}/" longfile="gnu" />
-			<untar src="${OSX.BUILD.DIR}/lib.tar"   dest="${OSX.BUILD.DIR}" overwrite="true" />
-			<delete file="${OSX.BUILD.DIR}/lib.tar" />
+			<mkdir dir="${OSX.BUILD.DIR}"      />				
+			<delete file="${java.io.tmpdir}/xxx_lib_321.tar" />
+			<tar tarfile="${java.io.tmpdir}/xxx_lib_321.tar" basedir="${OSX.LIB.DIR}/" longfile="gnu" />
+			<untar   src="${java.io.tmpdir}/xxx_lib_321.tar"   dest="${OSX.BUILD.DIR}" overwrite="true" />
+			<delete file="${java.io.tmpdir}/xxx_lib_321.tar" />
 		</target>
 
-		<target name="compile_osx" depends="init_osx"
+		<target name="compile_osx" depends="init_osx,compile_common"
 			description="copy across the application" >
 			<mkdir dir="${OSX.RESOURCES}"  />
 			<copy todir="${OSX.RESOURCES}" preservelastmodified="true" includeEmptyDirs="true">
@@ -167,6 +169,9 @@
 			<copy todir="${OSX.DIST.MOUNT}/${OSX.TARGET}" preservelastmodified="true">
 				<fileset dir="${OSX.BUILD.DIR}"/>
 			</copy>
+			<echo>Changing permission of ${OSX.DIST.EXECUTABLE}</echo>
+			<chmod file="${OSX.DIST.EXECUTABLE}" perm="ugo+rx" verbose="true" />
+
 
 			<exec executable="hdiutil" failonerror="true">
 				<arg value="detach" />
