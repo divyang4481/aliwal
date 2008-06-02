@@ -50,8 +50,8 @@
  			<menuitem id="mi_file_importflat" 	label="&fileImportText.label;"	command="cmd_import_flat" 	/> 
 <!--
 	      	<menuitem id="mi_file_save" 		label="&fileSave.label;"  		command="cmd_save" 		disabled="true"	/>
-	   		<menuitem id="mi_file_saveas" 		label="&fileSaveAs.label;" 		command="cmd_saveas" 	disabled="true"	/> 	
--->
+-->	   		<menuitem id="mi_file_saveas" 		label="&fileSaveAs.label;" 		command="cmd_saveas" 	disabled="false"	/> 	
+
 			<menuseparator/>
 			<menuitem id="mi_page_setup" 		label="&filePageSetup.label;"  	command="cmd_page_setup" disabled="true"	/>
 			<menuitem id="mi_file_print" 		label="&filePrint.label;"  		command="cmd_print" 	disabled="true"	/>
