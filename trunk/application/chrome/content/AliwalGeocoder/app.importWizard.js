@@ -181,13 +181,14 @@ ImportWizard.prototype.drawHeaderPreview = function(){
 		for(var idx in headers){
 			var txt1 = document.createTextNode(headers[idx]);
 			var th = document.createElement('html:th');
-			th.setAttribute('style','background-color:gray;font-style:bold;border-style: outset outset inset inset;');
+			//Stylesheet doesn't get picked up ??? Hardcode for now
+			th.setAttribute('style','font-style:bold;border-style: inset outset inset outset; padding:  0px 6px 0px 6px;');
 			th.appendChild(txt1);
 			hrow.appendChild(th);
-			// Create and empty data row just to make table look better
+			// Create an empty data row just to make table look better
 			var td = document.createElement('html:td');
 			td.setAttribute('style','background-color:white;');
-			var txt2 = document.createTextNode('&nbsp;FRED');
+			var txt2 = document.createTextNode('&nbsp;');
 			td.appendChild(txt2);
 			erow.appendChild(td);
 		}

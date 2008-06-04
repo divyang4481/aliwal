@@ -1,3 +1,8 @@
+<!ENTITY impwiz.wizardtitle      "Text file import wizard">
+<!ENTITY impwiz.wizardwelcome    "This wizard assists with importing a text file by collecting details about how the file and data are formatted.">
+
+<!ENTITY impwiz.filelayout       "File Layout">
+<!ENTITY impwiz.layout           "Layout">
 <!ENTITY impwiz.chooselayout     "How is the file layout best described?">
 <!ENTITY impwiz.delimited        "Delimited columns">
 <!ENTITY impwiz.fixedwidth       "Fixed width columns">
@@ -20,5 +25,33 @@
 <!ENTITY impwiz.col5             "Col 5">
 <!ENTITY impwiz.col6             "Col 6">
 
-<!ENTITY impwiz.coordcolumns     "Coordinate columns">
+<!ENTITY impwiz.coordcolumns     "Longitude &amp; Latitude">
+<!ENTITY impwiz.lonlatdescr1
+	"Choose the longitude and latitude columns. These are optional. 
+	If none are provided, geocoding will be tried instead.">
+<!ENTITY impwiz.lonlatdescr2     "Longitude first, then latitude.">
 <!ENTITY impwiz.tagcolumns       "Tag columns">
+
+<!ENTITY impwiz.geocodingcolumns "Geocoding columns">
+<!ENTITY impwiz.geodescr1        
+	"Choose the columns which make up the address data for geocoding.
+	Geocoding turns addresses into latitude and longitude coordinates that can be shown on the map. ">
+<!ENTITY impwiz.geodescr2        "These are optional and only required if the data doesn't already have coordinates.">
+	
+<!ENTITY impwiz.pinlabelpopup    "Pin Label &amp; Popup details">
+<!ENTITY impwiz.pindescr1
+	"Choose the columns for pin labels and popup details.
+	This is the data shown on the pop up of each pin in the map.">
+	
+<!ENTITY impwiz.tagdescr1
+	"Choose the columns that contain tag data.
+	These are used to hide and show pins on the map.">
+
+<!ENTITY impwiz.step0of          "Step 0 of 6">
+<!ENTITY impwiz.step1of          "Step 1 of 6">
+<!ENTITY impwiz.step2of          "Step 2 of 6">
+<!ENTITY impwiz.step3of          "Step 3 of 6">
+<!ENTITY impwiz.step4of          "Step 4 of 6">
+<!ENTITY impwiz.step5of          "Step 5 of 6">
+<!ENTITY impwiz.step6of          "Step 6 of 6">
+
