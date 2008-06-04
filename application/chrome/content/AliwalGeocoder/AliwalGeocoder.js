@@ -72,7 +72,7 @@ function fileImportFlat(){
 	var CC = Components.classes;
 	var CI = Components.interfaces;
 	var fp = CC["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-	fp.init(window, "Import CVS Data File", nsIFilePicker.modeOpen);
+	fp.init(window, "Import Text File", nsIFilePicker.modeOpen);
 	fp.appendFilter("CSV Files","*.csv");
 	fp.appendFilter("TXT Files","*.txt");
 	var rv = fp.show();

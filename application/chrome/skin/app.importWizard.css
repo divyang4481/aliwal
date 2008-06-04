@@ -8,3 +8,9 @@
  color: #C33;
  display: inline;
 }
+
+th{
+	font-style:bold;
+	border-style: inset outset inset outset;
+	padding:  0px 6px 0px 6px;
+}

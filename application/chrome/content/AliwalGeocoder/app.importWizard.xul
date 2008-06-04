@@ -4,7 +4,7 @@
 
 <!DOCTYPE window SYSTEM "chrome://AliwalGeocoder/locale/app.importWizard.dtd">
 
-<wizard id="importwizard" title="Import a text file" 
+<wizard id="importwizard" title="&impwiz.wizardtitle;" 
 	onload="impwiz.onWizardLoad();"
 	onwizardfinish="return impwiz.onWizardFinished()"
 	xmlns:html="http://www.w3.org/1999/xhtml"
@@ -24,20 +24,23 @@
 	}
 </script>
 
+	<wizardpage>
+		<description>&impwiz.wizardwelcome;</description>
+	</wizardpage>
+	
 	<wizardpage 
-		description="Layout Details"
+		description="&impwiz.filelayout;"
 		onpageshow="document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabLayoutSelection();" >
 		
-		<label class="label_step">Step 1 of 6</label>
+		<label class="label_step">&impwiz.step1of;</label>
+		<description value="&impwiz.chooselayout;"/>
 		<spacer />
-	    <description>
-	      This wizard will gather the details needed to import a text file.
-	      
-	    </description>
-	    <groupbox flex="1">
+
+		<groupbox flex="1">
+			<caption label="&impwiz.layout;" />
 			<radiogroup flex="1">
-				<description value="&impwiz.chooselayout;"/>
+				
 				<radio id="rb_layout_delimited" label="&impwiz.delimited;"
 					checked="true"
 					src="icons/importwiz-delimited.png" />
@@ -54,7 +57,7 @@
 		onpageshow="impwiz.checkDelimiter(); return true;"
 		onpageadvanced="impwiz.grabDelimiterSelection();" >
 		
-		<label class="label_step">Step 2 of 6</label>
+		<label class="label_step">&impwiz.step2of;</label>
 		<spacer />
 	    <description>How is the data delimited?</description>
 		<vbox>
@@ -128,14 +131,11 @@
 	<wizardpage description="&impwiz.coordcolumns;"
 		onpageshow="impwiz.drawLonLatColumns();document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabLonLatSelections();" >
-		<label class="label_step">Step 3 of 6</label>
+		<label class="label_step">&impwiz.step3of;</label>
 		<spacer />
-	    <description>
-			Choose the longitude and latitude columns with coordinate data.
-			These are optional. If none are provided, geocoding will be tried instead.
-			
-			Longitude should be 1st, then latitude.
-		</description>
+		<description>&impwiz.lonlatdescr1;</description>
+		<spacer />
+		<description>&impwiz.lonlatdescr2;</description>
 		<groupbox flex="1">
 			<hbox>
 				<listbox id="lb_posslonlat_cols" rows="7" flex="1" seltype="multiple" >
@@ -157,17 +157,15 @@
 
 	</wizardpage>
 	
-	<wizardpage description="Geocoding columns"
+	<wizardpage description="&impwiz.geocodingcolumns;"
 		onpageshow="impwiz.drawGeoColumns();document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabGeoSelections();" >
-		<label class="label_step">Step 4 of 6</label>
+		<label class="label_step">&impwiz.step4of;</label>
 		<spacer />
-	    <description>
-			Choose the columns with address data for geocoding.
-			Geocoding turns addresses into latitude and longitude coordinates that can be shown on the map.
-			These are optional and only required if the data doesn't already have coordinates.
-			Order like address lins, from most specific to general eg. house number to country.
-		</description>
+	    <description>&impwiz.geodescr1;</description>
+	    <spacer />
+	    <description>&impwiz.geodescr2;</description>
+	    
 		<groupbox flex="1">
 			<hbox>
 				<listbox id="lb_address_cols" rows="7" flex="1" seltype="multiple" >
@@ -189,15 +187,12 @@
 
 	</wizardpage>
 	
-	<wizardpage description="Pin Label &amp; Popup details"
+	<wizardpage description="&impwiz.pinlabelpopup;"
 		onpageshow="impwiz.drawDataColumns();document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabDataSelections();" >
-		<label class="label_step">Step 5 of 6</label>
+		<label class="label_step">&impwiz.step5of;</label>
 		<spacer />
-	    <description>
-			Choose the columns for pin labels and popup details.
-			This is the data that can be shown on the pop up of each pin in the map.
-		</description>
+	    <description>&impwiz.pindescr1;</description>
 		<groupbox flex="1">
 			<hbox>
 				<listbox id="lb_possdata_cols" rows="7" flex="1" seltype="multiple" >
@@ -222,12 +217,9 @@
 	<wizardpage description="&impwiz.tagcolumns;"
 		onpageshow="impwiz.drawTagColumns();document.getElementById('importwizard').canAdvance = true; return true;"
 		onpageadvanced="impwiz.grabTagSelections();" >
-		<label class="label_step">Step 6 of 6</label>
+		<label class="label_step">&impwiz.step6of;</label>
 		<spacer />
-	    <description>
-			Choose the columns that contain tag data.
-			These are used to hide and show pins on the map.
-		</description>
+	    	<description>&impwiz.tagdescr1;</description>
 		<groupbox flex="1">
 			<hbox>
 				<listbox id="lb_posstag_cols" rows="7" flex="1" seltype="multiple" >
