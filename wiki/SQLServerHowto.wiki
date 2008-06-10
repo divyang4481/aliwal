@@ -9,9 +9,9 @@ A walkthrough showing how to get your data from SQL Server into Aliwal Geocoder.
 The file format for Aliwal Geocoder is [http://code.google.com/apis/kml/documentation/ KML] with a few conventions.
 Use SQLCMD or an SSIS package to run the query below and put the results into an XML file named _something.*o1m*_ .
 
-  # Addresses which need to be geocoded are put into an _<ExtendedData>_ child called _<GeocodeAddress>_
-  # Columns which could be used for pin labels or in the pin popups are _<ExtendedData>_ children called _<Data>_
-  # Columns for tags are _<ExtendedData>_ children called _<TagSet>_ with Children for the tags called _<Tag>_
+  # Addresses which need to be geocoded are put into an _<ExtendedData>_ child node called _<GeocodeAddress>_
+  # Data which could be used for pin labels or in the pin popups are _<ExtendedData>_ child nodes called _<Data>_
+  # Data for tags are _<ExtendedData>_ child nodes called _<TagSet>_ with child nodes for the tags called _<Tag>_
 
 This query only produces an XML fragment, not the full document.
 To turn this fragment into a proper _*.o1m*_ file, add these two opening tags:
