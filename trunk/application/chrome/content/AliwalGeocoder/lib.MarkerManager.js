@@ -1,58 +1,74 @@
 function MarkerManager(){
 	/* Namespace for for markers functions */
-}
-MarkerManager.prototype.createDomPointMarkers = function( pKML, pDest ){
-	/* Populates a hash of marker objects ready to be dropped onto the map.
-	 * The pDest hash is keyed by the YMarker.id
-	 * Only handles Dom  Placemark elments with cooordinates
-	 */
-	var that = this;
-	var nm;
-	for(var keys in pDest){
-		delete pDest[keys];
-	};
-	$(pKML).find('Placemark:has("Point>coordinates")').each(function(idx, pmark){
-		try{
-			var spl = $(pmark).find('Point>coordinates:first').text().split(',');
-			if( !(isNaN(parseFloat(spl[0])) || isNaN(parseFloat(spl[1]))) ) {				
-				/* NB!  KML says coordinates come LON,LAT */
-				var geopoint = new YGeoPoint( spl[1], spl[0] );
-				nm = new YMarker( geopoint );		
-			}else {
-				throw 'MarkerManager: Point.coordinates could not be parsed.\nIgnoring Placemark';
+	
+	var that = this; // http://javascript.crockford.com/private.html
+
+	// Privileged methods
+	this.createDomPointMarkers = function( pKML, pDest ){
+		/* Populates a hash of marker objects ready to be dropped onto the map.
+		 * The pDest hash is keyed by the YMarker.id
+		 * Only handles Dom  Placemark elments with cooordinates
+		 * Privileged method
+		 */
+		var nm;
+		for(var keys in pDest){
+			delete pDest[keys];
+		};
+		$(pKML).find('Placemark:has("Point>coordinates")').each(function(idx, pmark){
+			try{
+				var spl = $(pmark).find('Point>coordinates:first').text().split(',');
+				if( !(isNaN(parseFloat(spl[0])) || isNaN(parseFloat(spl[1]))) ) {				
+					/* NB!  KML says coordinates come LON,LAT */
+					var geopoint = new YGeoPoint( spl[1], spl[0] );
+					nm = new YMarker( geopoint );		
+				}else {
+					throw 'MarkerManager: Point.coordinates could not be parsed.\nIgnoring Placemark';
+				}
+				that.enrichMarker( nm, pmark );
+	
+				pDest[nm.id] = nm;
+			} catch(e){
+				jsdump(e)
 			}
-			that.enrichMarker( nm, pmark );
-
-			pDest[nm.id] = nm;
-		} catch(e){
-			jsdump(e)
-		}
-	});
+		});
+	}
+	
+	this.createDomGeocodeMarkers = function( pKML, pDest ){
+		/* Populates a hash of marker objects ready to be dropped onto the map.
+		 * The pDest hash is keyed by the YMarker.id
+		 * Only handles Dom Placemark elments with GeoCodeAddress elements AND without a cooordinates element
+		 * Privileged method
+		 */
+		var nm;
+		for(var keys in pDest){
+			delete pDest[keys];
+		};
+		$(pKML).find('Placemark:has("ExtendedData>GeocodeAddress")').not(':has("Point>coordinates")').each(function(idx, pmark){
+			try{
+				var geoaddr = $.trim( $(pmark).find('ExtendedData>GeocodeAddress:first').text() );
+				nm = new YMarker(geoaddr);
+				nm.on1map_geocodeAddress = geoaddr;
+				
+				that.enrichMarker( nm, pmark );
+	
+				pDest[nm.id] = nm;
+			} catch(e){
+				jsdump(e)
+			}
+		});
+	}
+	
+	that.setPopupLabels = function( pVisibleMarkers, pPopupAttribArr ){
+		/* Takes an array of enriched markers and sets their popup contents to the
+		 * on1data values named pPopupAttribArr
+		 * Privileged method
+		 */
+		 $.each( pVisibleMarkers, function(idx, marker){
+			that.setPopupLabel(marker, pPopupAttribArr);
+		 });
+	}
 }
-MarkerManager.prototype.createDomGeocodeMarkers = function( pKML, pDest ){
-	/* Populates a hash of marker objects ready to be dropped onto the map.
-	 * The pDest hash is keyed by the YMarker.id
-	 * Only handles Dom Placemark elments with GeoCodeAddress elements AND without a cooordinates element
-	 */
-	var that = this;
-	var nm;
-	for(var keys in pDest){
-		delete pDest[keys];
-	};
-	$(pKML).find('Placemark:has("ExtendedData>GeocodeAddress")').not(':has("Point>coordinates")').each(function(idx, pmark){
-		try{
-			var geoaddr = $.trim( $(pmark).find('ExtendedData>GeocodeAddress:first').text() );
-			nm = new YMarker(geoaddr);
-			nm.on1map_geocodeAddress = geoaddr;
-			
-			that.enrichMarker( nm, pmark );
 
-			pDest[nm.id] = nm;
-		} catch(e){
-			jsdump(e)
-		}
-	});
-}
 MarkerManager.prototype.enrichMarker = function( pMarker, pDomFrag ){
 	/* Tags the DOM document Placemark element with attribute "on1map_markerid", the ID of the created marker.
 	 * Tags the YMarker object with a jquery reference "on1map_kml_ref" into the DOM doc.
@@ -119,15 +135,7 @@ MarkerManager.prototype.setPinLabels = function( pVisibleMarkers, pLabelAttrib )
 		pMarker.addAutoExpand(labelstr);
 	 });
 }
-MarkerManager.prototype.setPopupLabels = function( pVisibleMarkers, pPopupAttribArr ){
-	/* Takes an array of enriched markers and sets their popup contents to the
-	 * on1data values named pPopupAttribArr
-	 */
-	 var that = this;
-	 $.each( pVisibleMarkers, function(idx, marker){
-		that.setPopupLabel(marker, pPopupAttribArr);
-	 });
-}
+
 MarkerManager.prototype.setPopupLabel = function( pMarker, pPopupAttribArr ){
 	var html;
 	if(pPopupAttribArr.length === 0){

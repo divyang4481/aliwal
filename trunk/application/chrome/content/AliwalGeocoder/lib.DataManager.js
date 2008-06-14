@@ -1,5 +1,60 @@
 function DataManager(){
 	/* Namespace for Data functionality */
+	
+	var that = this; // http://javascript.crockford.com/private.html
+	
+	// Privileged methods
+	this.saveFile = function(pFile, pKML ){
+	/* Saves a KML/XML document to a file. Enriches any pointless Placemarks if possible.
+	 * Thanks: http://www.captain.at/programming/xul/
+	 * Privileged method
+	 */
+		try {
+			var file = Components.classes["@mozilla.org/file/local;1"]
+		                     .createInstance(Components.interfaces.nsILocalFile);
+			file.initWithPath(pFile);
+				if ( file.exists() == false ) {
+					file.create( Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420 );
+				}
+				
+				that.enrichFromCache( pKML);
+				var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+					.createInstance( Components.interfaces.nsIFileOutputStream );
+				/* Open flags 
+				#define PR_RDONLY       0x01
+				#define PR_WRONLY       0x02
+				#define PR_RDWR         0x04
+				#define PR_CREATE_FILE  0x08
+				#define PR_APPEND      0x10
+				#define PR_TRUNCATE     0x20
+				#define PR_SYNC         0x40
+				#define PR_EXCL         0x80
+				*/
+				/*
+				** File modes ....
+				**
+				** CAVEAT: 'mode' is currently only applicable on UNIX platforms.
+				** The 'mode' argument may be ignored by PR_Open on other platforms.
+				**
+				**   00400   Read by owner.
+				**   00200   Write by owner.
+				**   00100   Execute (search if a directory) by owner.
+				**   00040   Read by group.
+				**   00020   Write by group.
+				**   00010   Execute by group.
+				**   00004   Read by others.
+				**   00002   Write by others
+				**   00001   Execute by others.
+				**
+				*/
+				outputStream.init( file, 0x02 | 0x08 | 0x20, 0664, 0);   // write, create, truncate
+				var serializer = new XMLSerializer();
+				serializer.serializeToStream( pKML, outputStream, "");
+				outputStream.close();
+		} catch(e){
+			throw e;
+		}	
+	}
 }
 DataManager.prototype.emptyObj = function( pObj){
 	for(var key in pObj ){
@@ -66,7 +121,6 @@ DataManager.prototype.domMissingGeocode = function( pDoc ){
 DataManager.prototype.enrichWithGeocode = function( pPlacemarks, pGeoElements ){
 	/* Scans a JQuery list of Placemarks from the DOM and adds a Geocode element if there is no Point.coordinates or GeocodeAddress
 	 */
-	var that = this;
 	var domp = new DOMParser()
 	$(pPlacemarks).each( function(idx, pointless){
 		var geostr = '';
@@ -100,61 +154,9 @@ DataManager.prototype.enrichFromCache = function( pDoc){
 		}			
 	});
 }
-DataManager.prototype.saveFile = function(pFile, pKML ){
-/* Saves a KML/XML document to a file. Enriches any pointless Placemarks if possible.
- * Thanks: http://www.captain.at/programming/xul/
- */
-	var that = this;
-	try {
-		var file = Components.classes["@mozilla.org/file/local;1"]
-	                     .createInstance(Components.interfaces.nsILocalFile);
-		file.initWithPath(pFile);
-			if ( file.exists() == false ) {
-				file.create( Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420 );
-			}
-			
-			that.enrichFromCache( pKML);
-			var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-				.createInstance( Components.interfaces.nsIFileOutputStream );
-			/* Open flags 
-			#define PR_RDONLY       0x01
-			#define PR_WRONLY       0x02
-			#define PR_RDWR         0x04
-			#define PR_CREATE_FILE  0x08
-			#define PR_APPEND      0x10
-			#define PR_TRUNCATE     0x20
-			#define PR_SYNC         0x40
-			#define PR_EXCL         0x80
-			*/
-			/*
-			** File modes ....
-			**
-			** CAVEAT: 'mode' is currently only applicable on UNIX platforms.
-			** The 'mode' argument may be ignored by PR_Open on other platforms.
-			**
-			**   00400   Read by owner.
-			**   00200   Write by owner.
-			**   00100   Execute (search if a directory) by owner.
-			**   00040   Read by group.
-			**   00020   Write by group.
-			**   00010   Execute by group.
-			**   00004   Read by others.
-			**   00002   Write by others
-			**   00001   Execute by others.
-			**
-			*/
-			outputStream.init( file, 0x02 | 0x08 | 0x20, 0664, 0);   // write, create, truncate
-			var serializer = new XMLSerializer();
-			serializer.serializeToStream( pKML, outputStream, "");
-			outputStream.close();
-	} catch(e){
-		throw e;
-	}	
-}
 DataManager.prototype.loadFile = function(pFile, pLoadHandler, pProgressHandler, pErrorHandler, pCallback ){
 /* Loads a KML File into a DOM document and passes that to pCallback
  */
-	var that = this;
 	var req = new XMLHttpRequest();			
 	req.overrideMimeType('text/xml');	
 	req.onprogress = pProgressHandler;
@@ -184,7 +186,6 @@ DataManager.prototype.importDelimitedFile = function(pFile,pDelimiters,
 													pCallback ){
 /* Loads a CSV file into a DOM document and passes that to pCallback 
  */
-	var that = this;
 	var headerline={};
 	var dataline = {};
 	var hasmore = true;
