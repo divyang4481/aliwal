@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- Thanks: Copied from Firefox 3beta 5 ./preferences/connection.xul -->
 
-<!DOCTYPE prefwindow SYSTEM "chrome://on1map/locale/connection.dtd">
+<!DOCTYPE prefwindow SYSTEM "chrome://AliwalGeocoder/locale/connection.dtd">
 
 <?xml-stylesheet href="chrome://AliwalGeocoder/skin/connection.css" type="text/css"?>
 
