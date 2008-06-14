@@ -157,7 +157,7 @@ function DomManager(){
 		 * Privileged method.
 		 */
 		// New version
-		//return that.pinLabels;
+		return that.pinLabels;
 		
 		// Old version below, just in case
 		var ret = new Array();
@@ -211,7 +211,7 @@ function DomManager(){
 		
 			// Popup Selectors	
 			// Switched off. Unnecessary visual clutter.
-			domMgr.drawPopupSelector('pin_popup_switches' );	
+			//domMgr.drawPopupSelector('pin_popup_switches' );	
 		}
 	}
 
