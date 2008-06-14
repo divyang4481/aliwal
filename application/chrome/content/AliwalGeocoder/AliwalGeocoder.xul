@@ -16,27 +16,25 @@
 <!-- On1Map libs -->
 	<script type="application/x-javascript" src="chrome://global/content/printUtils.js"/>
 	<script src="lib.CacheManager.js" 	/>
-	<script src="lib.SaxEvent.js" 		/>
 	<script src="lib.DataManager.js" 	/>
 	<script src="AliwalGeocoder.js" 		/>
 
 	<script src="WebProgressListener.js" />
-	
- 
- 	<command id="cmd_new" 		oncommand="fileNew();"/>
-	<command id="cmd_open" 		oncommand="fileOpen();"/>
+	 
+ 	<command id="cmd_new" 			oncommand="fileNew();"/>
+	<command id="cmd_open" 			oncommand="fileOpen();"/>
 	<command id="cmd_import_flat" 	oncommand="fileImportFlat();"/>
-	<command id="cmd_save" 		oncommand="fileSave();"/>
-	<command id="cmd_saveas" 	oncommand="fileSaveAs();"/>
-	<command id="cmd_close" 	oncommand="fileClose();"/>
+	<command id="cmd_save" 			oncommand="fileSave();"/>
+	<command id="cmd_saveas" 		oncommand="fileSaveAs();"/>
+	<command id="cmd_close" 		oncommand="fileClose();"/>
 	<command id="cmd_page_setup" 	oncommand="filePageSetup();"/>
-	<command id="cmd_print" 	oncommand="filePrint();"/>
-	<command id="cmd_quit" 		oncommand="fileQuit(false);"/>
-	<command id="cmd_viewdata" 	oncommand="goViewData();"/>
-	<command id="cmd_reload" 	oncommand="reload();"/>
-	<command id="cmd_preferences" oncommand="goPreferences();" />
-	<command id="cmd_about" 	oncommand="goAbout();" />
-	<command id="cmd_viewstop" 	oncommand="goViewStop();" />
+	<command id="cmd_print" 		oncommand="filePrint();"/>
+	<command id="cmd_quit" 			oncommand="fileQuit(false);"/>
+	<command id="cmd_viewdata" 		oncommand="goViewData();"/>
+	<command id="cmd_reload" 		oncommand="reload();"/>
+	<command id="cmd_preferences" 	oncommand="goPreferences();" />
+	<command id="cmd_about" 		oncommand="goAbout();" />
+	<command id="cmd_viewstop" 		oncommand="goViewStop();" />
 	
 	<keyset id="mainKeyset">
 		<key id="key_quitApplication" key="q" command="cmd_quit" modifiers="accel"/>
