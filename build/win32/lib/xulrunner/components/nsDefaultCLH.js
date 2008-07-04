@@ -1,4 +1,4 @@
-//@line 38 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\components\nsDefaultCLH.js"
+//@line 38 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\components\nsDefaultCLH.js"
 
 const nsISupports              = Components.interfaces.nsISupports;
 

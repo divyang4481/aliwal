@@ -1,4 +1,4 @@
-//@line 44 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\content\debug.js"
+//@line 44 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\content\debug.js"
 
 var EXPORTED_SYMBOLS = ["NS_ASSERT"];
 

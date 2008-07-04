@@ -1,4 +1,4 @@
-//@line 37 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\components\urlformatter\src\nsURLFormatter.js"
+//@line 37 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\components\urlformatter\src\nsURLFormatter.js"
 /**
  * @class nsURLFormatterService
  *
