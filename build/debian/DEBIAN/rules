@@ -1,0 +1,140 @@
+#!/usr/bin/make -f
+
+DEB_MOZ_APPLICATION=prism
+DEB_MOZ_DIR=/usr/share/$(DEB_MOZ_APPLICATION)
+DEB_MOZ_DATA=/usr/share/$(DEB_MOZ_APPLICATION)
+DEB_MOZ_BIG_ICON=runtime/chrome/locale/en-US/brand/icon128.png
+
+DEBIAN_XUL_DEV := /usr/lib/xulrunner-devel-$(shell xulrunner-1.9 --gre-version)
+
+include /usr/share/quilt/quilt.make
+include /usr/share/mozilla-devscripts/prism.mk
+
+WEBAPPS = \
+	"facebook@facebook@Facebook@http://www.facebook.com/@GTK;Network;" \
+	"ganalytics@google-analytics@Google~Analytics@http://analytics.google.com/@GTK;Network;" \
+	"gcalendar@google-calendar@Google~Calendar@https://www.google.com/calendar@GTK;Office;Calendar;" \
+	"gdocs@google-docs@Google~Docs@https://docs.google.com/@GTK;Office;Spreadsheet;WordProcessor;" \
+	"gmail@google-mail@Google~Mail~\(GMail\)@https://mail.google.com/@GTK;Network;Email;" \
+	"greader@google-reader@Google~Reader@https://www.google.com/reader@GTK;Network;News;" \
+	"groups@google-groups@Google~Groups@http://groups.google.com/groups/favorites@GTK;Network;News;" \
+	"gtalk@google-talk@Google~Talk@http://talkgadget.google.com/talkgadget/popout@GTK;Network;InstantMessaging;" \
+	"twitter@twitter@twitter@http://www.twitter.com/@GTK;Network;" \
+	$(NULL)
+
+build: patch configure-stamp build-stamp ini-stamp
+
+configure: configure.in
+	autoconf2.13
+
+GARBAGE += configure-stamp patches
+configure-stamp: configure
+	dh_testdir
+	if [ ! -L patches ] ; then ln -s debian/patches ; fi
+	# Workaround
+	find build config -type f | xargs chmod u+x
+	./configure --with-libxul-sdk=$(DEBIAN_XUL_DEV)
+	touch $@
+
+GARBAGE += build-stamp
+build-stamp:
+	dh_testdir
+	make
+	touch $@
+
+client/application.ini.in:
+	if [ ! -f client/application.ini.in ] ; then cp -a client/application.ini  client/application.ini.in ; fi
+	
+GARBAGE += ini-stamp
+ini-stamp: client/application.ini.in
+	. ./confvars.sh && sed \
+	-e "s/@APP_NAME@/$$MOZ_APP_NAME/g" \
+	-e "s/@APP_DISPLAYNAME@/$$MOZ_APP_DISPLAYNAME/g" \
+	-e "s/@APP_VERSION@/$$MOZ_APP_VERSION/g" \
+	-e "s/@MOZ_XUL_APP@/$$MOZ_XUL_APP/g" \
+	-e "s/@MOZ_UPDATER@/$$MOZ_UPDATER/g" \
+	-e "s/@MOZ_ENABLE_LIBXUL@/$$MOZ_ENABLE_LIBXUL/g" \
+	-e "s/@MOZ_NO_XPCOM_OBSOLETE@/$$MOZ_NO_XPCOM_OBSOLETE/g" \
+	-e "s/@MOZ_XULRUNNER@/$$MOZ_XULRUNNER/g" \
+	-e "s/@GRE_BUILDID@/$(shell date +%Y%m%d)/g" \
+	< $< > $(basename $<)
+	touch $@
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_installdirs
+
+	make install
+
+	install -d -m 755  debian/tmp$(DEB_MOZ_DIR)
+	( cd client ; tar --exclude=macbuild -cf - . ) | ( cd debian/tmp$(DEB_MOZ_DIR) ; tar xvf - )
+	( cd common ; tar cf - . ) | ( cd debian/tmp$(DEB_MOZ_DIR) ; tar xvf - )
+	uudecode -o debian/prism.png debian/prism.png.uu
+	install -m 644 debian/prism.png debian/tmp$(DEB_MOZ_DIR)/chrome/icons/default/default.png
+	install -m 644 debian/prism.png debian/tmp$(DEB_MOZ_DIR)/chrome/icons/default/app.png
+	#install -m 644 debian/tmp$(DEB_MOZ_DIR)/chrome/icons/default/webrunner.png debian/tmp$(DEB_MOZ_DIR)/chrome/icons/default/app16.png
+	install -m 755 debian/prism.sh debian/tmp/usr/share/$(DEB_MOZ_APPLICATION)/$(DEB_MOZ_APPLICATION)
+	# WebApps
+	install -d -m 755 debian/tmp$(DEB_MOZ_DATA)/apps
+	( cd install/profiles; tar cf - . ) | ( cd debian/tmp$(DEB_MOZ_DATA)/apps ; tar xvf - )
+	# Desktop files
+	install -d -m 755 debian/tmp/usr/share/applications
+	install -m 644 debian/*.desktop debian/tmp/usr/share/applications
+	# Icons
+	for size in 48 ; do \
+	 install -d -m 755 debian/tmp/usr/share/icons/gnome/$${size}x$${size}/mimetypes ; \
+	 install -m 644 newapp/chrome/icons/default/install-shortcut$$size.png debian/tmp/usr/share/icons/gnome/$${size}x$${size}/mimetypes/gnome-mime-application-vnd.mozilla.webapp.png ; \
+	done
+	install -d -m 755 debian/tmp/usr/share/pixmaps
+	for app in $(WEBAPPS) ; do \
+	 APP=`echo $$app | cut -d@ -f1` ; \
+	 NAME=`echo $$app | cut -d@ -f2` ; \
+	 ( cd debian ; unzip tmp$(DEB_MOZ_DATA)/apps/$$APP.webapp $$APP.xpm ); \
+	 if [ -e debian/$$APP.xpm ] ; then \
+	   convert debian/$$APP.xpm debian/$$APP.png ; \
+	   ( cd debian ; zip tmp$(DEB_MOZ_DATA)/apps/$$APP.webapp $$APP.png ) ; \
+	   mv debian/$$APP.png debian/prism-$$NAME.png ; \
+	   rm -f debian/$$APP.xpm ; \
+	 else \
+	   cp debian/prism.png debian/prism-$$NAME.png ; \
+	 fi ; \
+	done
+	install -m 644 debian/*.png debian/tmp/usr/share/pixmaps
+	install -m 644 $(DEB_MOZ_BIG_ICON) debian/tmp/usr/share/pixmaps/prism.png
+
+binary-indep: install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installchangelogs prism/changelog
+	dh_install
+	dh_installmime
+	dh_installman
+	dh_icons
+	dh_desktop
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-arch:
+
+binary: binary-arch binary-indep
+
+clean: distclean unpatch
+distclean:
+	dh_testdir
+	dh_testroot
+	-f Makefile && make distclean
+	rm -rf dist _javagen config/*.pyc runtime/components/public/_xpidlgen runtime/components/public/_javagen
+	rm -f $(GARBAGE)
+	rm -rf debian/tmp
+	rm -f debian/prism-*.xpm debian/prism-*.png debian/prism.png
+	if [ -f client/application.ini.in ] ; then mv client/application.ini.in client/application.ini ; fi
+	dh_clean
+
+.PHONY: binary binary-arch binary-indep build clean clean-dh install
