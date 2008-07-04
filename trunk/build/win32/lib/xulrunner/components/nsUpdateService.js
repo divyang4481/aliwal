@@ -1,4 +1,4 @@
-//@line 44 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 44 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
 const PREF_APP_UPDATE_ENABLED             = "app.update.enabled";
 const PREF_APP_UPDATE_AUTO                = "app.update.auto";
@@ -29,10 +29,10 @@ const URI_UPDATES_PROPERTIES    = "chrome://mozapps/locale/update/updates.proper
 const URI_UPDATE_NS             = "http://www.mozilla.org/2005/app-update";
 
 const KEY_APPDIR          = "XCurProcD";
-//@line 75 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 75 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 const KEY_UPDROOT         = "UpdRootD";
 const KEY_UAPPDATA        = "UAppData";
-//@line 78 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 78 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
 const DIR_UPDATES         = "updates";
 const FILE_UPDATE_STATUS  = "update.status";
@@ -91,7 +91,7 @@ var gConsole    = null;
 var gLogEnabled = { };
 
 // shared code for suppressing bad cert dialogs
-//@line 40 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\shared\src\badCertHandler.js"
+//@line 40 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\shared\src\badCertHandler.js"
 
 /**
  * Only allow built-in certs for HTTPS connections.  See bug 340198.
@@ -157,7 +157,7 @@ BadCertHandler.prototype = {
     return this;
   }
 };
-//@line 137 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 137 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
 /**
  * Logs a string to the error console.
@@ -265,14 +265,14 @@ function getDirInternal(key, pathArray, shouldCreate, update) {
   var fileLocator = Components.classes["@mozilla.org/file/directory_service;1"]
                               .getService(Components.interfaces.nsIProperties);
   var dir = fileLocator.get(key, Components.interfaces.nsIFile);
-//@line 245 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 245 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
   if (update) {
     try {
       dir = fileLocator.get(KEY_UPDROOT, Components.interfaces.nsIFile);
     } catch (e) {
     }
   }
-//@line 252 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 252 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
   for (var i = 0; i < pathArray.length; ++i) {
     dir.append(pathArray[i]);
     if (shouldCreate && !dir.exists())
@@ -378,12 +378,12 @@ function getUpdatesDir(key) {
     appDir = fileLocator.get(key, Components.interfaces.nsIFile);
   else {
     appDir = fileLocator.get(KEY_APPDIR, Components.interfaces.nsIFile);
-//@line 358 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 358 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     try {
       appDir = fileLocator.get(KEY_UPDROOT, Components.interfaces.nsIFile);
     } catch (e) {
     }
-//@line 363 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 363 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
   }
   appDir.append(DIR_UPDATES);
   appDir.append("0");
@@ -1066,7 +1066,7 @@ function UpdateService() {
     gOSVersion = encodeURIComponent(osVersion);
   }
 
-//@line 1054 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1054 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
   // Start the update timer only after a profile has been selected so that the
   // appropriate values for the update check are read from the user's profile.
@@ -1162,7 +1162,7 @@ UpdateService.prototype = {
       status = null;
 
     var updRootKey = null;
-//@line 1150 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1150 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     function findPreviousUpdate(key) {
       var updateDir = getUpdatesDir(key);
       if (updateDir.exists()) {
@@ -1183,7 +1183,7 @@ UpdateService.prototype = {
     // required to migrate from older versions.
     if (status == null)
       findPreviousUpdate(KEY_APPDIR);
-//@line 1171 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1171 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
     if (status == STATE_DOWNLOADING) {
       LOG("UpdateService", "_postUpdateProcessing: Downloading patch, resuming...");
@@ -1227,13 +1227,13 @@ UpdateService.prototype = {
 
         LOG("UpdateService", "_postUpdateProcessing: Install Succeeded, Showing UI");
         prompter.showUpdateInstalled(update);
-//@line 1218 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1218 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
         // Perform platform-specific post-update processing.
         if (POST_UPDATE_CONTRACTID in Components.classes) {
           Components.classes[POST_UPDATE_CONTRACTID].
               createInstance(Components.interfaces.nsIRunnable).run();
         }
-//@line 1224 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1224 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
         // Done with this update. Clean it up.
         cleanupActiveUpdate(updRootKey);
@@ -1536,7 +1536,7 @@ UpdateService.prototype = {
         upDirFile.create(nsILocalFile.NORMAL_FILE_TYPE, PERMS_FILE);
         upDirFile.remove(false);
       }
-//@line 1527 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1527 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
       var sysInfo =
         Components.classes["@mozilla.org/system-info;1"]
                   .getService(Components.interfaces.nsIPropertyBag2);
@@ -1614,7 +1614,7 @@ UpdateService.prototype = {
           actualAppDirFile.remove(false);
         }
       }
-//@line 1605 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1605 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     }
     catch (e) {
        LOG("UpdateService", "can't update, no privileges: " + e);
@@ -2801,7 +2801,7 @@ TimerManager.prototype = {
   }
 };
 
-//@line 2792 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 2792 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 /**
  * UpdatePrompt
  * An object which can prompt the user with information about updates, request
@@ -3079,7 +3079,7 @@ UpdatePrompt.prototype = {
     return this;
   }
 };
-//@line 3070 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3070 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
 var gModule = {
   registerSelf: function(componentManager, fileSpec, location, type) {
@@ -3122,13 +3122,13 @@ var gModule = {
                className  : "Update Checker",
                factory    : makeFactory(Checker)
              },
-//@line 3113 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3113 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     prompt:  { CID        : Components.ID("{27ABA825-35B5-4018-9FDD-F99250A0E722}"),
                contractID : "@mozilla.org/updates/update-prompt;1",
                className  : "Update Prompt",
                factory    : makeFactory(UpdatePrompt)
              },
-//@line 3119 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3119 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     timers:  { CID        : Components.ID("{B322A5C0-A419-484E-96BA-D7182163899F}"),
                contractID : "@mozilla.org/updates/timer-manager;1",
                className  : "Timer Manager",
@@ -3172,14 +3172,14 @@ function NSGetModule(compMgr, fileSpec) {
  *          the specified update, false otherwise.
  */
 function isCompatible(update) {
-//@line 3163 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3163 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
   var em =
       Components.classes["@mozilla.org/extensions/manager;1"].
       getService(nsIExtensionManager);
   var items = em.getIncompatibleItemList("", update.extensionVersion,
     update.platformVersion, nsIUpdateItem.TYPE_ANY, false, { });
   return items.length == 0;
-//@line 3172 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3172 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 }
 
 /**
@@ -3198,7 +3198,7 @@ function showPromptIfNoIncompatibilities(update) {
     prompter.showUpdateAvailable(update);
   }
 
-//@line 3191 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3191 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
   /**
    * Determines if an addon is compatible with a particular update.
    * @param   addon
@@ -3307,6 +3307,6 @@ function showPromptIfNoIncompatibilities(update) {
     em.update([], 0, mode, listener);
   }
   else
-//@line 3300 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3300 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     showPrompt(update);
 }

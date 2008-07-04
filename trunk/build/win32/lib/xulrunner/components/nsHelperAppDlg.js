@@ -1,5 +1,5 @@
 /*
-//@line 44 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 44 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
 */
 
 /* This file implements the nsIHelperAppLauncherDialog interface.
@@ -233,7 +233,7 @@ nsUnknownContentTypeDialog.prototype = {
 
       this.makeFileUnique(aLocalFile);
 
-//@line 278 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 278 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
       let ext;
       try {
         // We can fail here if there's no primary extension set
@@ -251,7 +251,7 @@ nsUnknownContentTypeDialog.prototype = {
         f.remove(false);
         this.makeFileUnique(aLocalFile);
       }
-//@line 296 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 296 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
 
       return aLocalFile;
     },
@@ -419,7 +419,7 @@ nsUnknownContentTypeDialog.prototype = {
         // want users to be able to autodownload .exe files. 
         var rememberChoice = this.dialogElement("rememberChoice");
 
-//@line 482 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 482 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
         if (shouldntRememberChoice) {
           rememberChoice.checked = false;
           rememberChoice.disabled = true;
@@ -559,7 +559,7 @@ nsUnknownContentTypeDialog.prototype = {
     // Returns true if opening the default application makes sense.
     openWithDefaultOK: function() {
         // The checking is different on Windows...
-//@line 622 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 622 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
         // Windows presents some special cases.
         // We need to prevent use of "system default" when the file is
         // executable (so the user doesn't launch nasty programs downloaded
@@ -569,7 +569,7 @@ nsUnknownContentTypeDialog.prototype = {
         
         //  Default is Ok if the file isn't executable (and vice-versa).
         return !this.mLauncher.targetFileIsExecutable;
-//@line 637 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 637 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
     },
     
     // Set "default" application description field.
@@ -590,9 +590,9 @@ nsUnknownContentTypeDialog.prototype = {
 
     // getPath:
     getPath: function (aFile) {
-//@line 660 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 660 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
       return aFile.path;
-//@line 662 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 662 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
     },
 
     // initAppAndSaveToDiskValues:
@@ -821,7 +821,7 @@ nsUnknownContentTypeDialog.prototype = {
           // for the file to be saved to to pass to |saveToDisk| - otherwise
           // we must ask the user to pick a save name.
 
-//@line 904 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 904 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
 
           // see @notify
           // we cannot use opener's setTimeout, see bug 420405
@@ -876,20 +876,20 @@ nsUnknownContentTypeDialog.prototype = {
     // Retrieve the pretty description from the file
     getFileDisplayName: function getFileDisplayName(file)
     { 
-//@line 959 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 959 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
         if (file instanceof Components.interfaces.nsILocalFileWin) {
           try {
             return file.getVersionInfoField("FileDescription");
           } catch (ex) {
           }
         }
-//@line 966 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 966 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
         return file.leafName;
     },
 
     // chooseApp:  Open file picker and prompt user for application.
     chooseApp: function() {
-//@line 972 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 972 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
     // Protect against the lack of an extension    
     var fileExtension = "";
     try {
@@ -954,7 +954,7 @@ nsUnknownContentTypeDialog.prototype = {
         openHandler.selectedItem = this.dialogElement(lastSelectedID);
     }
 
-//@line 1076 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
+//@line 1076 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\downloads\src\nsHelperAppDlg.js.in"
     },
 
     // Turn this on to get debugging messages.

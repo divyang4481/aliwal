@@ -1,6 +1,6 @@
 /* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /*
-//@line 44 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 44 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 */
 
 //
@@ -144,7 +144,7 @@ var gFirstRun             = false;
 var gIDTest = /^(\{[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\}|[a-z0-9-\._]*\@[a-z0-9-\._]+)$/i;
 
 // shared code for suppressing bad cert dialogs
-//@line 40 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\shared\src\badCertHandler.js"
+//@line 40 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\shared\src\badCertHandler.js"
 
 /**
  * Only allow built-in certs for HTTPS connections.  See bug 340198.
@@ -210,7 +210,7 @@ BadCertHandler.prototype = {
     return this;
   }
 };
-//@line 188 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 188 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 
 /**
  * Creates a Version Checker object.
@@ -1373,7 +1373,7 @@ DirectoryInstallLocation.prototype = {
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIInstallLocation])
 };
 
-//@line 1351 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 1351 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 
 const nsIWindowsRegKey = Ci.nsIWindowsRegKey;
 
@@ -1431,7 +1431,7 @@ WinRegInstallLocation.prototype = {
     var appVendor = gApp.vendor;
     var appName = gApp.name;
 
-//@line 1413 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 1413 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 
     // XULRunner-based apps may intentionally not specify a vendor:
     if (appVendor != "")
@@ -1514,7 +1514,7 @@ WinRegInstallLocation.prototype = {
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIInstallLocation])
 };
 
-//@line 1496 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 1496 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 
 /**
  * An object which handles the installation of an Extension.
@@ -2503,7 +2503,7 @@ function ExtensionManager() {
     InstallLocations.put(systemLocation);
   }
 
-//@line 2485 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 2485 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
   // Register HKEY_LOCAL_MACHINE Install Location
   InstallLocations.put(
       new WinRegInstallLocation("winreg-app-global",
@@ -2517,7 +2517,7 @@ function ExtensionManager() {
                                 nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
                                 false,
                                 Ci.nsIInstallLocation.PRIORITY_APP_SYSTEM_USER + 10));
-//@line 2499 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 2499 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 
   // Register Additional Install Locations
   var categoryManager = Cc["@mozilla.org/categorymanager;1"].
@@ -2842,12 +2842,12 @@ ExtensionManager.prototype = {
   _installGlobalItem: function(file) {
     if (!file || !file.exists())
       throw new Error("Unable to find the file specified on the command line!");
-//@line 2824 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 2824 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
     // make sure the file is local on Windows
     file.normalize();
     if (file.path[1] != ':')
       throw new Error("Can't install global chrome from non-local file "+file.path);
-//@line 2829 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 2829 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
     var installManifestFile = extractRDFFileToTempDir(file, FILE_INSTALL_MANIFEST, true);
     if (!installManifestFile.exists())
       throw new Error("The package is missing an install manifest!");
@@ -5577,13 +5577,13 @@ ExtensionManager.prototype = {
       // count to 0 to prevent this dialog from being displayed again.
       this._downloadCount = 0;
       var result;
-//@line 5559 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 5559 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
       result = this._confirmCancelDownloads(this._downloadCount,
                                             "quitCancelDownloadsAlertTitle",
                                             "quitCancelDownloadsAlertMsgMultiple",
                                             "quitCancelDownloadsAlertMsg",
                                             "dontQuitButtonWin");
-//@line 5571 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 5571 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
       if (subject instanceof Ci.nsISupportsPRBool)
         subject.data = result;
     }
@@ -6095,7 +6095,7 @@ ExtensionItemUpdater.prototype = {
   _listener           : null,
 
   /* ExtensionItemUpdater
-//@line 6108 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 6108 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
   */
   checkForUpdates: function(aItems, aItemCount, aUpdateCheckType,
                             aListener) {
@@ -6453,7 +6453,7 @@ RDFItemUpdater.prototype = {
 
   onDatasourceLoaded: function(aDatasource, aLocalItem) {
     /*
-//@line 6506 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 6506 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
     */
     if (!aDatasource.GetAllResources().hasMoreElements()) {
       LOG("RDFItemUpdater:onDatasourceLoaded: Datasource empty.\r\n" +
@@ -8024,7 +8024,7 @@ ExtensionsDataSource.prototype = {
     if (id in this.visibleItems && this.visibleItems[id]) {
       var oldLocation = InstallLocations.get(this.visibleItems[id]);
       var newLocation = InstallLocations.get(locationKey);
-      if (forceReplace || newLocation.priority < oldLocation.priority)
+      if (forceReplace || !oldLocation || newLocation.priority < oldLocation.priority)
         this.visibleItems[id] = locationKey;
     }
     else
@@ -8128,6 +8128,8 @@ ExtensionsDataSource.prototype = {
   _getThemeImageURL: function(item, fileName, fallbackURL) {
     var id = stripPrefix(item.Value, PREFIX_ITEM_URI);
     var installLocation = this._em.getInstallLocation(id);
+    if (!installLocation)
+      return fallbackURL;
     var file = installLocation.getItemFile(id, fileName)
     if (file.exists())
       return gRDF.GetResource(getURLSpecFromFile(file));

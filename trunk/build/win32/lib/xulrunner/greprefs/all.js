@@ -134,7 +134,7 @@ pref("gfx.color_management.display_profile", "");
 pref("accessibility.browsewithcaret", false);
 pref("accessibility.warn_on_browsewithcaret", true);
 
-//@line 138 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 138 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 // Tab focus model bit field:
 // 1 focuses text controls, 2 focuses other form elements, 4 adds links.
 // Most users will want 1, 3, or 7.
@@ -147,7 +147,7 @@ pref("accessibility.tabfocus_applies_to_xul", false);
 // unless this preference was set manually
 pref("ui.scrollToClick", 0);
 
-//@line 154 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 154 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
 pref("accessibility.usetexttospeech", "");
 pref("accessibility.usebrailledisplay", "");
@@ -168,6 +168,9 @@ pref("accessibility.typeaheadfind.enabletimeout", true);
 pref("accessibility.typeaheadfind.soundURL", "beep");
 pref("accessibility.typeaheadfind.enablesound", true);
 pref("accessibility.typeaheadfind.prefillwithselection", true);
+
+// use Mac OS X Appearance panel text smoothing setting when rendering text, disabled by default
+pref("gfx.use_text_smoothing_setting", false);
 
 pref("browser.history_expire_days", 9);
 
@@ -520,7 +523,7 @@ pref("network.protocol-handler.external.data", false);
 pref("network.protocol-handler.external.ms-help", false);
 pref("network.protocol-handler.external.shell", false);
 pref("network.protocol-handler.external.vnd.ms.radio", false);
-//@line 529 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 532 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 pref("network.protocol-handler.external.disk", false);
 pref("network.protocol-handler.external.disks", false);
 pref("network.protocol-handler.external.afp", false);
@@ -749,12 +752,12 @@ pref("network.negotiate-auth.gsslib", "");
 // Specify if the gss lib comes standard with the OS
 pref("network.negotiate-auth.using-native-gsslib", true);
 
-//@line 758 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 761 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
 // Default to using the SSPI intead of GSSAPI on windows 
 pref("network.auth.use-sspi", true);
 
-//@line 763 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 766 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
 // The following prefs are used to enable automatic use of the operating
 // system's NTLM implementation to silently authenticate the user with their
@@ -778,9 +781,9 @@ pref("network.hosts.nntp_server",           "news.mozilla.org");
 
 pref("permissions.default.image",           1); // 1-Accept, 2-Deny, 3-dontAcceptForeign
 
-//@line 790 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 793 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 pref("network.proxy.type",                  0);
-//@line 795 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 798 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
 pref("network.proxy.ftp",                   "");
 pref("network.proxy.ftp_port",              0);
@@ -1114,7 +1117,7 @@ pref("font.minimum-size.x-western", 0);
 pref("font.minimum-size.x-unicode", 0);
 pref("font.minimum-size.x-user-def", 0);
 
-//@line 1129 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 1132 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 pref("font.name.serif.ar", "Times New Roman");
 pref("font.name.sans-serif.ar", "Arial");
 pref("font.name.monospace.ar", "Courier New");
@@ -1227,7 +1230,7 @@ pref("font.name.monospace.x-tamil", "Latha");
 pref("font.name-list.serif.x-tamil", "Latha, Code2000");
 pref("font.name-list.monospace.x-tamil", "Latha, Code2000");
 
-//@line 1242 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 1245 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
 pref("font.name.serif.x-armn", "Sylfaen");
 pref("font.name.sans-serif.x-armn", "Arial AMU");
@@ -1495,23 +1498,23 @@ pref("intl.jis0208.map", "CP932");
 // Switch the keyboard layout per window
 pref("intl.keyboard.per_window_layout", false);
 
-//@line 1511 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 1514 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 1927 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 1930 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2115 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2127 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2206 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2218 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2465 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2477 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2533 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2545 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2559 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2571 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2579 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2591 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2587 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2599 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
 // Login Manager prefs
 pref("signon.rememberSignons",              true);

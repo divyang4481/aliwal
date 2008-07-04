@@ -1,4 +1,4 @@
-//@line 41 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\components\console\jsconsole-clhandler.js"
+//@line 41 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\components\console\jsconsole-clhandler.js"
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");

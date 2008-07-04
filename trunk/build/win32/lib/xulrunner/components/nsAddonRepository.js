@@ -1,6 +1,6 @@
 /* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /*
-//@line 38 "e:\builds\tinderbox\XR-Trunk\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsAddonRepository.js"
+//@line 38 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsAddonRepository.js"
 */
 
 const Cc = Components.classes;
