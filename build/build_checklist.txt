@@ -20,10 +20,11 @@ deprecate the old release by adding the deprecated tag and removing the featured
 WIN
 ==========================
 From explorer, SVN update trunk
-cd into \src\trunk\build\win
-.\build.cmd and (A)l the two prompts.
-This will create  Aliwal Geocoder Install.exe
-Rename it to  Aliwal Geocoder v003 Install.exe
+cd into \src\trunk\build
+ant patch_number
+ant clean
+ant win32_dist
+This will create  Aliwal Geocoder xxx Install.exe
 Upload to code.google.com with tags like "Featured,Type-Installer,OpSys-Windows,alpha"
 		and description like "Win Alpha release v003"
 deprecate the old release by adding the deprecated tag and removing the featured tag
