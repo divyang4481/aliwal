@@ -1,13 +1,16 @@
-
-
+ALL
+====================
+Make sure the debug box on on1map.html is commented out
+svn status & svn update to make sure everything is up to date
+cd into ./src/trunk/build
+ant patch_number
+ant clean
 
 OSX
 ====================
-Make sure the debug box on on1map.html is commented out
-cd into ./build/osx
-delete everything, but don't rm -rf coz that might clobber subversion.
-svn update
-./build_osx.sh
+Make sure you've done the ALL instructions above
+cd into .src/trunk/build/
+ant dist_osx
 That will create  "Aliwal Geocoder.app"
 tar & zip that up with a version number in the archive name. tar -czvf "Aliwal Geocoder v003.app.tar.gz" "Aliwal Geocoder.app"
 upload that to http://code.google.com/p/aliwal/downloads/list 
@@ -19,12 +22,12 @@ deprecate the old release by adding the deprecated tag and removing the featured
 
 WIN
 ==========================
+Make sure you've done the ALL instructions above
 From explorer, SVN update trunk
-cd into \src\trunk\build
-ant patch_number
+cd into .\src\trunk\build
 ant clean
 ant win32_dist
 This will create  Aliwal Geocoder xxx Install.exe
 Upload to code.google.com with tags like "Featured,Type-Installer,OpSys-Windows,alpha"
 		and description like "Win Alpha release v003"
-deprecate the old release by adding the deprecated tag and removing the featured tag
+deprecate the old release by replacing the "featured" tag with "deprecated"
