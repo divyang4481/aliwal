@@ -28,6 +28,7 @@
 	xmlns  = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
   
 <!-- External libs -->
+	<script src="chrome://venkman/content/venkman-overlay.js"/>
 	<script src="jquery-1.2.3.js" 		/>  
 	
 <!-- On1Map libs -->
@@ -52,6 +53,8 @@
 	<command id="cmd_preferences" 	oncommand="goPreferences();" />
 	<command id="cmd_about" 		oncommand="goAbout();" />
 	<command id="cmd_viewstop" 		oncommand="goViewStop();" />
+	<command id="cmd_viewvenkman" 	oncommand="viewVenkman();" />
+	
 	
 	<keyset id="mainKeyset">
 		<key id="key_quitApplication" key="q" command="cmd_quit" modifiers="accel"/>
@@ -84,9 +87,10 @@
 	  
 		<menu id="view-menu" label="&view.label;">
 			<menupopup id="view-popup">
-<!--			<menuitem 						label="&viewData.label;" 	 	command="cmd_viewdata" 	type="checkbox" checked="false"/>  -->
+				<menuitem 						label="&viewData.label;" 	 	command="cmd_viewdata" 	type="checkbox" checked="false"/>  
 				<menuitem 						label="&viewStop.label;" 		command="cmd_viewstop" 	id="menu_viewstop" />
 				<menuitem 						label="&viewReload.label;" 		command="cmd_reload" 	/>
+				<menuitem 						label="Venkman" 				command="cmd_viewvenkman" 	/>
 				
 				<menuseparator/>
 				
