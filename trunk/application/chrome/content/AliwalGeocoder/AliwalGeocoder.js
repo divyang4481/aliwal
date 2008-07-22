@@ -234,7 +234,6 @@ function toggleSidebar(){
 }
 
 function drawSidebarTree(){
-	return true;
 	xscopeNS.KML.firstChild.setAttribute('id', 'xscopeNS_KML');
 	try{
 		var dataEle = document.getElementById('xscopeNS_KML');
@@ -246,7 +245,7 @@ function drawSidebarTree(){
 	
 	jsdump('Appending xscopeNS.KML to document.getElementById(\'on1map\')');
 	var cloned = xscopeNS.KML.firstChild.cloneNode(true);
-	document.getElementById('on1map').appendChild( cloned, true);
+	document.getElementById('browser').appendChild( cloned, true);
 	
 	var tree = document.getElementById("tr_raw_data");
 	tree.datasources="#xscopeNS_KML";
@@ -268,6 +267,17 @@ function onload() {
 	browser.addProgressListener(listener, Components.interfaces.nsIWebProgress.NOTIFY_ALL);
     
 	goWelcome();
+}
+
+
+function toOpenWindowByType(inType, uri) {
+	/* For venkman debugger */
+	var winopts = "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar";
+	window.open(uri, "_blank", winopts);
+}
+
+function viewVenkman(){
+	start_venkman();
 }
 
 addEventListener("load", onload, false);
