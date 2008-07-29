@@ -188,9 +188,6 @@ function goWelcome(){
 	var browser = document.getElementById("browser");
 	browser.loadURI("chrome://AliwalGeocoder/content/welcome.html", null, null);
 }
-function goViewDataTree(){
-	toggleSidebar();
-}
 function goViewDataWindow(){
 	var winopts = "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar";
 	window.open("chrome://AliwalGeocoder/content/app.DataWindow.xul", "_blank", winopts);
@@ -223,36 +220,6 @@ function jsdump(str)
   Components.classes['@mozilla.org/consoleservice;1']
             .getService(Components.interfaces.nsIConsoleService)
             .logStringMessage(str);
-}
-
-function toggleSidebar(){
-	var sb = document.getElementById('hb_sidebar_data');
-	var sp = document.getElementById('sp_sidebar_data');
-	if( sb.getAttribute('collapsed') === 'true' ){
-		sb.removeAttribute('collapsed');
-		sp.removeAttribute('collapsed');
-	} else {
-		sb.setAttribute('collapsed', 'true');
-		sp.setAttribute('collapsed', 'true');
-	}
-}
-
-function drawSidebarTree(){
-	xscopeNS.KML.firstChild.setAttribute('id', 'xscopeNS_KML');
-	try{
-		var dataEle = document.getElementById('xscopeNS_KML');
-		jsdump('document.removeChild( dataEle );');
-		document.removeChild( dataEle );
-	} catch(e){
-		// ignore
-	}
-	
-	jsdump('Appending xscopeNS.KML to document.getElementById(\'on1map\')');
-	var cloned = xscopeNS.KML.firstChild.cloneNode(true);
-	document.getElementById('browser').appendChild( cloned, true);
-	
-	var tree = document.getElementById("tr_raw_data");
-	tree.datasources="#xscopeNS_KML";
 }
 function drawFileProgress(e){
 	var percentComplete = (e.position / e.totalSize)*100;
