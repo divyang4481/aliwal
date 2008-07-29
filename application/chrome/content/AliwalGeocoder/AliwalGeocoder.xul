@@ -48,7 +48,8 @@
 	<command id="cmd_page_setup" 	oncommand="filePageSetup();"/>
 	<command id="cmd_print" 		oncommand="filePrint();"/>
 	<command id="cmd_quit" 			oncommand="fileQuit(false);"/>
-	<command id="cmd_viewdata" 		oncommand="goViewData();"/>
+	<command id="cmd_viewdata" 		oncommand="goViewDataTree();"/>
+	<command id="cmd_viewdatawin" 	oncommand="goViewDataWindow();"/>
 	<command id="cmd_reload" 		oncommand="reload();"/>
 	<command id="cmd_preferences" 	oncommand="goPreferences();" />
 	<command id="cmd_about" 		oncommand="goAbout();" />
@@ -90,6 +91,7 @@
 				<menuitem 						label="&viewData.label;" 	 	command="cmd_viewdata" 	type="checkbox" checked="false"/>  
 				<menuitem 						label="&viewStop.label;" 		command="cmd_viewstop" 	id="menu_viewstop" />
 				<menuitem 						label="&viewReload.label;" 		command="cmd_reload" 	/>
+				<menuitem 						label="&viewDataWin.label;" 	command="cmd_viewdatawin" 	/>
 				<menuitem 						label="Venkman" 				command="cmd_viewvenkman" 	/>
 				
 				<menuseparator/>

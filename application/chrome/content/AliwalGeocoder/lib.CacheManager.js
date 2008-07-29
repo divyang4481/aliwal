@@ -16,7 +16,7 @@
 */
 function CacheManager(){
 	/* A Namespace for cache stuff.
-	 * Geocoding addresses to coordinates is expensive so the results are written to
+	 * Geocoding addresses to coordinates is expensive, so the results are written to
 	 * an internal database in key:value form where the address is the key and the value is a JSON object string.
 	 * Thanks: http://simon-cozens.org/programmer/articles/xul-storage.pod
 	 */
