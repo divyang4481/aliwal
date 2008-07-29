@@ -326,7 +326,7 @@ DomManager.prototype.drawTagsetFilter = function( pDivId, pTag, pTagData){
 DomManager.prototype.getFilterSelection = function(){
 	/* Returns an object. Members are named after the tagsets, their value is the array of selected tags 
 	 * Must return an empty array for tagsets with no selections. No tagsets implies no filtering at all.
-	 * Special case for options with class 'selectall'
+	 * Special case for options with class 'selectany'
 	 */
 	var ret = {};
 	$('SELECT.tagset_filter').each(function(i,v){

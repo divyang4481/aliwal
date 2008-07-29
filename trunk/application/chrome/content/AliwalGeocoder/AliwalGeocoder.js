@@ -188,8 +188,12 @@ function goWelcome(){
 	var browser = document.getElementById("browser");
 	browser.loadURI("chrome://AliwalGeocoder/content/welcome.html", null, null);
 }
-function goViewData(){
+function goViewDataTree(){
 	toggleSidebar();
+}
+function goViewDataWindow(){
+	var winopts = "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar";
+	window.open("chrome://AliwalGeocoder/content/app.DataWindow.xul", "_blank", winopts);
 }
 function goMap(){
 	var browser = document.getElementById("browser");

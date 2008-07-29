@@ -82,7 +82,7 @@ var lastBounds;
 
 $(document).ready( function(){
 	
-	/* Filter controls need to be in place bfore the map can be drawn */
+	/* Filter controls need to be in place before the map can be drawn */
 	domMgr.drawControls( true );
 	
 	// Attach an event handler to ALL of the options hideshow checkboxes
