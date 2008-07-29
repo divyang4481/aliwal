@@ -48,7 +48,6 @@
 	<command id="cmd_page_setup" 	oncommand="filePageSetup();"/>
 	<command id="cmd_print" 		oncommand="filePrint();"/>
 	<command id="cmd_quit" 			oncommand="fileQuit(false);"/>
-	<command id="cmd_viewdata" 		oncommand="goViewDataTree();"/>
 	<command id="cmd_viewdatawin" 	oncommand="goViewDataWindow();"/>
 	<command id="cmd_reload" 		oncommand="reload();"/>
 	<command id="cmd_preferences" 	oncommand="goPreferences();" />
@@ -87,8 +86,7 @@
 	  </menu>
 	  
 		<menu id="view-menu" label="&view.label;">
-			<menupopup id="view-popup">
-				<menuitem 						label="&viewData.label;" 	 	command="cmd_viewdata" 	type="checkbox" checked="false"/>  
+			<menupopup id="view-popup">  
 				<menuitem 						label="&viewStop.label;" 		command="cmd_viewstop" 	id="menu_viewstop" />
 				<menuitem 						label="&viewReload.label;" 		command="cmd_reload" 	/>
 				<menuitem 						label="&viewDataWin.label;" 	command="cmd_viewdatawin" 	/>
@@ -110,77 +108,6 @@
 	</menubar>
 
 	<hbox flex="1">
-
-		<vbox flex="1" id="hb_sidebar_data" collapsed="true">
-			<hbox flex="1">			
-				<groupbox id="gb_tree_data" flex="1">								
-					<tree id="tr_raw_data" datasources="" ref="*" querytype="xml" rows="22" enableColumnDrag="true" >
-						<treecols>
-					    	<treecol id="Tags" 		label="Tags" primary="true" flex="1" persist="width ordinal hidden"/>
-							<treecol id="Contents" 	label="Contents"  flex="2" persist="width ordinal hidden"/>
-						</treecols>
-					
-						<template>
-							<query expr="*">
-								<assign var="?o1m_text" 	expr="text()"/>
-								<assign var="?o1m_name" expr="name()"/>
-								
-							</query>
-										
-							<rule>
-								<where subject="?o1m_name" rel="equals" value="TagSet"/>
-								<action>
-									<treechildren>
-										<treeitem uri="?"  container="true" open="true">
-											<treerow>
-												<treecell label="?o1m_name" />
-												<treecell label="?name" />
-											</treerow>
-										</treeitem>
-									</treechildren>
-								</action>
-							</rule>			
-							<rule>
-								<where subject="?o1m_name" rel="equals" value="Data"/>
-								<action>
-									<treechildren>
-										<treeitem uri="?"  container="true" open="true">
-											<treerow>
-												<treecell label="?o1m_name" />
-												<treecell label="?name" />
-											</treerow>
-										</treeitem>
-									</treechildren>
-								</action>
-							</rule>			
-							<rule>
-								<action>
-									<treechildren>
-										<treeitem uri="?"  container="true" open="true">
-											<treerow>
-												<treecell label="?o1m_name" />
-												<treecell label="?o1m_text" />
-											</treerow>
-										</treeitem>
-									</treechildren>
-								</action>
-							</rule>
-						</template>
-					
-					</tree>
-				</groupbox>
-			</hbox>
-		</vbox>
-		<splitter
-		    id="sp_sidebar_data"
-		    state="closed"
-		    collapse="before"
-		    resizebefore="closest"
-		    resizeafter="closest"
-		     collapsed="true" >
-		    <grippy />
-		</splitter>
-
 		<browser flex="5" id="browser" src="" type="content-primary"/>
 	</hbox>
   	
