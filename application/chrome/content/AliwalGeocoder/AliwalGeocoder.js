@@ -15,14 +15,9 @@
 	along with Aliwal Geocoder.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* ***************************************************************************************************************************** */ 
-// Load an emtpy set of symbols that will be used to share data between the XUL & HTML
-Components.utils.import("resource://app/modules/xscope.jsm");
-//
-/* ***************************************************************************************************************************** */ 
-
 function fileOpen(){
-	
+	//ToDo: Put the geocoding wizard back in here
+	//
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;	
 	var CC = Components.classes;
 	var CI = Components.interfaces;
@@ -37,7 +32,6 @@ function fileOpen(){
 			xscopeNS.flags.loadingData = true;
 			xscopeNS.flags.promptForGeocodeFields = true;
 			
-			
 			var fLoadHandler = function(){}
 			var fProgressHandler = function (e) {
 				drawFileProgress(e);
@@ -45,39 +39,20 @@ function fileOpen(){
 			var fErrorHandler = function(e) {
 				jsdump("Error " + e.target.status + " occurred while loading the document.");
 			};
-			var fCallback = function( pDoc ){
-				/* dataMgr.loadFile() is asyncronous. 
-				 * This is called when it's finished loading successfully.
-				 */
-		
-				if(xscopeNS.flags.promptForGeocodeFields){
-					// Pop up a wizard which can get the geocode fields from the user
-					var placemarks = dataMgr.domMissingGeocode(pDoc);
-					if (placemarks.length > 0){
-						var params = {  KML 			: pDoc,
-										pointlessCount 	: placemarks.length,
-										callback 		: function(pGeocodeArgs){ 
-															dataMgr.enrichWithGeocode(placemarks, pGeocodeArgs);
-														  }
-									 };
-						window.openDialog(	"chrome://AliwalGeocoder/content/wiz.importKML.xul",
-											"importWizard","modal", params );
-					}
-				}
-				// ToDo: What to do if user cancels wizard ???
-				dataMgr.enrichFromCache( pDoc );
-				xscopeNS.KML = pDoc;
-				xscopeNS.flags.loadingData = false;
-				
-				// Drop the Map drawing into it's own thread
-				window.setTimeout( goMap, 1);
-				drawSidebarTree();
+			var fLoadedCallback = function(pPlacemark){		
+
 			};
 			
-			var dataMgr = new DataManager();
-			dataMgr.emptyObj( xscopeNS.pointMarkers );
-			dataMgr.emptyObj( xscopeNS.hiddenMarkers );
-			dataMgr.loadFile( fp.file.path, fLoadHandler, fProgressHandler, fErrorHandler, fCallback );
+			xscopeNS.amodel = new AliwalModel();
+			xscopeNS.acontroller = new AliwalController(xscopeNS.amodel);						
+			xscopeNS.acontroller.loadKMLFile( 	fp.file.path, 
+												fLoadHandler, 
+												fProgressHandler, 
+												fErrorHandler, 
+												fLoadedCallback );
+			xscopeNS.flags.loadingData = false;
+			// Drop the Map drawing into it's own thread
+			window.setTimeout( goMap, 1);
 		} catch(e){
 			jsdump(e);
 		}
@@ -98,47 +73,48 @@ function fileImportFlat(){
 		try {
 			xscopeNS.flags.loadingData = true;
 			xscopeNS.flags.promptForGeocodeFields = true;
-
-			var fLoadHandler = function(){}
-			var fProgressHandler = function (e) {
+			var fLoadHandler = function(){};
+			var fProgressHandler = function(e){
 				drawFileProgress(e);
 			};
 			var fErrorHandler = function(e) {
 				jsdump("Error " + e.target.status + " occurred while loading the document.");
 			};
-			var fDMCallback = function(pDoc){ 
-				xscopeNS.KML = pDoc;
-			};
 			var fWizCallback = function( pFilename,pLayout,
 										pDelimiters,pHeaderRows,pFooterRows,pColHeadings,
 										pDataCols,pTagCols,pGeocodeAddressCols,pLonLatCols){
-
-					if( pLayout === 'delimited'){
-						var dataMgr = new DataManager();
-						dataMgr.emptyObj( xscopeNS.pointMarkers );
-						dataMgr.emptyObj( xscopeNS.hiddenMarkers );
-						dataMgr.importDelimitedFile(pFilename,pDelimiters, 
-													pHeaderRows, pFooterRows,pColHeadings,
-													pDataCols, pTagCols, pGeocodeAddressCols, pLonLatCols,
-													fLoadHandler, fProgressHandler, fErrorHandler, 
-													fDMCallback );
-					
-					} else {
-						throw 'fileImportFlat: unhandled delimiter';
-					}
-					xscopeNS.flags.loadingData = false;				
-					// Drop the Map drawing into it's own thread
-					window.setTimeout( goMap, 1);
-					drawSidebarTree();
+				
+				xscopeNS.amodel = new AliwalModel();
+				xscopeNS.acontroller = new AliwalController();
+				if( pLayout === 'delimited'){						
+					xscopeNS.acontroller.loadDelimitedFile( pFilename, 
+															pDelimiters, 
+															pHeaderRows, 
+															pFooterRows,
+															pColHeadings,
+															pDataCols, 
+															pTagCols, 
+															pGeocodeAddressCols, 
+															pLonLatCols,
+															fLoadHandler, 
+															fProgressHandler, 
+															fErrorHandler, 
+															function(){alert('done')} );
+				} else {
+					throw 'fileImportFlat: unhandled delimiter';
 				}
+				xscopeNS.flags.loadingData = false;				
+				// Drop the Map drawing into it's own thread
+				window.setTimeout( goMap, 1);
+			}
 			xscopeNS.currentFile = fp.file.path;
 			var params = { 
 					filename: fp.file.path, 
 					callback: fWizCallback
-				};
+			};
 			window.openDialog("chrome://AliwalGeocoder/content/app.importWizard.xul","importWizard","modal", params);
 		} catch(e){
-			jsdump(e);
+			alert(e);
 		}
 	}
 }
@@ -184,17 +160,29 @@ function goAbout(){
 	window.openDialog("chrome://AliwalGeocoder/content/about.xul","aboutDialog","dialog" );
 }
 function goWelcome(){
+	var  mapBrowser = document.getElementById("BrowserTabMap" );
+	var dataBrowser = document.getElementById("BrowserTabData");
+	
+	var fEmpty = function(){};
+	
+	xscopeNS.amodel = new AliwalModel();
+	xscopeNS.acontroller = new AliwalController( xscopeNS.amodel );
+	xscopeNS.acontroller.loadDefaultData( fEmpty );
+	
+	mapBrowser.loadURI ("chrome://AliwalGeocoder/content/BrowserMap.html" , null, null);
+	dataBrowser.loadURI("chrome://AliwalGeocoder/content/BrowserData.html", null, null);
 	document.title = 'Aliwal Geocoder. Your data, on a map.';
-	var browser = document.getElementById("browser");
-	browser.loadURI("chrome://AliwalGeocoder/content/welcome.html", null, null);
 }
 function goViewDataWindow(){
 	var winopts = "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar";
 	window.open("chrome://AliwalGeocoder/content/app.DataWindow.xul", "_blank", winopts);
 }
 function goMap(){
-	var browser = document.getElementById("browser");
-	browser.loadURI("chrome://AliwalGeocoder/content/on1map.html", null, null);
+	var  mapBrowser = document.getElementById("BrowserTabMap" );
+	var dataBrowser = document.getElementById("BrowserTabData");
+	
+	mapBrowser.loadURI("chrome://AliwalGeocoder/content/BrowserMap.html"  , null, null);
+	dataBrowser.loadURI("chrome://AliwalGeocoder/content/BrowserData.html", null, null);
 }
 function goPreferences(){
 	window.openDialog("chrome://AliwalGeocoder/content/connection.xul", "", "chrome,toolbar");
@@ -204,18 +192,21 @@ function showConsole() {
   window.open("chrome://global/content/console.xul", "_blank",
     "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar");
 }
-function reload() {
-	var dataMgr = new DataManager();
-	var browser = document.getElementById("browser");
-	browser.reload();
+function viewReload() {
+	var  mapBrowser = document.getElementById("BrowserTabMap" );
+	var dataBrowser = document.getElementById("BrowserTabData");
+	
+	mapBrowser.reload();
+	dataBrowser.reload();
 }
-function stop() {
-  var browser = document.getElementById("browser");
-  browser.stop();
+function viewStop() {
+	var  mapBrowser = document.getElementById("BrowserTabMap" );
+	var dataBrowser = document.getElementById("BrowserTabData");
+	mapBrowser.stop();
+	dataBrowser.stop();
 }
 
-function jsdump(str)
-{
+function jsdump(str){
 	/* Thanks: http://developer.mozilla.org/en/docs/Debugging_a_XULRunner_Application */
   Components.classes['@mozilla.org/consoleservice;1']
             .getService(Components.interfaces.nsIConsoleService)
@@ -232,11 +223,9 @@ function drawFileProgress(e){
 };
 
 function onload() {
-    listener = new WebProgressListener();
-
-	var browser = document.getElementById("browser");
-	browser.addProgressListener(listener, Components.interfaces.nsIWebProgress.NOTIFY_ALL);
-    
+	var listener = new WebProgressListener();
+	var mapBrowser = document.getElementById("BrowserTabMap");
+	mapBrowser.addProgressListener(listener, Components.interfaces.nsIWebProgress.NOTIFY_ALL);
 	goWelcome();
 }
 
@@ -252,28 +241,6 @@ function viewVenkman(){
 }
 
 addEventListener("load", onload, false);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
