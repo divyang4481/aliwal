@@ -36,6 +36,7 @@
 <!ENTITY viewReload.label      "Reload">
 <!ENTITY viewStop.label        "Stop">
 <!ENTITY viewPreferences.label "Preferences">
+<!ENTITY viewDataWin.label 	   "Data Grid">
 
 
 <!ENTITY help.label            "Help">

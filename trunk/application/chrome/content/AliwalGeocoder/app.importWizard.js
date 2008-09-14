@@ -71,7 +71,7 @@ function ImportWizard(){
 			);
 			return true; // Allow the wizard to close
 		} catch(e){
-			jsdump(e);
+			alert('Wizard error:'+uneval(e));
 			return false; //Keep the wizard open
 		}
 		

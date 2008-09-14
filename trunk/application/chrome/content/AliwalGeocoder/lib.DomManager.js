@@ -80,6 +80,10 @@ function DomManager(){
 		$('#sel_change_pin_label').trigger( 'change');
 	}
 	
+	this.drawPinCounts = function( pVisCount, pTotCount ){
+		$('#feedback_pincounts').text( pVisCount + ' / ' + pTotCount );
+	}
+	
 	this.drawInitMarkers = function( pPoll, pCallback){
 		/* If pPoll then wait until xscopeNS.flags.loadingData is finished.
 		 * Privileged method.
@@ -259,7 +263,6 @@ DomManager.prototype.warningGeocodingError = function( pSet, pAddress ){
 		$('#feedback_geocoding').attr('src','icons/geocoding_warn.png');
 		$('#feedback_geocoding').attr('title','Geocoding errors');
 		$('#feedback_geocoding').fadeIn('slow');
-		jsdump('Couldn\'t geocode address ' + pAddress );
 	} else if ( $('#feedback_geocoding').attr('src') !== 'icons/geocoding_ok.png' ){
 		$('#feedback_geocoding').fadeOut('fast');
 		$('#feedback_geocoding').attr('src','icons/geocoding_ok.png');

@@ -32,13 +32,20 @@
 	<script src="jquery-1.2.3.js" 		/>  
 	
 <!-- On1Map libs -->
-	<script type="application/x-javascript" src="chrome://global/content/printUtils.js"/>
-	<script src="lib.CacheManager.js" 	/>
-	<script src="lib.DataManager.js" 	/>
-	<script src="AliwalGeocoder.js" 		/>
+	<script src="chrome://global/content/printUtils.js" type="application/x-javascript" />
+	<script src="WebProgressListener.js" type="application/x-javascript" />
+	<script src='yahoo/yahoo/yahoo.js' type="application/x-javascript" />
+	<script src='yahoo/event/event.js' type="application/x-javascript" />
+	
+	<script src="lib.CacheManager.js" 	type="application/x-javascript" />
+	<script src="lib.DataManager.js" 	type="application/x-javascript" />
+	<script src="AliwalGeocoder.js" 	type="application/x-javascript" />
+	<script src="AliwalMVC.js" 			type="application/x-javascript" />
+	<script src="AliwalModel.js" 		type="application/x-javascript" />
+	<script src="AliwalController.js" 	type="application/x-javascript" />
+	<script src="AliwalXscopeNS.js" 	type="application/x-javascript" />
+	
 
-	<script src="WebProgressListener.js" />
-	 
  	<command id="cmd_new" 			oncommand="fileNew();"/>
 	<command id="cmd_open" 			oncommand="fileOpen();"/>
 	<command id="cmd_import_flat" 	oncommand="fileImportFlat();"/>
@@ -48,12 +55,11 @@
 	<command id="cmd_page_setup" 	oncommand="filePageSetup();"/>
 	<command id="cmd_print" 		oncommand="filePrint();"/>
 	<command id="cmd_quit" 			oncommand="fileQuit(false);"/>
-	<command id="cmd_viewdatawin" 	oncommand="goViewDataWindow();"/>
-	<command id="cmd_reload" 		oncommand="reload();"/>
+	<command id="cmd_viewreload" 	oncommand="viewReload();"/>
+	<command id="cmd_viewstop" 		oncommand="viewStop();" />
+	<command id="cmd_viewvenkman" 	oncommand="viewVenkman();" />
 	<command id="cmd_preferences" 	oncommand="goPreferences();" />
 	<command id="cmd_about" 		oncommand="goAbout();" />
-	<command id="cmd_viewstop" 		oncommand="goViewStop();" />
-	<command id="cmd_viewvenkman" 	oncommand="viewVenkman();" />
 	
 	
 	<keyset id="mainKeyset">
@@ -88,8 +94,7 @@
 		<menu id="view-menu" label="&view.label;">
 			<menupopup id="view-popup">  
 				<menuitem 						label="&viewStop.label;" 		command="cmd_viewstop" 	id="menu_viewstop" />
-				<menuitem 						label="&viewReload.label;" 		command="cmd_reload" 	/>
-				<menuitem 						label="&viewDataWin.label;" 	command="cmd_viewdatawin" 	/>
+				<menuitem 						label="&viewReload.label;" 		command="cmd_viewreload" 	/>
 				<menuitem 						label="Venkman" 				command="cmd_viewvenkman" 	/>
 				
 				<menuseparator/>
@@ -106,15 +111,37 @@
 			</menupopup>	
 		</menu>
 	</menubar>
+<!--
+	<vbox>
+		<textbox multiline="true" id="ml_debug" value="alert('debug code goes here');"/>
+		<hbox>
+			<button id="btnLoadBrowserContent" label="Debug" oncommand="eval(document.getElementById('ml_debug').value);"/>
+		</hbox>
+	</vbox>
+-->
+	<vbox>
+		<tabbox id="tabBrowser" flex="1">
+			<tabs>
+				<tab label="Map"/>
+				<tab label="Data"/>
+			</tabs>
+			<tabpanels>
+<!--
+				<browser height="800" id="BrowserTabMap"  src="chrome://AliwalGeocoder/content/BrowserMap.html" />
+				<browser height="800" id="BrowserTabData" src="chrome://AliwalGeocoder/content/BrowserData.html"/>
+-->
+				<browser height="800" id="BrowserTabMap"   />
+				<browser height="800" id="BrowserTabData"  />
+				
+			</tabpanels>
+		</tabbox>
+	</vbox>
 
-	<hbox flex="1">
-		<browser flex="5" id="browser" src="" type="content-primary"/>
-	</hbox>
+	
   	
   <statusbar>
     <statusbarpanel id="sp_status" label="" crop="end" flex="1"/>
     <progressmeter id="progress" mode="determined" value="0%" style="display: none"/>
   </statusbar>
  
-  
-</window>
+  </window>
