@@ -28,7 +28,7 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
 
 <!-- External libs -->
-	<script src="jquery-1.2.3.js" 		/>  
+	<script src="jquery/jquery-1.2.6.js" 		/>  
 	
 <!-- On1Map libs -->
 	<script src="lib.DataManager.js" 	/>

@@ -119,6 +119,8 @@ function AliwalViewGrid( pAliwalModel, pDomGrid, pDomPager ){
 	/**
 	 * @Constructor
 	 */
+	$(_domGrid).width('99%');
+	var ww = $(_domGrid).width();
     $(_domGrid).jqGrid({
     	caption		: 'Aliwal Geocoder Data',
     	colModel  	: _gridModel,
@@ -126,19 +128,21 @@ function AliwalViewGrid( pAliwalModel, pDomGrid, pDomPager ){
         datatype 	: 'clientSide',
         editurl 	: "#",
         imgpath		: 'jqGrid/themes/basic/images',
-		onSelectRow	: function(id){
+/*		onSelectRow	: function(id){
         	if(id && id!==lastrow ){
 				$(_domGrid).restoreRow(lastrow);
 				$(_domGrid).editRow(id,true);
 				lastrow = id;
         	}
-        },      
+        },
+*/      
         pager		: $(_domPager),
         rowNum		: 40,
-        viewrecords	: true
-//        width: '100%',
+        viewrecords	: true,
+        height: '90%',
+        width: ww
 	});
-	
+		
 	$.each( _dataModel.getGeocodedPlacemarks(), function(idx, val_pm){
 		try{
 			that.addPlacemark( val_pm );

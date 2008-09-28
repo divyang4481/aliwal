@@ -251,7 +251,7 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	// Privileged method
 	this.redraw = function(){
 		/**
-		 * A way for the controlelr to ask for a redraw
+		 * A way for the controller to ask for a redraw
 		 */
 		_drawMarkers( _map.getBoundsLatLon() );
 	}
