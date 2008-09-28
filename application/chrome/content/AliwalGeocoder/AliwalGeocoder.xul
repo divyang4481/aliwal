@@ -29,7 +29,7 @@
   
 <!-- External libs -->
 	<script src="chrome://venkman/content/venkman-overlay.js"/>
-	<script src="jquery-1.2.3.js" 		/>  
+	<script src="jquery/jquery-1.2.6.js" 		/>  
 	
 <!-- On1Map libs -->
 	<script src="chrome://global/content/printUtils.js" type="application/x-javascript" />
