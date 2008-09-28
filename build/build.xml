@@ -29,7 +29,7 @@
 	<target name="diagnostics" description="diagnostics">
 		<diagnostics/>
 	</target>
-	
+		
 	<target name="patch_number" description="Increments VERSION.PATCH in the version.properties file" >
 		<!-- Thanks: http://blog.nirav.name/2008/02/how-to-auto-increament-version-build-id.html -->
 		<propertyfile file="build/version.properties" comment="VERSION.PATCH incremented by ANT build. Edit not!">
@@ -66,7 +66,8 @@
 		<echo>ToDo: Freshmeat announcement</echo>
 	</target>
 	
-	<target name="clean"   depends="clean_common,clean_osx,clean_win32"       description="Clean for all arches" />
+	<target name="docs"    depends="docs_system,docs_user"        			  description="Docs for all arches" />
+	<target name="clean"   depends="clean_common,clean_osx,clean_win32,clean_docs"       description="Clean for all arches" />
 	<target name="init"    depends=""                                         description="This target is here just for completeness"/>
 	<target name="compile" depends="compile_common,compile_osx,compile_win32" description="Compile for all arches. Doesn't do dist targets" />
 	<target name="dist"    depends="patch_number,dist_common,dist_osx"        description="Dist for all arches. Does version.patch number too" >	
@@ -76,7 +77,7 @@
 			*********************************************************
 		</echo>
 	</target>
-	
+		
 <!-- ******************** WIN32 BUILD **************************************************************** -->	
 		<target name="clean_dist_win32" description="Clean up for dist target">
 			<delete dir="${WIN32.DIST.DIR}"  />
@@ -228,6 +229,28 @@
 
 		</target>
 
+<!-- ******************** DOCS BUILD **************************************************************** -->
 	
+	<target name="clean_docs">
+	</target>
+	
+	<target name="docs_user" description="User Documentation">
+	</target>
+	
+	<target name="docs_system" description="System Documentation">
+<!--	java -jar jsrun.jar app/run.js -a -t=templates/jsdoc -recurse=0 -d=../../../docs/generated/ ../../../src/trunk/application/chrome/content/AliwalGeocoder/*.js
+-->		
+		<mkdir dir="${DOC.SYSTEM.DIR}" />
+		
+		<java jar="${DOC.TOOLKIT.DIR}/jsrun.jar" dir="${DOC.TOOLKIT.DIR}" fork="true" >
+			<arg value="app/run.js" />
+			<arg value="-jar app/run.js" />
+			<arg value="-t=templates/jsdoc" />
+			<arg value="-a" />
+			<arg value="-recurse=0" />
+			<arg value="-d=${DOC.SYSTEM.DIR}" />
+			<arg value="${SRC.CHROME.DIR}" />
+		</java>
+	</target>
 	
 </project>
