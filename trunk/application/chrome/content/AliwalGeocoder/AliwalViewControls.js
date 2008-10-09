@@ -14,48 +14,109 @@
 	You should have received a copy of the GNU General Public License
 	along with Aliwal Geocoder.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-AliwalViewControls = function( pAliwalModel, pDomFilters, pDomPinLabel ){
-	/** A view object - for the MVC pattern - that displays the tagset filters and pin label selector.
-	 * Creates a list box per tagset and one dropdown listbox for the label selector.
-	 * @param pFilterCallback(AliwalTagset) will get triggered when the filter selection changes.
-	 * @param pLabelCallback(pSelectedPinLabel) will get triggered when the pin label selector is changed.
-	 */
-	 
+/**
+ * @class
+ * A view object - for the MVC pattern - that displays the tagset filters and pin label selector.
+ * Creates a list box per tagset and one dropdown listbox for the label selector.
+ */
+AliwalViewControls = function(    pAliwalModel
+								, pDivFilters
+								, pDivPinLabel
+								, pDivPinCounts
+								, pDivPinCeiling
+								, pDivGeocodingErr ){
+	
+	// Yahoo Events
+	this.eventDrawn            = new YAHOO.util.CustomEvent( "ViewDrawn", this);
+	this.eventViewLabelChange  = new YAHOO.util.CustomEvent( "ViewLabelChange", this);
+	this.eventViewFilterChange = new YAHOO.util.CustomEvent( "ViewFilterChange",this);
+	
 	// Private members
-	var _dataModel = pAliwalModel;
+	var _dataModel       = pAliwalModel;
+	var _domFilters      = $( '#' + pDivFilters );
+	var _domPinLabel     = $( '#' + pDivPinLabel );
+	var _domPinCounts    = $( '#' + pDivPinCounts );
+	var _domPinCeiling   = $( '#' + pDivPinCeiling );
+	var _domGeocodingErr = $( '#' + pDivGeocodingErr );
 	var tagsetnum = 0;
+	var _feedbackPinCeiling;
+	var _feedbackGeocodingErr;
+	
 	var that = this;
+			
+	// Private method
+	_drawPinCounts = function(){
+		_domPinCounts.empty();
+		_domPinCounts.append( '<label id="feedback_pincounts"></label>' );
+	};
+	
+	// Private method
+	_drawGeocodingErr = function(){
+		_domGeocodingErr.empty();
+		_domGeocodingErr.append( '<img id="feedback_geocoding_err" src="icons/geocoding_ok.png" />' );
+		_feedbackGeocodingErr = $('#feedback_geocoding_err');
+	};
+	
+	// Private method
+	_drawPinCeiling = function(){
+		_domPinCeiling.empty();
+		_domPinCeiling.append( '<img id="feedback_pin_ceiling"   src="icons/pin_ceiling_ok.png" />' );
+		_feedbackPinCeiling = $('#feedback_pin_ceiling');
+	};
+	
+	
 		 
 	// Private method
-	_drawPinLabelSelector = function( pDivId, pLabelCensus ){
+	_drawPinLabelSelector = function(){
 		/** Args: The string id of the div to draw the label selector in.
 		 */
-		var dd = $('#' + pDivId);
-		dd.empty();
+		var labelCensus = _dataModel.labelCensus();
+		_domPinLabel.empty();
 		var empty = true;
 		var sel = '<SELECT id="sel_change_pin_label">';
-		for( var lbl in pLabelCensus ){ // FOR ... IN iterates members
+		for( var lbl in labelCensus ){ // FOR ... IN iterates members
 			sel += '<OPTION>'+lbl+'</OPTION>\n';
 			empty = false;
 		};
 		sel += '</SELECT>';
 		
 		if(  empty ){
-			dd.append('<div class="warn">No data</div>');
+			_domPinLabel.append('<div class="warn">No data</div>');
 		} else {
-			dd.append( sel );
+			_domPinLabel.append( sel );
 		}
-	}
+		$('#sel_change_pin_label').bind( 'change', function(){
+			that.eventViewLabelChange.fire()
+		});
+	};
 	
 	// Private method
-	_drawTagsetFilter = function( pDivId, pTag, pTagData ){
+	_drawTagsetFilters = function(){	
+		var pinTagSets = _dataModel.tagsetCensus();
+		var html = '<table id="tbl_filters"></table>';
+		_domFilters.empty();
+		_domFilters.append(html);
+	
+	 	var filcnt = 0;
+		$.each( pinTagSets, function(tagset, tags){
+			html = '<tr><td id="divFilter_' + filcnt + '"></td></tr>';
+			$('#tbl_filters').append(html);
+			_drawFilter('#divFilter_' + filcnt, tagset, pinTagSets );
+			filcnt++;
+		});
+		$('.tagset_filter').bind('change', function(){
+			that.eventViewFilterChange.fire();
+		});
+	};
+	
+	// Private method
+	_drawFilter = function( pDivId, pTag, pTagData ){
 		/** Draws a filter for a tagset. Where to draw it is pDivId, which tagset is pTag.
 		 */
-		var dd = $('#' + pDivId);
-		dd.empty();
+		var div = $( pDivId );
+		div.empty();
 		var labl = '<label class="label_sub">' + pTag + '</label>';
-		dd.append(labl);
+		div.append(labl);
 		
 		var options = [];
 		$.each( pTagData[pTag], function(key,val){
@@ -70,9 +131,17 @@ AliwalViewControls = function( pAliwalModel, pDomFilters, pDomPinLabel ){
 			sel += opt;
 		});
 		sel += '</SELECT>\n';
-		dd.append(sel);
+		div.append(sel);
 		
 		tagsetnum++;
+	}
+	
+	//Privileged method
+	this.getPinLabel = function(){
+		/**
+		 * Returns the name of the pin label that should be displayed onMouseover 
+		 */
+		return $('#sel_change_pin_label').val(); 
 	}
 	
 	// Privileged method
@@ -107,7 +176,7 @@ AliwalViewControls = function( pAliwalModel, pDomFilters, pDomPinLabel ){
 		alert('ToDo');
 	}
 	
-	// Privieged method
+	// Privileged method
 	this.redraw = function(){
 		/**
 		 * Not yet necessary, just here to match AliwalYahooView.
@@ -116,40 +185,43 @@ AliwalViewControls = function( pAliwalModel, pDomFilters, pDomPinLabel ){
 	}
 	
 	// Privileged method
-	this.bindLabelChange = function( pLabelCallback){
-		/**
-		 * Attach an event handler to the pin label selector
-		 */ 
-		$('#sel_change_pin_label').bind( 'change', function(e){
-			pLabelCallback(this.value );
-		});		
+	this.warningPinCeiling = function( pSet ){
+		if(pSet){
+			_feedbackPinCeiling.fadeOut('fast');
+			_feedbackPinCeiling.attr('src','icons/pin_ceiling_warn.png');
+			_feedbackPinCeiling.attr('title','Too many pins');
+			_feedbackPinCeiling.fadeIn('slow');
+			
+			
+		} else if ( _feedbackPinCeiling.attr('src') !== 'icons/pin_ceiling_ok.png' ){
+			_feedbackPinCeiling.fadeOut('fast');
+			_feedbackPinCeiling.attr('src','icons/pin_ceiling_ok.png');
+			_feedbackPinCeiling.attr('title','Number of pins OK');
+			_feedbackPinCeiling.fadeIn('slow');
+		}
 	}
 	
 	// Privileged method
-	this.bindFilterChange = function( pFilterCallback){
-		/**
-		 * Attach an event handler to the filter stuff
-		 */ 
-		$('.tagset_filter').bind('change', function(e){
-			pFilterCallback( that.getFilterTagset());
-		});
+	this.warningGeocodingError = function( pSet, pAddress ){
+		if(pSet){
+			_feedbackGeocodingErr.fadeOut('fast');
+			_feedbackGeocodingErr.attr('src','icons/geocoding_warn.png');
+			_feedbackGeocodingErr.attr('title','Geocoding errors');
+			_feedbackGeocodingErr.fadeIn('slow');
+		} else if ( _feedbackGeocodingErr.attr('src') !== 'icons/geocoding_ok.png' ){
+			_feedbackGeocodingErr.fadeOut('fast');
+			_feedbackGeocodingErr.attr('src','icons/geocoding_ok.png');
+			_feedbackGeocodingErr.attr('title','Geocoding OK');
+			_feedbackGeocodingErr.fadeIn('slow');
+		}
 	}
-	
-	
-	// Constructor
-	_drawPinLabelSelector('pin_label_selector', _dataModel.labelCensus() );
-	
-	var pinTagSets = _dataModel.tagsetCensus();
-	var html = '<table id="tbl_filters"></table>';
-	$("#div_filters").empty();
-	$("#div_filters").append(html);
 
- 	var filcnt = 0;
-	$.each( pinTagSets, function(tagset, tags){
-		html = '<tr><td id="divFilter_' + filcnt + '"></td></tr>';
-		$('#tbl_filters').append(html);
-		_drawTagsetFilter('divFilter_' + filcnt, tagset, pinTagSets );
-		filcnt++;
-	});
+	// Constructor
+	_drawPinCounts();
+	_drawPinCeiling();
+	_drawGeocodingErr();
+	_drawPinLabelSelector();
+	_drawTagsetFilters();
+	
 
 }

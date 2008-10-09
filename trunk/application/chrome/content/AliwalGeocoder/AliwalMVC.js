@@ -20,26 +20,28 @@
  * @name AliwalMVC
  */
 
-
+/**
+ * @class 
+ * An object to hold 1or more tagsets
+ * { 'tagset_name', ['tag1','tag2','tag3'], ... } 
+ */
 function AliwalTagSet(){
-	/** 
-	 * An object to hold 1or more tagsets
-	 * { 'tagset_name', ['tag1','tag2','tag3'], ... } 
-	 */
 }
 
+/**
+ * @class 
+ * An object to hold label:data pairs
+ * { 'label_name', 'label value', ...}
+ */
 function AliwalLabelledData(){
-	/** 
-	 * An object to hold label:data pairs
-	 * { 'label_name', 'label value', ...}
-	 */
 }
 
+/**
+ * @class 
+ * An object for pin data.
+ * Now emits yahoo events
+ */
 function AliwalPlacemark(){
-	/** 
-	 * An object for pin data.
-	 * Now emits yahoo events
-	 */
 	
 	// Private members
 	var _labels 		= {};  	// type defn is AliwalLabelledData 

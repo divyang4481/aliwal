@@ -14,12 +14,13 @@
 	You should have received a copy of the GNU General Public License
 	along with Aliwal Geocoder.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+/**
+ * @class
+ * A map view object for the MVC pattern that uses the mapstraction API.
+ * View AliwalPlacemark data on a map.
+ * Defaults Yahoo maps for now.	 
+ */
 function AliwalViewMapstraction( pAliwalModel, pDomMap ){
-	/* A map view object for the MVC pattern that uses the mapstraction API.
-	 * View AliwalPlacemark data on a map.
-	 * Defaults Yahoo maps for now.
-	 */
 	
 	//Private members
 	var _dataModel = pAliwalModel;

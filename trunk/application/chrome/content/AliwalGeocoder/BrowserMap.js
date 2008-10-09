@@ -15,7 +15,6 @@
 	along with Aliwal Geocoder.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 // Global scope for easier debugging.
 // No point creating a*v views until the model is populated, 
 // which is done by the fake module in AliwalXscopeNS.js
@@ -23,42 +22,38 @@
 
 var avy; // AliwalViewYahoo
 var avc; // AliwalViewControls
-var domMgr = new DomManager();
+
 
 $(document).ready(function(){
-
-	// Attach an event handler to hideshow2
-	$('.div_hideshow_option').bind( 'click', function(e){
-		domMgr.hideShow2( this.id );
-	});	
-
 
 	// Drop the filter and label selector controls onto the page
 	avc = new AliwalViewControls( 	xscopeNS.amodel, 
 									'div_filters', 
-									'pin_label_selector' );	
-	
+									'pin_label_selector',
+									'feedback_pincounts',
+									'feedback_pin_ceiling',
+									'feedback_geocoding_err' );
+
+	xscopeNS.amodel.eventPlacemarkAdded.subscribe( function( pType, pArgs ){
+		avc.addPlacemark(pArgs[0]);
+	});
+
 	
 	// The model may be loaded with some geocoded placemarks at this point & they'll automatically go onto the map.
 	// Uncoded placemarks in the model need to be dealt with manually
-	
 	avy = new AliwalViewYahoo( xscopeNS.amodel, 'map');
-	xscopeNS.amodel.addedListener( avy, avy.addPlacemark );	
-	xscopeNS.amodel.addedListener( avc, avc.addPlacemark );
-
-	// Make the map view respond to changes in the controls view	
-	avc.bindFilterChange(	function(p){ // pfilterCallback
-								avy.setFilterTagset(p);
-								avy.redraw();
-								var vp = avy.getCountVisiblePins();
-								var tp = vp + avy.getCountHiddenPins() + avy.getCountErrorPins();
-								domMgr.drawPinCounts( vp, tp );
-							});
-
-	// Make the map view respond to changes in the controls view
-	avc.bindLabelChange(	function(p){ //pLabelCallback
-								avy.setPinLabels(p);
-							});
+	
+	xscopeNS.amodel.eventPlacemarkAdded.subscribe( function( pEvent, pArgs){
+		avy.addPlacemark(pArgs[0]);
+	});
+	
+	avc.eventViewFilterChange.subscribe( function( pEvent, pArgs ){ 
+		avy.setFilterTagset( avc.getFilterTagset() );
+		avy.redraw();
+	});	
+	avc.eventViewLabelChange.subscribe( function( pEvent, pArgs ){
+		avy.setPinLabels( avc.getPinLabel() );
+	});
 	
 	// Get the controller to geocode placemarks that need looking up 
 	// and add them to the map too 
@@ -71,8 +66,23 @@ $(document).ready(function(){
 			});
 		} catch(e){
 			// Geocoding may throw exceptions
-			domMgr.warningGeocodingError(true, e);
+//			domMgr.warningGeocodingError(true, e);
 		}
 	});
 	
+	// Attach an event handler to hideshow2
+	$('.div_hideshow_option').bind( 'click', function(pId){
+		var ctl = $('#'+pId);
+		var victims = ctl.siblings();
+	
+		if( ctl.attr('state') === 'HIDDEN'){
+			victims.slideDown(20);
+			ctl.attr('state','SHOWN');
+			ctl.find('.hideshowicon>img').attr('src','icons/minimize_option.png');
+		} else{ 
+			victims.slideUp(20);
+			ctl.attr('state','HIDDEN');
+			ctl.find('.hideshowicon>img').attr('src','icons/maximize_option.png');
+		}
+	});
 }); 

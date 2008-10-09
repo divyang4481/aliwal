@@ -15,11 +15,15 @@
 	along with Aliwal Geocoder.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @class
+ * A grid view object for the MVC pattern. 
+ * View AliwalPlacemark ( possibly edit) data in a grid. 	 
+ */
 function AliwalViewGrid( pAliwalModel, pDomGrid, pDomPager ){
-	/** 
-	 * A grid view object for the MVC pattern. 
-	 * View AliwalPlacemark ( possibly edit) data in a grid. 
-	 */
+		
+	// Yahoo Events
+	this.eventDrawn = new YAHOO.util.CustomEvent("ViewDrawn", this);
 	
 	// Private members
 	var that = this;
@@ -110,6 +114,13 @@ function AliwalViewGrid( pAliwalModel, pDomGrid, pDomPager ){
 		$(_domGrid).addRowData( _rowcnt, _buildGridRow( pPlacemark ));
 		_rowcnt++;
 	};
+	
+	// Privileged method
+	this.redraw = function(){
+		/** ToDo.
+		 * A way for the controller to ask for a redraw
+		 */
+	}
 	
 	// Private members
 	var _gridCols  = _buildGridCols ( _dataModel.labelCensus(), _dataModel.tagsetCensus() );

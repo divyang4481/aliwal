@@ -3,8 +3,9 @@
 // No point creating av* views until the model is populated
 var avg; // AliwalViewGrid
 
-jQuery(document).ready(function(){
+$(document).ready(function(){
 	avg = new AliwalViewGrid( xscopeNS.amodel, '#gridview', '#gridpager' );
-	xscopeNS.amodel.addedListener( avg, avg.addPlacemark );
-
+	xscopeNS.amodel.eventPlacemarkAdded.subscribe( function( pType, pArgs ){
+		avg.addPlacemark(pArgs[0]);
+	});
 }); 
