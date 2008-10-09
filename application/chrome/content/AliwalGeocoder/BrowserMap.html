@@ -10,6 +10,9 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="jqGrid/themes/jqModal.css" /> 
 	
 	<script src="jquery/jquery-1.2.6.js" 		type="text/javascript"></script>
+	<script src="yahoo/yahoo/yahoo.js" 			type="text/javascript"></script>
+	<script src="yahoo/event/event.js" 			type="text/javascript"></script>
+
 	
 	<script src="AliwalMVC.js" 					type="text/javascript"></script>
 	<script src="AliwalModel.js" 				type="text/javascript"></script>
@@ -18,10 +21,7 @@
 	<script src="AliwalViewYahoo.js" 			type="text/javascript"></script>	
 	<script src="AliwalXscopeNS.js" 			type="text/javascript"></script>
 	<script src="lib.CacheManager.js" 			type="text/javascript"></script>
-	<script src="lib.DomManager.js" 			type="text/javascript"></script>
 	
-	<script src="yahoo/yahoo/yahoo.js" 			type="text/javascript"></script>
-	<script src="yahoo/event/event.js" 			type="text/javascript"></script>
 	
 	<!-- This is last because it's not local -->	
 	<script type="text/javascript" src="http://api.maps.yahoo.com/ajaxymap?v=3.8&appid=TQBZw2PV34GYymqj0eHGSn32aSw7fyGL7wdA3Cs5QufCQY4Zy9qn1ZHzSepRxh2XKg--"></script>
@@ -41,13 +41,11 @@
 		</div><!-- content -->
 	</div><!-- wrapper -->
 	<div id="navigation">
-	<div id="feedback">
-		<label id="feedback_pincounts"></label>
+		<div id="feedback_pincounts"><blink>Loading...</blink></div>
 		<hr>
-		<img id="feedback_pin_ceiling"   src="icons/pin_ceiling_ok.png" />
-		<img id="feedback_geocoding" src="icons/geocoding_ok.png" />
-	</div>
-	<hr>
+		<div id="feedback_geocoding_err"><blink>Loading...</blink></div>
+		<div id="feedback_pin_ceiling"><blink>Loading...</blink></div>
+		<hr>
 		<div id="hsdiv_filters">
 			<div id="hsctl_filters" class="div_hideshow_option" state="SHOWN">
 				<div class="hideshowlabel float_left"><label>Tags</label></div>
@@ -56,15 +54,14 @@
 			</div>
 			<div id="div_filters">
 				<blink>Loading...</blink>
-			</div><!-- div_ddlb_filters -->
+			</div>
 		</div>
 		<hr>
-			<label>Pin Label</label>
+		<label>Pin Label</label>
 		<div id="pin_label_selector">
 			<blink>Loading...</blink>
 		</div>
 		<hr>
-
 	</div><!-- navigation -->
 	<div id="extra">
 	</div><!-- extra -->

@@ -15,39 +15,23 @@
 	along with Aliwal Geocoder.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @class
+ * The domain-specific representation of the information on which the application operates.
+ * i.e A collection of AliwalPlacemarks.
+ */
 function AliwalModel(){
-	/** 
-	 * The domain-specific representation of the information on which the application operates.
-	 * i.e A collection of AliwalPlacemarks.
-	 */
+	// Yahoo Events
+	this.eventPlacemarkAdded = new YAHOO.util.CustomEvent("ModelPlacemarkAdded", this);
 
 	// Private members
+	var that = this;
 	var _pmarks = [];
 	var _lc_cache; 				// a cache for labelCensus data
 	var _ts_cache; 				// a cache for tagsetCensus data
 	var _addedListeners = []; 	// Array of [pObj, pHandlerFunc] callbacks for when an AliwalPlacemark is added to the model
 	var _geocodedListeners = [];// Array of [pObj, pHandlerFunc] callbacks for when an AliwalPlacemark is geocoded
-
 	
-	// Private method
-	_fireAddedEvent = function( pPlacemark ){
-		$.each(_addedListeners, function(idx, val_lnr){
-			try{
-				val_lnr[1].call(val_lnr[0], pPlacemark );
-			} catch(e){
-				// Ignore
-			}
-		});
-	}
-
-	// Privileged method
-	this.addedListener = function(pObj, pHandlerFunc){
-		/** 
-		 * A barebones event registration for new Placemarks added to the model 
-		 */
-		_addedListeners.push( [pObj, pHandlerFunc] );
-	}
-
 	// Privileged method
 	this.addPlacemark = function( pPlacemark ){
 		/** 
@@ -56,6 +40,7 @@ function AliwalModel(){
 		 * Privileged method
 		 */
 		_pmarks.push( pPlacemark );
+		this.eventPlacemarkAdded.fire();
 		
 		var undef;
 		_lc_cache = undef;

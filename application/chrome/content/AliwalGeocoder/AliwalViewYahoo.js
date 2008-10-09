@@ -15,14 +15,15 @@
 	along with Aliwal Geocoder.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @class
+ * A map view - for the MVC pattern - that uses the Yahoo map API
+ * Views AliwalPlacemark data on a Yahoo map.
+ * Mapstraction not rich enough for current requirements
+ * Creates the map markers and shuffles them between _hidMarkers & _visMarkers
+ */
 function AliwalViewYahoo( pAliwalModel, pDomMap ){
-	/** 
-	 * A map view - for the MVC pattern - that uses the Yahoo map API
-	 * Views AliwalPlacemark data on a Yahoo map.
-	 * Mapstraction not rich enough for current requirements
-	 * Creates the map markers and shuffles them between _hidMarkers & _visMarkers
-	 */
-	
+
 	// Private members
 	var _dataModel = pAliwalModel;
 	var _map;
@@ -40,7 +41,9 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	var _filterTagsets = {}; // Type AliwalTagset 	
 	
 	// Yahoo Events
-	this.eventPinDensityCeiling = new YAHOO.util.CustomEvent("PinDensityCeiling", this);
+	this.eventDrawn             = new YAHOO.util.CustomEvent("ViewDrawn", this);
+	this.eventPinDensityCeiling = new YAHOO.util.CustomEvent("ViewPinDensityCeiling", this);
+	
 
 	// Private method
 	_buildPopupContents = function( pPlacemark ){
@@ -102,11 +105,6 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	}
 
 	// Private method
-	_drawPinCounts = function(){
-		/** ToDo 
-		 */
-	}
-	// Private method
 	_drawMarkers = function( pBounds ){
 		var visicount = 0;
 		var errcount = 0;
@@ -153,10 +151,10 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 				}
 			}
 		} catch(e){
-			this.eventPinDensityCeiling.fire();
-			_drawPinCounts();
+			that.eventPinDensityCeiling.fire();
+			that.eventDrawn.fire();
 		}
-		_drawPinCounts();
+		that.eventDrawn.fire();
 	}
 	
 	// Private method

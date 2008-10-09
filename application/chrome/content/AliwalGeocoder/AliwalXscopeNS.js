@@ -15,13 +15,16 @@
 	along with Aliwal Geocoder.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Wrapping the module import up like this mean that HTML pages can be tested 
-// outside of the XUL application & browser.
+/** 
+ * @file 
+ * Wrapping the module import up like this means that HTML pages can be tested 
+ * outside of the XUL application & browser.
+ */ 
 
 try{
 	// Load an emtpy set of symbols that will be used to share data between the XUL & HTML scopes
 	Components.utils.import("resource://app/modules/xscope.jsm");
-}catch(e){
+} catch(e) {
 	alert('Falling back to DEMO mode because\ncould not import module xscope.jsm.');
 	// ********************************* START OF FAKE JSM **********************************************
 	var xscopeNS = {
@@ -52,5 +55,5 @@ try{
 	
 	xscopeNS.acontroller.loadDefaultData( function(){alert('Fake data loaded')} );
 	//xscopeNS.acontroller.loadKMLFile('/Users/greg/Projects/Aliwal Geocoder/src/trunk/application/chrome/content/AliwalGeocoder/fake-jsm-data-live-490.o1m', fEmpty, fEmpty, fEmpty, fEmpty);
-	
+
 }
