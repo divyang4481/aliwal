@@ -26,10 +26,13 @@ AliwalViewControls = function(    pAliwalModel
 								, pDivPinCeiling
 								, pDivGeocodingErr ){
 	
-	// Yahoo Events
-	this.eventDrawn            = new YAHOO.util.CustomEvent( "ViewDrawn", this);
-	this.eventViewLabelChange  = new YAHOO.util.CustomEvent( "ViewLabelChange", this);
-	this.eventViewFilterChange = new YAHOO.util.CustomEvent( "ViewFilterChange",this);
+	// Events
+	this.events = $({
+	//  eventID:  'eventName' // Should match
+		ViewDrawn        : 'ViewDrawn',
+		ViewLabelChange  : 'ViewLabelChange',
+		ViewFilterChange : 'ViewFilterChange'
+    });
 	
 	// Private members
 	var _dataModel       = pAliwalModel;
@@ -86,7 +89,7 @@ AliwalViewControls = function(    pAliwalModel
 			_domPinLabel.append( sel );
 		}
 		$('#sel_change_pin_label').bind( 'change', function(){
-			that.eventViewLabelChange.fire()
+			that.events.triggerHandler( that.events.attr('ViewLabelChange') );
 		});
 	};
 	
@@ -105,7 +108,7 @@ AliwalViewControls = function(    pAliwalModel
 			filcnt++;
 		});
 		$('.tagset_filter').bind('change', function(){
-			that.eventViewFilterChange.fire();
+			that.events.triggerHandler( that.events.attr('ViewFilterChange') );
 		});
 	};
 	

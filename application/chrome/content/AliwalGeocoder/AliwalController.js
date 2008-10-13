@@ -26,11 +26,14 @@ function AliwalController( pAliwalModel ){
 	var _model = pAliwalModel;
 	var _cacheMgr; // Initialized in constructor
 	
-	// Yahoo Events
-	this.eventGeocodeSuccess = new YAHOO.util.CustomEvent("ControllerGeocodeSuccess", this);
-	this.eventGeocodeFail    = new YAHOO.util.CustomEvent("ControllerGeocodeFail", this);
-	this.eventDataLoaded     = new YAHOO.util.CustomEvent("ControllerDataLoaded", this);
-		
+	// Events
+	this.events = $({
+	//  eventID:  'eventName' // Should match
+		ControllerGeocodeSuccess : 'ControllerGeocodeSuccess',
+		ControllerGeocodeFail    : 'ControllerGeocodeFail',
+		ControllerDataLoaded     : 'ControllerDataLoaded'
+    });
+	
 	// Private method
 	var _geocodeFromCache = function( pAliwalPlacemark ){
 		/**
@@ -43,10 +46,10 @@ function AliwalController( pAliwalModel ){
 			var lon = cacheret.split(',')[0];
 			pAliwalPlacemark.setLatitude(lat);
 			pAliwalPlacemark.setLongitude(lon);
-			jsdump('cache HIT for address:\n' + pAliwalPlacemark.getGeocodeAddress() );
+			//console.log('cache HIT for address:\n' + pAliwalPlacemark.getGeocodeAddress() );
 		}catch(e){
 			// cache miss
-			jsdump('cache MISS for address:\n' + pAliwalPlacemark.getGeocodeAddress() );
+			//console.log('cache MISS for address:\n' + pAliwalPlacemark.getGeocodeAddress() );
 		}			
 	};
 
@@ -66,7 +69,7 @@ function AliwalController( pAliwalModel ){
 		}
 		
 		if( pPlacemark.isGeocoded() ){
-			that.eventGeocodeSuccess.fire();
+			that.events.triggerHandler( that.events.attr('ControllerGeocodeSuccess'), pPlacemark );
 		} else {
 		// Cache failed, hit up the web
 			var geocoder = new XMLHttpRequest();
@@ -85,7 +88,8 @@ function AliwalController( pAliwalModel ){
 			geocoder.onreadystatechange = function(response) { 
 				if( geocoder.readyState == 4){
 					if(  geocoder.status != 200 ){
-						throw 'Geocoding failed:\n\t' + pPlacemark.getGeocodeAddress();
+						//console.log('eventGeocodeFail firing');
+						that.events.triggerHandler( that.events.attr('ControllerGeocodeFail'), pPlacemark );
 					} else {
 						var xml = geocoder.responseXML.documentElement;
 						/*
@@ -96,7 +100,7 @@ function AliwalController( pAliwalModel ){
 						*/
 						pPlacemark.setLatitude ( xml.getElementsByTagName('Latitude' )[0].firstChild.nodeValue );
 						pPlacemark.setLongitude( xml.getElementsByTagName('Longitude')[0].firstChild.nodeValue );
-						that.eventGeocodeSuccess.fire( pPlacemark );
+						that.events.triggerHandler( that.events.attr('ControllerGeocodeSuccess'), pPlacemark );
 					}
 				}	
 			};
@@ -209,7 +213,7 @@ function AliwalController( pAliwalModel ){
 			};
 			
 			istream.close();		
-			that.eventDataLoaded.fire();
+			that.events.triggerHandler( that.events.attr('ControllerDataLoaded') );
 		} catch(e){
 			throw e;
 		}
@@ -265,7 +269,7 @@ function AliwalController( pAliwalModel ){
 										if(placemark.getLatitude()  >= -90 ){
 											if(placemark.getLatitude()  <= 90 ){
 												// Coordinates look reasonable so just use them
-												jsdump('AliwalController: Geocoding not necessary:\n' + uneval(placemark));
+												//console.log('AliwalController: Geocoding not necessary:\n' + uneval(placemark));
 												doGeocode = false;
 												_model.addPlacemark(placemark);
 											}
@@ -280,9 +284,9 @@ function AliwalController( pAliwalModel ){
 							that.geocodePlacemark( placemark );
 						};
 					});
-					that.eventDataLoaded.fire();
+					that.events.triggerHandler( that.events.attr('ControllerDataLoaded') );
 				} else {
-					jsdump('AliwalController: Error loading KML file');
+					//console.log('AliwalController: Error loading KML file');
 					throw  'AliwalController: Error loading KML file.';
 				}
 			}
@@ -300,12 +304,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x01 = new AliwalPlacemark();
 			x01.addLabelledData("Pool", "John Charles Centre for Sport");
-			x01.addLabelledData("Type", "Olympic");
+			x01.addLabelledData("Pool Size", "Olympic");
 			x01.addLabelledData("Lane", "10 Lane");
 			x01.addLabelledData("Tel. #", "0113 2475222");
 			x01.addLabelledData("Town", "Leeds");
 			x01.addLabelledData("Country", "England");
-			x01.addTag("Type", "Olympic");
+			x01.addTag("Pool Size", "Olympic");
 			x01.addTag("Lane", "10 Lane");
 			x01.setGeocodeAddress( "John Charles centre for sport, Middleton Grove, Leeds, LS11 5DJ" );
 			_model.addPlacemark(x01);
@@ -313,12 +317,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x02 = new AliwalPlacemark();
 			x02.addLabelledData("Pool", "Ponds Forge International Sports Centre");
-			x02.addLabelledData("Type", "Olympic");
+			x02.addLabelledData("Pool Size", "Olympic");
 			x02.addLabelledData("Lane", "10 Lane");
 			x02.addLabelledData("Tel. #", "01142233400");
 			x02.addLabelledData("Town", "Sheffield");
 			x02.addLabelledData("Country", "England");
-			x02.addTag("Type", "Olympic");
+			x02.addTag("Pool Size", "Olympic");
 			x02.addTag("Lane", "10 Lane");
 			x02.setGeocodeAddress( "Ponds Forge International Sports Centre, Sheaf Street, Sheffield, S1 2BP" );
 			_model.addPlacemark(x02);
@@ -326,12 +330,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x03 = new AliwalPlacemark();
 			x03.addLabelledData("Pool", "Sunderland Aquatic Centre");
-			x03.addLabelledData("Type", "Olympic");
+			x03.addLabelledData("Pool Size", "Olympic");
 			x03.addLabelledData("Lane", "10 Lane");
 			x03.addLabelledData("Tel. #", "(0191) 520 5555");
 			x03.addLabelledData("Town", "Sunderland");
 			x03.addLabelledData("Country", "England");
-			x03.addTag("Type", "Olympic");
+			x03.addTag("Pool Size", "Olympic");
 			x03.addTag("Lane", "10 Lane");
 			x03.setGeocodeAddress( "Sunderland City Council, Civic Centre, Burdon Road, Sunderland, SR2 7DN" );
 			_model.addPlacemark(x03);
@@ -339,12 +343,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x04 = new AliwalPlacemark();
 			x04.addLabelledData("Pool", "Aldershot Garrison Sports Centre");
-			x04.addLabelledData("Type", "Regular");
+			x04.addLabelledData("Pool Size", "Regular");
 			x04.addLabelledData("Lane", "8 Lane");
 			x04.addLabelledData("Tel. #", "01252 347724");
 			x04.addLabelledData("Town", "Aldershot");
 			x04.addLabelledData("Country", "England");
-			x04.addTag("Type", "Regular");
+			x04.addTag("Pool Size", "Regular");
 			x04.addTag("Lane", "8 Lane");
 			x04.setGeocodeAddress( "Princes Avenue, North Camp, Hampshire, Aldershot, GU11 2LQ" );
 			_model.addPlacemark(x04);
@@ -352,12 +356,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x05 = new AliwalPlacemark();
 			x05.addLabelledData("Pool", "University Of Bath Sports Training Village");
-			x05.addLabelledData("Type", "Regular");
+			x05.addLabelledData("Pool Size", "Regular");
 			x05.addLabelledData("Lane", "8 Lane");
 			x05.addLabelledData("Tel. #", "01225 386339");
 			x05.addLabelledData("Town", "Bath");
 			x05.addLabelledData("Country", "England");
-			x05.addTag("Type", "Regular");
+			x05.addTag("Pool Size", "Regular");
 			x05.addTag("Lane", "8 Lane");
 			x05.setGeocodeAddress( "University of Bath, Bath, BA2 7AY, UK" );
 			_model.addPlacemark(x05);
@@ -365,12 +369,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x06 = new AliwalPlacemark();
 			x06.addLabelledData("Pool", "Coventry Sports And Leisure Centre");
-			x06.addLabelledData("Type", "Regular");
+			x06.addLabelledData("Pool Size", "Regular");
 			x06.addLabelledData("Lane", "8 Lane");
 			x06.addLabelledData("Tel. #", "024 7625 2525");
 			x06.addLabelledData("Town", "Coventry");
 			x06.addLabelledData("Country", "England");
-			x06.addTag("Type", "Regular");
+			x06.addTag("Pool Size", "Regular");
 			x06.addTag("Lane", "8 Lane");
 			x06.setGeocodeAddress( "Fairfax Street, Coventry CV1 5RY" );
 			_model.addPlacemark(x06);
@@ -378,12 +382,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x07 = new AliwalPlacemark();
 			x07.addLabelledData("Pool", "K2 Centre");
-			x07.addLabelledData("Type", "Regular");
+			x07.addLabelledData("Pool Size", "Regular");
 			x07.addLabelledData("Lane", "8 Lane");
 			x07.addLabelledData("Tel. #", "01293 585300");
 			x07.addLabelledData("Town", "Crawley");
 			x07.addLabelledData("Country", "England");
-			x07.addTag("Type", "Regular");
+			x07.addTag("Pool Size", "Regular");
 			x07.addTag("Lane", "8 Lane");
 			x07.setGeocodeAddress( "K2 Crawley, Pease Pottage Hill, Crawley, RH11 9BQ" );
 			_model.addPlacemark(x07);
@@ -391,23 +395,23 @@ function AliwalController( pAliwalModel ){
 			
 			var x08 = new AliwalPlacemark();
 			x08.addLabelledData("Pool", "Gurnell Leisure Centre");
-			x08.addLabelledData("Type", "Regular");
+			x08.addLabelledData("Pool Size", "Regular");
 			x08.addLabelledData("Tel. #", "020 8998 3241");
 			x08.addLabelledData("Town", "Ealing");
 			x08.addLabelledData("Country", "England");
-			x08.addTag("Type", "Regular");
+			x08.addTag("Pool Size", "Regular");
 			x08.setGeocodeAddress( "Ruislip Road East, Ealing, London, W13 0AL" );
 			_model.addPlacemark(x08);
 			
 			
 			var x09 = new AliwalPlacemark();
 			x09.addLabelledData("Pool", "Picton Leisure Centre");
-			x09.addLabelledData("Type", "Regular");
+			x09.addLabelledData("Pool Size", "Regular");
 			x09.addLabelledData("Lane", "8 Lane");
 			x09.addLabelledData("Tel. #", "+44 151 734 2294");
 			x09.addLabelledData("Town", "Liverpool");
 			x09.addLabelledData("Country", "England");
-			x09.addTag("Type", "Regular");
+			x09.addTag("Pool Size", "Regular");
 			x09.addTag("Lane", "8 Lane");
 			x09.setGeocodeAddress( "Wellington Road, Liverpool, L15 4LE" );
 			_model.addPlacemark(x09);
@@ -415,12 +419,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x10 = new AliwalPlacemark();
 			x10.addLabelledData("Pool", "London Fields Lido");
-			x10.addLabelledData("Type", "Regular");
+			x10.addLabelledData("Pool Size", "Regular");
 			x10.addLabelledData("Lane", "8 Lane");
 			x10.addLabelledData("Tel. #", "020 7254 9038");
 			x10.addLabelledData("Town", "London Borough of Hackney");
 			x10.addLabelledData("Country", "England");
-			x10.addTag("Type", "Regular");
+			x10.addTag("Pool Size", "Regular");
 			x10.addTag("Lane", "8 Lane");
 			x10.setGeocodeAddress( "London Fields Lido, London Fields Westside, E8 3EU" );
 			_model.addPlacemark(x10);
@@ -428,12 +432,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x11 = new AliwalPlacemark();
 			x11.addLabelledData("Pool", "Loughborough Pool");
-			x11.addLabelledData("Type", "Regular");
+			x11.addLabelledData("Pool Size", "Regular");
 			x11.addLabelledData("Lane", "8 Lane");
 			x11.addLabelledData("Tel. #", "01509 226200");
 			x11.addLabelledData("Town", "Loughborough");
 			x11.addLabelledData("Country", "England");
-			x11.addTag("Type", "Regular");
+			x11.addTag("Pool Size", "Regular");
 			x11.addTag("Lane", "8 Lane");
 			x11.setGeocodeAddress( "Sports Development Centre, Loughborough University, Leicestershire, LE11 3TU" );
 			_model.addPlacemark(x11);
@@ -441,12 +445,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x12 = new AliwalPlacemark();
 			x12.addLabelledData("Pool", "Manchester Aquatics Centre");
-			x12.addLabelledData("Type", "Regular");
+			x12.addLabelledData("Pool Size", "Regular");
 			x12.addLabelledData("Lane", "8 Lane");
 			x12.addLabelledData("Tel. #", "0161 275 9450");
 			x12.addLabelledData("Town", "Manchester");
 			x12.addLabelledData("Country", "England");
-			x12.addTag("Type", "Regular");
+			x12.addTag("Pool Size", "Regular");
 			x12.addTag("Lane", "8 Lane");
 			x12.setGeocodeAddress( "2 Booth Street East, Ardwick, Manchester, M13 9SS" );
 			_model.addPlacemark(x12);
@@ -454,12 +458,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x13 = new AliwalPlacemark();
 			x13.addLabelledData("Pool", "UEA Sports Centre");
-			x13.addLabelledData("Type", "Regular");
+			x13.addLabelledData("Pool Size", "Regular");
 			x13.addLabelledData("Lane", "8 Lane");
 			x13.addLabelledData("Tel. #", "(01603) 592398");
 			x13.addLabelledData("Town", "Norwich");
 			x13.addLabelledData("Country", "England");
-			x13.addTag("Type", "Regular");
+			x13.addTag("Pool Size", "Regular");
 			x13.addTag("Lane", "8 Lane");
 			x13.setGeocodeAddress( "UEA Sportspark, University of East Anglia, Norwich, Norfolk, NR4 7TJ" );
 			_model.addPlacemark(x13);
@@ -467,12 +471,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x14 = new AliwalPlacemark();
 			x14.addLabelledData("Pool", "Grand Central Pools");
-			x14.addLabelledData("Type", "Regular");
+			x14.addLabelledData("Pool Size", "Regular");
 			x14.addLabelledData("Lane", "8 Lane");
 			x14.addLabelledData("Tel. #", "0161 474 7766");
 			x14.addLabelledData("Town", "Stockport");
 			x14.addLabelledData("Country", "England");
-			x14.addTag("Type", "Regular");
+			x14.addTag("Pool Size", "Regular");
 			x14.addTag("Lane", "8 Lane");
 			x14.setGeocodeAddress( "12 Grand Central Square,, Wellington Road South,, Stockport,, SK1 3TA" );
 			_model.addPlacemark(x14);
@@ -480,23 +484,23 @@ function AliwalController( pAliwalModel ){
 			
 			var x15 = new AliwalPlacemark();
 			x15.addLabelledData("Pool", "Millfield");
-			x15.addLabelledData("Type", "Regular");
+			x15.addLabelledData("Pool Size", "Regular");
 			x15.addLabelledData("Lane", "8 Lane");
 			x15.addLabelledData("Town", "Somerset");
 			x15.addLabelledData("Country", "England");
-			x15.addTag("Type", "Regular");
+			x15.addTag("Pool Size", "Regular");
 			x15.addTag("Lane", "8 Lane");
 			_model.addPlacemark(x15);
 			
 			
 			var x16 = new AliwalPlacemark();
 			x16.addLabelledData("Pool", "Wigan International Pool");
-			x16.addLabelledData("Type", "Regular");
+			x16.addLabelledData("Pool Size", "Regular");
 			x16.addLabelledData("Lane", "8 Lane");
 			x16.addLabelledData("Tel. #", "01942 243345");
 			x16.addLabelledData("Town", "Wigan");
 			x16.addLabelledData("Country", "England");
-			x16.addTag("Type", "Regular");
+			x16.addTag("Pool Size", "Regular");
 			x16.addTag("Lane", "8 Lane");
 			x16.setGeocodeAddress( "Library St, Wigan, WN1 1NN" );
 			_model.addPlacemark(x16);
@@ -504,12 +508,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x17 = new AliwalPlacemark();
 			x17.addLabelledData("Pool", "The Dollan Aqua Centre");
-			x17.addLabelledData("Type", "Regular");
+			x17.addLabelledData("Pool Size", "Regular");
 			x17.addLabelledData("Lane", "6 Lane");
 			x17.addLabelledData("Tel. #", "+44 (1355) 260000");
 			x17.addLabelledData("Town", "East Kilbride");
 			x17.addLabelledData("Country", "Scotland");
-			x17.addTag("Type", "Regular");
+			x17.addTag("Pool Size", "Regular");
 			x17.addTag("Lane", "6 Lane");
 			x17.setGeocodeAddress( "Town Centre Park, Brouster Hill, East Kilbride, South Lanarkshire, G74 1AF, Scotland" );
 			_model.addPlacemark(x17);
@@ -517,12 +521,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x18 = new AliwalPlacemark();
 			x18.addLabelledData("Pool", "Royal Commonwealth Pool");
-			x18.addLabelledData("Type", "Regular");
+			x18.addLabelledData("Pool Size", "Regular");
 			x18.addLabelledData("Lane", "8 Lane");
 			x18.addLabelledData("Tel. #", "0131 667 7211");
 			x18.addLabelledData("Town", "Edinburgh");
 			x18.addLabelledData("Country", "Scotland");
-			x18.addTag("Type", "Regular");
+			x18.addTag("Pool Size", "Regular");
 			x18.addTag("Lane", "8 Lane");
 			x18.setGeocodeAddress( "Royal Commonwealth Pool, 21 Dalkeith Road, Edinburgh EH16 5BB" );
 			_model.addPlacemark(x18);
@@ -530,12 +534,12 @@ function AliwalController( pAliwalModel ){
 			
 			var x19 = new AliwalPlacemark();
 			x19.addLabelledData("Pool", "Robertson Trust Swimming Pool");
-			x19.addLabelledData("Type", "Regular");
+			x19.addLabelledData("Pool Size", "Regular");
 			x19.addLabelledData("Lane", "8 Lane");
 			x19.addLabelledData("Tel. #", "(01786) 466500");
 			x19.addLabelledData("Town", "Stirling");
 			x19.addLabelledData("Country", "Scotland");
-			x19.addTag("Type", "Regular");
+			x19.addTag("Pool Size", "Regular");
 			x19.addTag("Lane", "8 Lane");
 			x19.setGeocodeAddress( "University of Stirling, Stirling , Scotland , FK9 4LA, UK" );
 			_model.addPlacemark(x19);
@@ -543,17 +547,17 @@ function AliwalController( pAliwalModel ){
 			
 			var x20 = new AliwalPlacemark();
 			x20.addLabelledData("Pool", "Wales National Pool");
-			x20.addLabelledData("Type", "Regular");
+			x20.addLabelledData("Pool Size", "Regular");
 			x20.addLabelledData("Lane", "8 Lane");
 			x20.addLabelledData("Tel. #", "01792 513513");
 			x20.addLabelledData("Town", "Swansea");
 			x20.addLabelledData("Country", "Wales");
-			x20.addTag("Type", "Regular");
+			x20.addTag("Pool Size", "Regular");
 			x20.addTag("Lane", "8 Lane");
 			x20.setGeocodeAddress( "Wales National Pool Swansea, Sketty Lane, Swansea, SA2 8QG" );
 			_model.addPlacemark(x20);
 	
-			that.eventDataLoaded.fire();
+			that.events.triggerHandler( that.events.attr('ControllerDataLoaded') );
 		};
 		window.setTimeout(fDelayed, 111 );
 	};

@@ -39,11 +39,13 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	var _errPlacemarks = []; // Type: AliwalPlacemark. Special case for markers not yet geocoded.  
 	
 	var _filterTagsets = {}; // Type AliwalTagset 	
-	
-	// Yahoo Events
-	this.eventDrawn             = new YAHOO.util.CustomEvent("ViewDrawn", this);
-	this.eventPinDensityCeiling = new YAHOO.util.CustomEvent("ViewPinDensityCeiling", this);
-	
+
+	// Events
+	this.events = $({
+	//  eventID:  'eventName' // Should match
+		ViewDrawn             : 'ViewDrawn',
+		ViewPinDensityCeiling : 'ViewPinDensityCeiling'
+    });
 
 	// Private method
 	_buildPopupContents = function( pPlacemark ){
@@ -151,10 +153,10 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 				}
 			}
 		} catch(e){
-			that.eventPinDensityCeiling.fire();
-			that.eventDrawn.fire();
+			that.events.triggerHandler( that.events.attr('ViewPinDensityCeiling') );
+			that.events.triggerHandler( that.events.attr('ViewDrawn') );
 		}
-		that.eventDrawn.fire();
+		that.events.triggerHandler( that.events.attr('ViewDrawn') );
 	}
 	
 	// Private method

@@ -21,8 +21,12 @@
  * i.e A collection of AliwalPlacemarks.
  */
 function AliwalModel(){
-	// Yahoo Events
-	this.eventPlacemarkAdded = new YAHOO.util.CustomEvent("ModelPlacemarkAdded", this);
+	
+	// Events	
+	this.events = $({
+	//  eventID:  'eventName' // Should match
+		ModelPlacemarkAdded: 'ModelPlacemarkAdded'
+    });
 
 	// Private members
 	var that = this;
@@ -40,7 +44,7 @@ function AliwalModel(){
 		 * Privileged method
 		 */
 		_pmarks.push( pPlacemark );
-		this.eventPlacemarkAdded.fire();
+		this.events.triggerHandler( this.events.attr('ModelPlacemarkAdded'), pPlacemark );
 		
 		var undef;
 		_lc_cache = undef;
