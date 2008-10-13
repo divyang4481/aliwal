@@ -44,22 +44,26 @@ function AliwalLabelledData(){
 function AliwalPlacemark(){
 	
 	// Private members
+	var that            = this;
 	var _labels 		= {};  	// type defn is AliwalLabelledData 
 	var _tagsets 		= {}; 	// type defn is AliwalTagset
 	var _latitude 		= null;  	
 	var _longitude 		= null;
 	var _geocodeAddress = null; // The address used for geocoding if lat & long not available
 	
-	// Yahoo Events
-	this.eventMoved = new YAHOO.util.CustomEvent("AliwalPlacemarkMoved", this); 
-	
+	// Events
+	this.events = $({
+	//  eventID:  'eventName' // Should match
+		AliwalPlacemarkMoved : 'AliwalPlacemarkMoved'
+    });
+    
 	// Privileged method
 	this.getLatitude = function(){
 		return _latitude;
 	};
 	this.setLatitude = function(pLatitude){
 		_latitude = pLatitude;
-		this.eventMoved.fire();
+		that.events.triggerHandler( that.events.attr('AliwalPlacemarkMoved') );
 	};
 	
 	// Privileged method
@@ -68,7 +72,7 @@ function AliwalPlacemark(){
 	};
 	this.setLongitude = function(pLongitude){
 		_longitude = pLongitude;
-		this.eventMoved.fire();
+		that.events.triggerHandler( that.events.attr('AliwalPlacemarkMoved') );
 	};
 	
 	// Privileged method
@@ -77,7 +81,7 @@ function AliwalPlacemark(){
 	};
 	this.setGeocodeAddress = function(pGeocodeAddress){
 		_geocodeAddress = pGeocodeAddress;
-		this.eventMoved.fire();
+		that.events.triggerHandler( that.events.attr('AliwalPlacemarkMoved') );
 	};
 	
 	// Privileged method

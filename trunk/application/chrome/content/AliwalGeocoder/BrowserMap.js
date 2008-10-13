@@ -26,6 +26,20 @@ var avc; // AliwalViewControls
 
 $(document).ready(function(){
 
+	// The model may be loaded with some geocoded placemarks at this point & they'll automatically go onto the map.
+	// Uncoded placemarks in the model need to be dealt with manually
+	avy = new AliwalViewYahoo( xscopeNS.amodel, 'map');
+	
+	xscopeNS.acontroller.events.bind( 'ControllerGeocodeSuccess', function(event, eventArg ){
+		console.log('ControllerGeocodeSuccess received'); 
+		avy.redraw();
+	});
+	
+	xscopeNS.amodel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
+		console.log('ModelPlacemarkAdded received'); 
+		avy.addPlacemark( eventArg );
+	});
+
 	// Drop the filter and label selector controls onto the page
 	avc = new AliwalViewControls( 	xscopeNS.amodel, 
 									'div_filters', 
@@ -34,24 +48,21 @@ $(document).ready(function(){
 									'feedback_pin_ceiling',
 									'feedback_geocoding_err' );
 
-	xscopeNS.amodel.eventPlacemarkAdded.subscribe( function( pType, pArgs ){
-		avc.addPlacemark(pArgs[0]);
+	xscopeNS.amodel.events.bind( 'ModelPlacemarkAdded', function( event, eventArg ){
+		console.log('ModelPlacemarkAdded received'); 
+		avc.addPlacemark( eventArg );
 	});
 
-	
-	// The model may be loaded with some geocoded placemarks at this point & they'll automatically go onto the map.
-	// Uncoded placemarks in the model need to be dealt with manually
-	avy = new AliwalViewYahoo( xscopeNS.amodel, 'map');
-	
-	xscopeNS.amodel.eventPlacemarkAdded.subscribe( function( pEvent, pArgs){
-		avy.addPlacemark(pArgs[0]);
+	xscopeNS.acontroller.events.bind( 'ControllerGeocodeFail', function(event, eventArg ){
+		console.log('ControllerGeocodeFail received'); 
+		avc.warningGeocodingError( true, '' );
 	});
-	
-	avc.eventViewFilterChange.subscribe( function( pEvent, pArgs ){ 
+
+	avc.events.bind( 'ViewFilterChange', function( event, eventArg ){ 
 		avy.setFilterTagset( avc.getFilterTagset() );
 		avy.redraw();
 	});	
-	avc.eventViewLabelChange.subscribe( function( pEvent, pArgs ){
+	avc.events.bind( 'ViewLabelChange', function( event, eventArg ){
 		avy.setPinLabels( avc.getPinLabel() );
 	});
 	
@@ -69,6 +80,7 @@ $(document).ready(function(){
 //			domMgr.warningGeocodingError(true, e);
 		}
 	});
+	avy.setPinLabels( avc.getPinLabel() );
 	
 	// Attach an event handler to hideshow2
 	$('.div_hideshow_option').bind( 'click', function(pId){

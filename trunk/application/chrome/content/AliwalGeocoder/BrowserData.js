@@ -5,7 +5,7 @@ var avg; // AliwalViewGrid
 
 $(document).ready(function(){
 	avg = new AliwalViewGrid( xscopeNS.amodel, '#gridview', '#gridpager' );
-	xscopeNS.amodel.eventPlacemarkAdded.subscribe( function( pType, pArgs ){
-		avg.addPlacemark(pArgs[0]);
-	});
+//	xscopeNS.amodel.eventPlacemarkAdded.subscribe( function( pType, pArgs ){
+//		avg.addPlacemark(pArgs[0]);
+//	});
 }); 
