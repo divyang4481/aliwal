@@ -30,13 +30,19 @@ $(document).ready(function(){
 	// Uncoded placemarks in the model need to be dealt with manually
 	avy = new AliwalViewYahoo( xscopeNS.amodel, 'map');
 	
+/*	
 	xscopeNS.acontroller.events.bind( 'ControllerGeocodeSuccess', function(event, eventArg ){
-		console.log('ControllerGeocodeSuccess received'); 
+		avy.addPlacemark( eventArg ); // ToDo: Make the view do it's own listening for Placemarks asd 
 		avy.redraw();
+	});
+*/
+	xscopeNS.acontroller.events.bind( 'ControllerGeocodeFail', function(event, eventArg ){
+		console.log('ControllerGeocodeFail received'); 
+		avc.warningGeocodingError( true, '' );
 	});
 	
 	xscopeNS.amodel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
-		console.log('ModelPlacemarkAdded received'); 
+		//console.log('ModelPlacemarkAdded received'); 
 		avy.addPlacemark( eventArg );
 	});
 
@@ -49,13 +55,8 @@ $(document).ready(function(){
 									'feedback_geocoding_err' );
 
 	xscopeNS.amodel.events.bind( 'ModelPlacemarkAdded', function( event, eventArg ){
-		console.log('ModelPlacemarkAdded received'); 
+		//console.log('ModelPlacemarkAdded received'); 
 		avc.addPlacemark( eventArg );
-	});
-
-	xscopeNS.acontroller.events.bind( 'ControllerGeocodeFail', function(event, eventArg ){
-		console.log('ControllerGeocodeFail received'); 
-		avc.warningGeocodingError( true, '' );
 	});
 
 	avc.events.bind( 'ViewFilterChange', function( event, eventArg ){ 
@@ -66,20 +67,13 @@ $(document).ready(function(){
 		avy.setPinLabels( avc.getPinLabel() );
 	});
 	
-	// Get the controller to geocode placemarks that need looking up 
-	// and add them to the map too 
+	// Get the controller to geocode placemarks that need looking up. 
 	$.each( xscopeNS.amodel.getUncodedPlacemarks(), function(idx, val_pm){
-		try{
-			xscopeNS.acontroller.geocodePlacemark( val_pm, function(pm2){
-				// This anon function is called async when the geocoding returns successful.
-				avy.addPlacemark(pm2);
-				avy.redraw();
-			});
-		} catch(e){
-			// Geocoding may throw exceptions
-//			domMgr.warningGeocodingError(true, e);
-		}
+		xscopeNS.acontroller.geocodePlacemark( val_pm, function(pm2){
+
+		});
 	});
+	
 	avy.setPinLabels( avc.getPinLabel() );
 	
 	// Attach an event handler to hideshow2

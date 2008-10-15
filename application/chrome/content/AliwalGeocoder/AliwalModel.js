@@ -25,7 +25,9 @@ function AliwalModel(){
 	// Events	
 	this.events = $({
 	//  eventID:  'eventName' // Should match
-		ModelPlacemarkAdded: 'ModelPlacemarkAdded'
+		ModelPlacemarkAdded   : 'ModelPlacemarkAdded',
+		ModelPlacemarkMoved   : 'ModelPlacemarkMoved',
+		ModelPlacemarkGeocoded: 'ModelPlacemarkGeocoded'
     });
 
 	// Private members
@@ -39,12 +41,22 @@ function AliwalModel(){
 	// Privileged method
 	this.addPlacemark = function( pPlacemark ){
 		/** 
-		 * Add an AliwalPlacemark to the model
+		 * Add an AliwalPlacemark to the model.
+		 * Listens for AliwalPlacemarkMoved events from that placemark and 
+		 * passes them on as ModelPlacemarkMoved events so that views don't have to listen to every marker.
 		 * Will also invalidate the caches so they are regenerated when next used.
 		 * Privileged method
 		 */
 		_pmarks.push( pPlacemark );
-		this.events.triggerHandler( this.events.attr('ModelPlacemarkAdded'), pPlacemark );
+		
+		pPlacemark.events.bind( 'AliwalPlacemarkGeocoded', function( event, eventArg ){
+			that.events.triggerHandler( that.events.attr('ModelPlacemarkGeocoded'), eventArg );
+		});
+		pPlacemark.events.bind( 'AliwalPlacemarkMoved', function( event, eventArg ){
+			that.events.triggerHandler( that.events.attr('ModelPlacemarkMoved'), eventArg );
+		});
+		
+		that.events.triggerHandler( that.events.attr('ModelPlacemarkAdded'), pPlacemark );
 		
 		var undef;
 		_lc_cache = undef;
