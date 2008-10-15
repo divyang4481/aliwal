@@ -562,7 +562,8 @@ function AliwalController( pAliwalModel ){
 		window.setTimeout(fDelayed, 111 );
 	};
 	 
-	// Constructor
+	/** @constructor 
+	 */
 	try{
 		_cacheMgr = new CacheManager();
 	} catch(e){

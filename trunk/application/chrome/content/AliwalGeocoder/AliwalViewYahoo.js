@@ -293,7 +293,7 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	_lastBounds = _map.getBoundsLatLon();
 	_drawMarkers( _map.getBoundsLatLon() );
 	
-	// Capture events that require drawing
+	// Lsiten for YUI events that require drawing
 	YEvent.Capture(_map, EventsList.endMapDraw, function(resultObj) { 
 		_drawMarkers( _map.getBoundsLatLon() );
 	});
@@ -308,4 +308,24 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 			_lastBounds = currb;
 		}
 	});
+	
+	// Listen for model ( jQuery ) events
+	/* Want the View Objects to listen to the model & controller events directly
+	 * something like this
+	 */  
+	_dataModel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
+		// console.log('ModelPlacemarkAdded received');
+		that.addPlacemark( eventArg );
+		that.redraw();  
+	});
+	_dataModel.events.bind( 'ModelPlacemarkGeocoded', function(event, eventArg ){
+		// console.log('ModelPlacemarkGeocoded received');
+		that.addPlacemark( eventArg );
+		that.redraw();  
+	});
+	_dataModel.events.bind( 'ModelPlacemarkMoved', function(event, eventArg ){
+		// console.log('ModelPlacemarkMoved received here 001');
+		that.redraw(); 
+	});
+	
 }

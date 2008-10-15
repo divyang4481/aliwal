@@ -39,7 +39,7 @@ function AliwalLabelledData(){
 /**
  * @class 
  * An object for pin data.
- * Now emits yahoo events
+ * Now emits jQuery events
  */
 function AliwalPlacemark(){
 	
@@ -54,6 +54,7 @@ function AliwalPlacemark(){
 	// Events
 	this.events = $({
 	//  eventID:  'eventName' // Should match
+		AliwalPlacemarkGeocoded : 'AliwalPlacemarkGeocoded',
 		AliwalPlacemarkMoved : 'AliwalPlacemarkMoved'
     });
     
@@ -61,18 +62,30 @@ function AliwalPlacemark(){
 	this.getLatitude = function(){
 		return _latitude;
 	};
-	this.setLatitude = function(pLatitude){
-		_latitude = pLatitude;
-		that.events.triggerHandler( that.events.attr('AliwalPlacemarkMoved') );
-	};
-	
-	// Privileged method
 	this.getLongitude = function(){
 		return _longitude;
 	};
+
+	// Privileged method
+	this.setLatitude = function(pLatitude){
+		var wasGeocoded = this.isGeocoded();
+		_latitude = pLatitude;
+		if ( wasGeocoded ){
+			that.events.triggerHandler( that.events.attr('AliwalPlacemarkMoved'), this );
+		} else if( this.isGeocoded() ){
+			that.events.triggerHandler( that.events.attr('AliwalPlacemarkGeocoded'), this );
+		}
+	};
+	
+	// Privileged method
 	this.setLongitude = function(pLongitude){
+		var wasGeocoded = this.isGeocoded();
 		_longitude = pLongitude;
-		that.events.triggerHandler( that.events.attr('AliwalPlacemarkMoved') );
+		if ( wasGeocoded ){
+			that.events.triggerHandler( that.events.attr('AliwalPlacemarkMoved'), this );
+		} else if( this.isGeocoded() ){
+			that.events.triggerHandler( that.events.attr('AliwalPlacemarkGeocoded'), this );
+		}
 	};
 	
 	// Privileged method
@@ -81,7 +94,7 @@ function AliwalPlacemark(){
 	};
 	this.setGeocodeAddress = function(pGeocodeAddress){
 		_geocodeAddress = pGeocodeAddress;
-		that.events.triggerHandler( that.events.attr('AliwalPlacemarkMoved') );
+		that.events.triggerHandler( that.events.attr('AliwalPlacemarkMoved'), this );
 	};
 	
 	// Privileged method
