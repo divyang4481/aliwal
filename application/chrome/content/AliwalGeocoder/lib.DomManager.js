@@ -131,7 +131,7 @@ function DomManager(){
 			pCallback.call(that);
 		}
 	}
-		
+}		
 
 
 DomManager.prototype.inBounds = function( pBounds, pLat, pLon ){

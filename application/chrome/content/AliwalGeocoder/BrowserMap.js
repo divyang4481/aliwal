@@ -29,37 +29,31 @@ $(document).ready(function(){
 	// The model may be loaded with some geocoded placemarks at this point & they'll automatically go onto the map.
 	// Uncoded placemarks in the model need to be dealt with manually
 	avy = new AliwalViewYahoo( xscopeNS.amodel, 'map');
-	
-/*	
-	xscopeNS.acontroller.events.bind( 'ControllerGeocodeSuccess', function(event, eventArg ){
-		avy.addPlacemark( eventArg ); // ToDo: Make the view do it's own listening for Placemarks asd 
-		avy.redraw();
-	});
-*/
-	xscopeNS.acontroller.events.bind( 'ControllerGeocodeFail', function(event, eventArg ){
-		console.log('ControllerGeocodeFail received'); 
-		avc.warningGeocodingError( true, '' );
-	});
-	
+		
 	xscopeNS.amodel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
 		//console.log('ModelPlacemarkAdded received'); 
 		avy.addPlacemark( eventArg );
 	});
 
-	// Drop the filter and label selector controls onto the page
+	// Drop the controls view onto the page
 	avc = new AliwalViewControls( 	xscopeNS.amodel, 
 									'div_filters', 
 									'pin_label_selector',
 									'feedback_pincounts',
 									'feedback_pin_ceiling',
 									'feedback_geocoding_err' );
-
-	xscopeNS.amodel.events.bind( 'ModelPlacemarkAdded', function( event, eventArg ){
-		//console.log('ModelPlacemarkAdded received'); 
-		avc.addPlacemark( eventArg );
+	
+	avy.events.bind( 'ViewDrawn', function( event, eventArg ){
+		var hidPins = avy.getCountHiddenPins();
+		var visPins = avy.getCountVisiblePins();
+		avc.drawPinCounts( visPins, hidPins + visPins );
 	});
-
-	avc.events.bind( 'ViewFilterChange', function( event, eventArg ){ 
+		
+	avc.events.bind( 'ViewFilterChange', function( event, eventArg ){
+		var hidPins = avy.getCountHiddenPins();
+		var visPins = avy.getCountVisiblePins();
+		avc.drawPinCounts( visPins, hidPins + visPins );
+		 
 		avy.setFilterTagset( avc.getFilterTagset() );
 		avy.redraw();
 	});	
@@ -67,28 +61,37 @@ $(document).ready(function(){
 		avy.setPinLabels( avc.getPinLabel() );
 	});
 	
-	// Get the controller to geocode placemarks that need looking up. 
-	$.each( xscopeNS.amodel.getUncodedPlacemarks(), function(idx, val_pm){
-		xscopeNS.acontroller.geocodePlacemark( val_pm, function(pm2){
-
-		});
+	xscopeNS.acontroller.events.bind( 'ControllerGeocodeFail', function(event, eventArg ){
+		console.log('ControllerGeocodeFail received'); 
+		avc.warningGeocodingError( true, eventArg.getGeocodeAddress() );
 	});
 	
-	avy.setPinLabels( avc.getPinLabel() );
+	// Get the controller to geocode placemarks that need looking up. 
+	$.each( xscopeNS.amodel.getUncodedPlacemarks(), function(idx, val_pm){
+		xscopeNS.acontroller.geocodePlacemark( val_pm, function(pm2){} );
+	});
 	
-	// Attach an event handler to hideshow2
-	$('.div_hideshow_option').bind( 'click', function(pId){
-		var ctl = $('#'+pId);
+	// Attach an event handler to hideshow
+	$('.hideshowoptions').bind( 'click', function(){
+		var ctl = $(this);
 		var victims = ctl.siblings();
 	
 		if( ctl.attr('state') === 'HIDDEN'){
 			victims.slideDown(20);
 			ctl.attr('state','SHOWN');
-			ctl.find('.hideshowicon>img').attr('src','icons/minimize_option.png');
+			ctl.find('#hideshowicon').attr('src','icons/maximize_option.png');
 		} else{ 
 			victims.slideUp(20);
 			ctl.attr('state','HIDDEN');
-			ctl.find('.hideshowicon>img').attr('src','icons/maximize_option.png');
+			ctl.find('#hideshowicon').attr('src','icons/minimize_option.png');
 		}
 	});
+	
+	// The very first ViewDrawn from avy sometimes gets missed, so 
+	// just do it's stuff here to be sure.
+	var hidPins = avy.getCountHiddenPins();
+	var visPins = avy.getCountVisiblePins();
+	avc.drawPinCounts( visPins, hidPins + visPins );
+	avy.setPinLabels( avc.getPinLabel() );
+
 }); 
