@@ -2,8 +2,8 @@
 <head>
 	<title>Aliwal Geocoder Map</title>
 	 
-	<link rel="stylesheet" type="text/css" href="chrome://AliwalGeocoder/skin/on1struct.css" />
-	<link rel="stylesheet" type="text/css" href="chrome://AliwalGeocoder/skin/on1map.css" />
+	<link rel="stylesheet" type="text/css" href="chrome://AliwalGeocoder/skin/BrowserMap.struct.css" />
+	<link rel="stylesheet" type="text/css" href="chrome://AliwalGeocoder/skin/BrowserMap.css" />
 	<link rel="stylesheet" type="text/css" href="chrome://AliwalGeocoder/skin/marker.css" />
 		
 	<script src="jquery/jquery-1.2.6.js" 		type="text/javascript"></script>
@@ -43,20 +43,22 @@
 		<div id="feedback_geocoding_err"><blink>Loading...</blink></div>
 		<div id="feedback_pin_ceiling"><blink>Loading...</blink></div>
 		<hr>
+		<label>Pin Label</label>
+		<div id="pin_label_selector">
+			<blink>Loading...</blink>
+		</div>
+		<hr>
 		<div id="hsdiv_filters">
-			<div id="hsctl_filters" class="div_hideshow_option" state="SHOWN">
+			<div id="hsctl_filters" class="hideshowoptions" state="SHOWN" >
 				<div class="hideshowlabel float_left"><label>Tags</label></div>
-				<div class="hideshowicon float_right"><img height="20px" width="20px" src="icons/minimize_option.png" /></div>
+				<div class="float_right">
+					<img id="hideshowicon" height="20px" width="20px" src="icons/maximize_option.png" />
+				</div>
 				<div class="float_clear"></div>
 			</div>
 			<div id="div_filters">
 				<blink>Loading...</blink>
 			</div>
-		</div>
-		<hr>
-		<label>Pin Label</label>
-		<div id="pin_label_selector">
-			<blink>Loading...</blink>
 		</div>
 		<hr>
 	</div><!-- navigation -->

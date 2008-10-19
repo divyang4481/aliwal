@@ -46,12 +46,6 @@ AliwalViewControls = function(    pAliwalModel
 	var _feedbackGeocodingErr;
 	
 	var that = this;
-			
-	// Private method
-	_drawPinCounts = function(){
-		_domPinCounts.empty();
-		_domPinCounts.append( '<label id="feedback_pincounts"></label>' );
-	};
 	
 	// Private method
 	_drawGeocodingErr = function(){
@@ -137,7 +131,13 @@ AliwalViewControls = function(    pAliwalModel
 		div.append(sel);
 		
 		tagsetnum++;
-	}
+	};
+	
+	//Privileged method
+	this.drawPinCounts = function( pVisCount, pTotCount ){
+		_domPinCounts.empty();
+		_domPinCounts.append( '<label id="label_feedback_pincounts">' + pVisCount + ' / ' + pTotCount +'</label>' );
+	};
 	
 	//Privileged method
 	this.getPinLabel = function(){
@@ -175,16 +175,12 @@ AliwalViewControls = function(    pAliwalModel
 	
 	// Privileged method
 	this.addPlacemark = function(pPlacemark){
-		// ToDo: Updated the controls if necessary
-		alert('ToDo');
+		// ToDo: Update the controls if necessary
 	}
 	
 	// Privileged method
 	this.redraw = function(){
-		/**
-		 * Not yet necessary, just here to match AliwalYahooView.
-		 * ToDo.
-		 */
+		
 	}
 	
 	// Privileged method
@@ -219,12 +215,21 @@ AliwalViewControls = function(    pAliwalModel
 		}
 	}
 
-	// Constructor
-	_drawPinCounts();
+	/** @constructor
+	 * No point triggering events here because nothing could be listening 
+	 */
+	
 	_drawPinCeiling();
 	_drawGeocodingErr();
 	_drawPinLabelSelector();
 	_drawTagsetFilters();
 	
+	// Listen for model ( jQuery ) events
+	_dataModel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
+	});
+	_dataModel.events.bind( 'ModelPlacemarkGeocoded', function(event, eventArg ){  
+	});
+	_dataModel.events.bind( 'ModelPlacemarkMoved', function(event, eventArg ){ 
+	});
 
 }

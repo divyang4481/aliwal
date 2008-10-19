@@ -490,6 +490,7 @@ function AliwalController( pAliwalModel ){
 			x15.addLabelledData("Country", "England");
 			x15.addTag("Pool Size", "Regular");
 			x15.addTag("Lane", "8 Lane");
+			x15.setGeocodeAddress("Butleigh Road, Somerset, BA16 0YD")
 			_model.addPlacemark(x15);
 			
 			

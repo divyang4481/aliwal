@@ -21,6 +21,12 @@
  * Views AliwalPlacemark data on a Yahoo map.
  * Mapstraction not rich enough for current requirements
  * Creates the map markers and shuffles them between _hidMarkers & _visMarkers
+ * 
+ * Subscribes to events: 
+ *  * ModelPlacemarkAdded
+ *  * ModelPlacemarkGeocoded
+ *  * ModelPlacemarkMoved
+ *  
  */
 function AliwalViewYahoo( pAliwalModel, pDomMap ){
 
@@ -204,10 +210,10 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 			_hidMarkers[nm.id] = nm;
 
 			// Sort out the marker popup window 				
-			YEvent.Capture( nm, EventsList.MouseClick, function(){
-					/* Scope of "this" will have changed to the YMarker object by the time this gets invoked. */
-					this.openSmartWindow('<blink>Loading...</blink>');
-					this.updateSmartWindow( this.smartWindowHtml );
+			YEvent.Capture( _hidMarkers[nm.id], EventsList.MouseClick, function(){
+				/* Scope of "this" will have changed to the YMarker object by the time this gets invoked. */ 
+				this.openSmartWindow('<blink>Loading...</blink>');
+				this.updateSmartWindow( this.smartWindowHtml );
 			});
 			
 			// Sort out the marker hover label
@@ -267,7 +273,9 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 		_filterTagsets = pAliwalTagset;
 	}
 		
-	// Constructor
+	/** @constructor
+	 * No point triggering events here because nothing could be listening 
+	 */
 	_map = new YMap(document.getElementById(pDomMap));	// Will throw "YMap not defined" if internet not available.
 														// ToDo: Catch and error msg, maybe alert('Check proxy settings');
 
@@ -310,9 +318,6 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	});
 	
 	// Listen for model ( jQuery ) events
-	/* Want the View Objects to listen to the model & controller events directly
-	 * something like this
-	 */  
 	_dataModel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
 		// console.log('ModelPlacemarkAdded received');
 		that.addPlacemark( eventArg );
