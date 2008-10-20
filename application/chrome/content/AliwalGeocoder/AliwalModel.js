@@ -35,6 +35,7 @@ function AliwalModel(){
 	var _pmarks = [];
 	var _lc_cache; 				// a cache for labelCensus data
 	var _ts_cache; 				// a cache for tagsetCensus data
+	var _tsm_cache; 			// a cache for tagset max counts data
 	var _addedListeners = []; 	// Array of [pObj, pHandlerFunc] callbacks for when an AliwalPlacemark is added to the model
 	var _geocodedListeners = [];// Array of [pObj, pHandlerFunc] callbacks for when an AliwalPlacemark is geocoded
 	
@@ -83,6 +84,28 @@ function AliwalModel(){
 			 });
 		 };
 		 return _lc_cache;
+	}
+
+	// Privileged method
+	this.tagsetMaxTagCounts = function( pRegenerate ){
+		/**
+		 * Looking  across all Placemarks, returns the max number of tags in each tagset.
+		 * Useful to know how many columns are needed when gridding tagset data
+		 */
+		if( pRegenerate || typeof _tsm_cache == 'undefined' ){
+			_tsm_cache = new Object();
+			$.each(_pmarks, function(idx, placemark){
+				$.each(placemark.getTagsets(), function(key_tagset, val_tags){
+					if( typeof(_tsm_cache[key_tagset]) === 'undefined' ){
+						_tsm_cache[key_tagset] = 0;
+					};
+					if ( val_tags.length > _tsm_cache[key_tagset] ){
+						_tsm_cache[key_tagset] = val_tags.length;
+					};
+				});
+			});
+		}
+		return _tsm_cache;
 	}
 
 	// Privileged method
