@@ -26,29 +26,39 @@ function AliwalModel(){
 	this.events = $({
 	//  eventID:  'eventName' // Should match
 		ModelPlacemarkAdded   : 'ModelPlacemarkAdded',
+		ModelPlacemarkDeleted : 'ModelPlacemarkDeleted',
 		ModelPlacemarkMoved   : 'ModelPlacemarkMoved',
 		ModelPlacemarkGeocoded: 'ModelPlacemarkGeocoded'
     });
 
 	// Private members
 	var that = this;
-	var _pmarks = [];
-	var _lc_cache; 				// a cache for labelCensus data
-	var _ts_cache; 				// a cache for tagsetCensus data
-	var _tsm_cache; 			// a cache for tagset max counts data
-	var _addedListeners = []; 	// Array of [pObj, pHandlerFunc] callbacks for when an AliwalPlacemark is added to the model
-	var _geocodedListeners = [];// Array of [pObj, pHandlerFunc] callbacks for when an AliwalPlacemark is geocoded
+	var _incOnly = 0;            // An increment only counter used to generate unique placemark ids
+	var _pmarks = {};            // a hash of placemarks by their unique id.
+	var _lc_cache;               // a cache for labelCensus data
+	var _ts_cache;               // a cache for tagsetCensus data
+	var _tsm_cache;              // a cache for tagset max counts data
+	
+	/** @private */
+	var _nextUniqueID = function(){
+		_incOnly++;
+		return 'modelID_' + _incOnly;
+	}
 	
 	// Privileged method
 	this.addPlacemark = function( pPlacemark ){
 		/** 
 		 * Add an AliwalPlacemark to the model.
+		 *
 		 * Listens for AliwalPlacemarkMoved events from that placemark and 
 		 * passes them on as ModelPlacemarkMoved events so that views don't have to listen to every marker.
 		 * Will also invalidate the caches so they are regenerated when next used.
+		 * Returns: A unique id string to address the placemark in the model.
+		 * 
 		 * Privileged method
 		 */
-		_pmarks.push( pPlacemark );
+		var _modelID = _nextUniqueID();
+		_pmarks[ _modelID ] =  pPlacemark ;
 		
 		pPlacemark.events.bind( 'AliwalPlacemarkGeocoded', function( event, eventArg ){
 			that.events.triggerHandler( that.events.attr('ModelPlacemarkGeocoded'), eventArg );
@@ -62,6 +72,28 @@ function AliwalModel(){
 		var undef;
 		_lc_cache = undef;
 		_ts_cache = undef;
+		
+		return _modelID;
+	}
+	
+	// Privileged method
+	this.getPlacemark = function( pModelID ){
+		return _pmarks[ pModelID ];
+	}
+	
+	// Privileged method
+	this.getPlacemarkIDs = function(){
+		var retIDs = [];
+		$.each(_pmarks, function(key_id, placemark){
+			retIDs.push(key_id);
+		});
+		return retIDs;
+	}
+	
+	// Privileged method
+	this.delPlacemark = function( pModelID ){
+		delete _pmarks[ pModelID ];
+		that.events.triggerHandler( that.events.attr('ModelPlacemarkDeleted'), pModelID );
 	}
 	
 	// Privileged method
@@ -73,7 +105,7 @@ function AliwalModel(){
 		 */
 		 if ( pRegenerate || typeof _lc_cache == 'undefined'){
 		 	_lc_cache = new Object();
-			 $.each(_pmarks, function(idx, placemark){
+			 $.each(_pmarks, function(key_id, placemark){
 			 	$.each(placemark.getLabelledSet(), function( label_name, label_value){
 			 		if ( typeof(_lc_cache[label_name]) === 'undefined' ){
 			 			_lc_cache[label_name] = 1;	
@@ -94,7 +126,7 @@ function AliwalModel(){
 		 */
 		if( pRegenerate || typeof _tsm_cache == 'undefined' ){
 			_tsm_cache = new Object();
-			$.each(_pmarks, function(idx, placemark){
+			$.each(_pmarks, function(key_id, placemark){
 				$.each(placemark.getTagsets(), function(key_tagset, val_tags){
 					if( typeof(_tsm_cache[key_tagset]) === 'undefined' ){
 						_tsm_cache[key_tagset] = 0;
@@ -117,7 +149,7 @@ function AliwalModel(){
 		 */
 		if ( pRegenerate || typeof _ts_cache == 'undefined'){ 
 			_ts_cache = new Object();
-			$.each(_pmarks, function(idx, placemark){
+			$.each(_pmarks, function(key_id, placemark){
 				$.each(placemark.getTagsets(), function( key_tagset, val_tags){
 					$.each(val_tags, function(idx, tag){
 						if( typeof (_ts_cache[key_tagset]) === 'undefined'){ 
@@ -142,8 +174,8 @@ function AliwalModel(){
 		 * Map views can only handle geocoded placemarks
 		 * This method returns an array of AliwalPlacemarks that DON'T need geocoding
 		 */
-		ret = new Array();
-		$.each(_pmarks, function(idx, val_pm){
+		var ret = new Array();
+		$.each(_pmarks, function(key_id, val_pm){
 			if( val_pm.isGeocoded() ){
 				ret.push(val_pm);
 			}
@@ -156,8 +188,8 @@ function AliwalModel(){
 		 * Map views can only handle geocoded placemarks. 
 		 * This mehtod returns and array of AliwalPlacemarks that need geocoding
 		 */
-		ret = new Array();
-		$.each(_pmarks, function(idx, val_pm){
+		var ret = new Array();
+		$.each(_pmarks, function(key_id, val_pm){
 			if( !(val_pm.isGeocoded()) ){
 				ret.push(val_pm);
 			}
