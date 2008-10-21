@@ -31,21 +31,17 @@
 	<script src="chrome://venkman/content/venkman-overlay.js"/>
 	<script src="jquery/jquery-1.2.6.js" 		/>  
 	
-<!-- On1Map libs -->
+<!-- Aliwal libs -->
 	<script src="chrome://global/content/printUtils.js" type="application/x-javascript" />
 	<script src="WebProgressListener.js" type="application/x-javascript" />
-	<script src='yahoo/yahoo/yahoo.js' type="application/x-javascript" />
-	<script src='yahoo/event/event.js' type="application/x-javascript" />
 	
 	<script src="lib.CacheManager.js" 	type="application/x-javascript" />
-	<script src="lib.DataManager.js" 	type="application/x-javascript" />
 	<script src="AliwalGeocoder.js" 	type="application/x-javascript" />
 	<script src="AliwalMVC.js" 			type="application/x-javascript" />
 	<script src="AliwalModel.js" 		type="application/x-javascript" />
 	<script src="AliwalController.js" 	type="application/x-javascript" />
 	<script src="AliwalXscopeNS.js" 	type="application/x-javascript" />
 	
-
  	<command id="cmd_new" 			oncommand="fileNew();"/>
 	<command id="cmd_open" 			oncommand="fileOpen();"/>
 	<command id="cmd_import_flat" 	oncommand="fileImportFlat();"/>

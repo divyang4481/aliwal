@@ -61,8 +61,7 @@ $(document).ready(function(){
 		avy.setPinLabels( avc.getPinLabel() );
 	});
 	
-	xscopeNS.acontroller.events.bind( 'ControllerGeocodeFail', function(event, eventArg ){
-		console.log('ControllerGeocodeFail received'); 
+	xscopeNS.acontroller.events.bind( 'ControllerGeocodeFail', function(event, eventArg ){ 
 		avc.warningGeocodingError( true, eventArg.getGeocodeAddress() );
 	});
 	
