@@ -271,7 +271,7 @@ function AliwalController( pAliwalModel ){
 												// Coordinates look reasonable so just use them
 												//console.log('AliwalController: Geocoding not necessary:\n' + uneval(placemark));
 												doGeocode = false;
-												_model.addPlacemark(placemark);
+												//_model.addPlacemark(placemark);
 											}
 										}
 									}
@@ -283,7 +283,9 @@ function AliwalController( pAliwalModel ){
 							// ToDo: Geocoding failures ???
 							that.geocodePlacemark( placemark );
 						};
+						_model.addPlacemark(placemark);
 					});
+
 					that.events.triggerHandler( that.events.attr('ControllerDataLoaded') );
 				} else {
 					//console.log('AliwalController: Error loading KML file');

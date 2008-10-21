@@ -31,7 +31,6 @@ function fileOpen(){
 		try {
 			xscopeNS.flags.loadingData = true;
 			xscopeNS.flags.promptForGeocodeFields = true;
-			
 			var fLoadHandler = function(){}
 			var fProgressHandler = function (e) {
 				drawFileProgress(e);
@@ -40,7 +39,7 @@ function fileOpen(){
 				jsdump("Error " + e.target.status + " occurred while loading the document.");
 			};
 			var fLoadedCallback = function(pPlacemark){		
-
+				alert('file loaded callback');
 			};
 			
 			xscopeNS.amodel = new AliwalModel();
