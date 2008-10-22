@@ -1,18 +1,13 @@
 #summary Windows build instructions for AliwalGeocoder.
 #labels Phase-Implementation,HowTo
 
-= How to build AliwalGeocoder on Windows =
+= How to build Aliwal Geocoder on Windows =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
-
-  * Install Subversion client. I grabbed : Slik SVN 1.5.3, 32 bit (Windows 2000/XP/2003/Vista) from [http://www.sliksvn.com/en/download]
-  * Install Java. I installed Java SE Development Kit (JDK) 6 Update 10 from [http://java.sun.com/javase/downloads/?intcmp=1281]
-  * Install Ant. I grabbed : apache-ant-1.7.1-bin.zip from [http://ant.apache.org/bindownload.cgi] ran through the wizard and fiddled with the environment as detailed in the install instructions
-  * Install NSIS, the Nullsoft Scriptable Install system. I grabbed 2.4.0 from [http://nsis.sourceforge.net/Download] and ran through the wizard.
-  * Check out the AliwalGeocoder source code by opening a command prompt and running:
+  * Install the Subversion command line client. I grabbed: [http://www.sliksvn.com/en/download Slik SVN 1.5.3, 32 bit (Windows 2000/XP/2003/Vista)]
+  * Install Java. I installed [http://java.sun.com/javase/downloads/?intcmp=1281 Java SE Development Kit (JDK) 6 Update 10]
+  * Install Ant. I grabbed [http://ant.apache.org/bindownload.cgi apache-ant-1.7.1-bin.zip], ran through the wizard and fiddled with the environment as detailed in the install instructions
+  * Install NSIS, the Nullsoft Scriptable Install system. I grabbed [http://nsis.sourceforge.net/Download 2.4.0] and ran through the install wizard.
+  * Check out the Aliwal Geocoder source code by opening a command prompt and running:
   `svn checkout http://aliwal.googlecode.com/svn/trunk/ aliwal-read-only`
   * Still at the command prompt, change down to the build directory and run  
   `ant dist_win32`
