@@ -1,8 +1,6 @@
 #summary Windows build instructions for AliwalGeocoder.
 #labels Phase-Implementation,HowTo
 
-= 2008/10/22 Work in Progress =
-
 = Details =
 
 Add your content here.  Format your content with:
@@ -16,3 +14,7 @@ Add your content here.  Format your content with:
   * Install NSIS, the Nullsoft Scriptable Install system. I grabbed 2.4.0 from [http://nsis.sourceforge.net/Download] and ran through the wizard.
   * Check out the AliwalGeocoder source code by opening a command prompt and running:
   `svn checkout http://aliwal.googlecode.com/svn/trunk/ aliwal-read-only`
+  * Still at the command prompt, change down to the build directory and run  
+  `ant dist_win32`
+  * If all goes well you'll see "BUILD SUCCESSFUL" and there will be an installer file called something like "Aliwal Geocoder 0.0.8 Installer.exe" in the .\build\win32\ directory.
+  * Any problems, drop me an email and I'll do my best to help.
