@@ -1,0 +1,18 @@
+#labels Phase-Implementation
+#Windows build instructions for AliwalGoecoder.
+
+= 2008/10/22 Work in Progress =
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+  * Install Subversion client. I grabbed : Slik SVN 1.5.3, 32 bit (Windows 2000/XP/2003/Vista) from [http://www.sliksvn.com/en/download]
+  * Install Java. I installed Java SE Development Kit (JDK) 6 Update 10 from [http://java.sun.com/javase/downloads/?intcmp=1281]
+  * Install Ant. I grabbed : apache-ant-1.7.1-bin.zip from [http://ant.apache.org/bindownload.cgi] ran through the wizard and fiddled with the environment as detailed in the install instructions
+  * Install NSIS, the Nullsoft Scriptable Install system. I grabbed 2.4.0 from [http://nsis.sourceforge.net/Download] and ran through the wizard.
+  * Check out the AliwalGeocoder source code by opening a command prompt and running:
+  `svn checkout http://aliwal.googlecode.com/svn/trunk/ aliwal-read-only`
