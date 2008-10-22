@@ -1,5 +1,5 @@
 #summary Windows build instructions for AliwalGeocoder.
-#labels Phase-Implementation
+#labels Phase-Implementation,HowTo
 
 = 2008/10/22 Work in Progress =
 
