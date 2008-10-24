@@ -50,15 +50,15 @@ AliwalViewControls = function(    pAliwalModel
 	// Private method
 	_drawGeocodingErr = function(){
 		_domGeocodingErr.empty();
-		_domGeocodingErr.append( '<img id="feedback_geocoding_err" src="icons/geocoding_ok.png" />' );
-		_feedbackGeocodingErr = $('#feedback_geocoding_err');
+		_domGeocodingErr.append( '<img id="img_feedback_geocoding_err" src="icons/geocoding_ok.png" />' );
+		_feedbackGeocodingErr = $('#img_feedback_geocoding_err');
 	};
 	
 	// Private method
 	_drawPinCeiling = function(){
 		_domPinCeiling.empty();
-		_domPinCeiling.append( '<img id="feedback_pin_ceiling"   src="icons/pin_ceiling_ok.png" />' );
-		_feedbackPinCeiling = $('#feedback_pin_ceiling');
+		_domPinCeiling.append( '<img id="img_feedback_pin_ceiling"   src="icons/pin_ceiling_ok.png" />' );
+		_feedbackPinCeiling = $('#img_feedback_pin_ceiling');
 	};
 	
 	
