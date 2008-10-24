@@ -1,31 +1,31 @@
 <html>
 <head>
 	<title>Aliwal Geocoder Map</title>
-	 
+
 	<link rel="stylesheet" type="text/css" href="chrome://AliwalGeocoder/skin/BrowserMap.struct.css" />
 	<link rel="stylesheet" type="text/css" href="chrome://AliwalGeocoder/skin/BrowserMap.css" />
 	<link rel="stylesheet" type="text/css" href="chrome://AliwalGeocoder/skin/marker.css" />
-		
+
 	<script src="jquery/jquery-1.2.6.js" 		type="text/javascript"></script>
 	<script src="yahoo/yahoo/yahoo.js" 			type="text/javascript"></script>
 	<script src="yahoo/event/event.js" 			type="text/javascript"></script>
 
-	
+
 	<script src="AliwalMVC.js" 					type="text/javascript"></script>
 	<script src="AliwalModel.js" 				type="text/javascript"></script>
 	<script src="AliwalController.js" 			type="text/javascript"></script>
 	<script src="AliwalViewControls.js" 		type="text/javascript"></script>
-	<script src="AliwalViewYahoo.js" 			type="text/javascript"></script>	
+	<script src="AliwalViewYahoo.js" 			type="text/javascript"></script>
 	<script src="AliwalXscopeNS.js" 			type="text/javascript"></script>
 	<script src="lib.CacheManager.js" 			type="text/javascript"></script>
-	
-	
-	<!-- This is last because it's not local -->	
+
+
+	<!-- This is last because it's not local -->
 	<script type="text/javascript" src="http://api.maps.yahoo.com/ajaxymap?v=3.8&appid=TQBZw2PV34GYymqj0eHGSn32aSw7fyGL7wdA3Cs5QufCQY4Zy9qn1ZHzSepRxh2XKg--"></script>
-	
-	<script src="BrowserMap.js" 				type="text/javascript"></script>		
-</head> 
-<body> 
+
+	<script src="BrowserMap.js" 				type="text/javascript"></script>
+</head>
+<body>
 
 <div id="container">
 	<div id="header">
@@ -65,8 +65,8 @@
 	<div id="extra">
 	</div><!-- extra -->
 	<div id="footer">
- 	
 
+<!--
 <script type="text/javascript">
 function debug(){
 	eval( $('#code').val() );
@@ -81,12 +81,10 @@ function llog(v){
 <br>
 <textarea id="code" cols="130" rows="10">
 $('#content').hide();
-domMgr.log('uneval(xscopeNS.loadingData):\n'+ uneval(xscopeNS.loadingData));
-domMgr.log('(xscopeNS.markers.length):\n'+ xscopeNS.markers.length );
 var ss = new XMLSerializer();
 jsdump(ss.serializeToString(xscopeNS.KML) );
 </textarea>
-
+-->
 
 	</div><!-- footer -->
 </div><!-- container -->
@@ -95,6 +93,6 @@ jsdump(ss.serializeToString(xscopeNS.KML) );
 
 
 
-		
+
 </body>
 </html>
