@@ -47,11 +47,12 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 	}
 	
 	// Private member
-	_buildGridModel = function(){
+	_buildSourceModel = function(){
 		/** 
-		 * It's important that _buildGridModel and _buildGridRow are in sync with each other.
+		 * It's important that _buildGridModel and _buildGridRow and _buildSourceModel are in sync with each other.
 		 */
 		var retModel = [];
+		
 		var labelCensus = _dataModel.labelCensus()
 		var tagsetMaxTagCounts = _dataModel.tagsetMaxTagCounts();
 	
@@ -75,11 +76,61 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 		
 		return retModel;
 	};
+	
+	// Private member
+	_buildGridModel = function(){
+		/** 
+		 * It's important that _buildGridModel and _buildGridRow and _buildSourceModel are in sync with each other.
+		 */
+		
+		var retModel   = [];
+		var retLabels  = [];
+		var retTagsets = [];
+		var retGeo     = [];
+		
+		var labelCensus = _dataModel.labelCensus()
+		var tagsetMaxTagCounts = _dataModel.tagsetMaxTagCounts();
+	
+		$.each( labelCensus, function( key_label, val_count ){
+			retLabels.push( {key: _makeLabelName(key_label), sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
+		});
+		
+		$.each( tagsetMaxTagCounts, function(key_tagset, val_numtags){
+			for( var tagIdx = 0 ;tagIdx < val_numtags; tagIdx++ ){
+				retTagsets.push({ key        : _makeTagsetName( key_tagset, tagIdx, tagsetMaxTagCounts), 
+						sortable   : true, 
+						resizeable : true, 
+						editor 	   : new YAHOO.widget.BaseCellEditor() 
+				});
+			};
+		});
+		
+		retGeo.push( {key: 'geocodeAddress', sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
+		retGeo.push( {key: 'latitude',       sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
+		retGeo.push( {key: 'longitude',      sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
+		
+		retModel = [
+			//{ key: 'Select',  label:'Select: <a id="grid_select_all"href="#">All</a> <a id="grid_select_none" href="#">None</a>', resizeable:true, formatter:"checkbox"}, 
+			{ key: 'Labels',    children: retLabels  },
+			{ key: 'Tagsets',   children: retTagsets },
+			{ key: 'Geo',       children: retGeo     },
+			//
+			// Disabled for readonly release
+			//
+			//{ key: 'DeleteRow', label:'Delete Row',
+			//       formatter:function(elCell) {
+			//       elCell.innerHTML = '<img src="icons/red_cross_circle.png" title="delete row" />';
+			//       elCell.style.cursor = 'pointer';}
+			//}
+		];
+		
+		return retModel;
+	};
 		
 	//Private method
 	_buildGridRow = function( pPlacemark, pTagsetMaxTagCounts ){
 		/** 
-		 * It's important that _buildGridModel and _buildGridRow are in sync with each other.
+		 * It's important that _buildGridModel and _buildGridRow and _buildSourceModel are in sync with each other.
 		 */
 		var retRowData = new Object();
 		
@@ -136,7 +187,8 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 	 */
 	
         var _gridModel = _buildGridModel();
-        
+        var _sourceModel = _buildSourceModel();
+                
 	$.each( _dataModel.getGeocodedPlacemarks(), function(idx, val_pm){
 		that.addPlacemark( val_pm );
 	});
@@ -147,10 +199,10 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 
 	_yuiDataSource = new YAHOO.util.DataSource( _gridData );
 	_yuiDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-	_yuiDataSource.responseSchema = { fields: _gridModel };
+	_yuiDataSource.responseSchema = { fields: _sourceModel };
 	
-	_yuiDataTable = new YAHOO.widget.DataTable("basic", _gridModel, _yuiDataSource, {
-		caption:"DataTable Caption",
+	_yuiDataTable = new YAHOO.widget.DataTable( _domGrid, _gridModel, _yuiDataSource, {
+		caption:"Aliwal Geocoder",
 //		selectionMode:"cellblock"
 	});
 	
@@ -158,15 +210,23 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
         _yuiDataTable.subscribe("rowMouseoverEvent", _yuiDataTable.onEventHighlightRow  );
         _yuiDataTable.subscribe("rowMouseoutEvent",  _yuiDataTable.onEventUnhighlightRow);
         _yuiDataTable.subscribe("cellSelectEvent",   _yuiDataTable.clearTextSelection   );
-        
-	_yuiDataTable.subscribe("cellClickEvent", function (oArgs) {
-		var target = oArgs.target;
-		var record = this.getRecord(target);
-		var column = this.getColumn(target);
-		column.editor = new YAHOO.widget.TextboxCellEditor();
-		this.showCellEditor(target);  
-	});
-	
+
+//
+// Disabled for readonly release
+//	_yuiDataTable.subscribe("cellClickEvent", function (oArgs) {
+//		var target = oArgs.target;
+//		var record = this.getRecord(target);
+//		var column = this.getColumn(target);
+//		if( column.key == 'DeleteRow'){
+//			if (confirm('Are you sure?')) {
+//			    _yuidataTable.deleteRow(target);
+//			}				
+//		} else {
+//			column.editor = new YAHOO.widget.TextboxCellEditor();
+//			this.showCellEditor(target);  
+//		}
+//		
+//	});
 	
 	
 	_yuiDataTable.subscribe("editorSaveEvent", function(oArgs){

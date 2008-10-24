@@ -28,15 +28,14 @@ try{
 	alert('Falling back to DEMO mode because\ncould not import module xscope.jsm.');
 	// ********************************* START OF FAKE JSM **********************************************
 	var xscopeNS = {
-		
 		// Whole flags object should be passed because of pass by reference requirement
-		flags		: { loadingData 		: false, 
-						scrollOnGeocodeSuccess: false,
-					    warnGeocodingError 	: true,
-					    warnPinCountError 	: true
-					  },
+		flags	    : { loadingData 	       : false, 
+				scrollOnGeocodeSuccess : false,
+				warnGeocodingError     : true,
+				warnPinCountError      : true
+			      },
 		acontroller : {},
-		amodel 		: {}
+		amodel      : {}
 	};
 	
    
@@ -53,7 +52,5 @@ try{
 	xscopeNS.amodel = new AliwalModel();
 	xscopeNS.acontroller = new AliwalController( xscopeNS.amodel );
 	
-	xscopeNS.acontroller.loadDefaultData( function(){alert('Fake data loaded')} );
-	//xscopeNS.acontroller.loadKMLFile('/Users/greg/Projects/Aliwal Geocoder/src/trunk/application/chrome/content/AliwalGeocoder/fake-jsm-data-live-490.o1m', fEmpty, fEmpty, fEmpty, fEmpty);
-
+	xscopeNS.acontroller.loadDefaultData();
 }
