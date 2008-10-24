@@ -117,7 +117,7 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	// Private method
 	_tagsetColourMap = function(){
 		var colours = ['orange', 'blue', 'lightblue', 'brown', 'green', 'lightgreen', 'grey', 'black', 'maroon', 'ocre', 'purple'];
-		var tsc = _dataModel.tagsetCensus();
+		var tsc = eval(uneval(_dataModel.tagsetCensus())); // Create a copy 
 		if( $(tsc).length > 0){
 			// Re-purpose the census results, replace the counts with a colour
 			$.each( tsc, function(key_tagset, val_tags){
