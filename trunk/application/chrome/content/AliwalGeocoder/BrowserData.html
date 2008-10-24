@@ -1,40 +1,49 @@
 <html>
 <head>
 	<title>Aliwal Geocoder Data</title>
-	 
-	<link rel="stylesheet" type="text/css" href="chrome://AliwalGeocoder/skin/BrowserData.css" />
-	
-	<link rel="stylesheet" type="text/css" media="screen" href="jqGrid/themes/basic/grid.css" /> 
-	<link rel="stylesheet" type="text/css" media="screen" href="jqGrid/themes/jqModal.css" /> 
-	
-	<script src="jquery/jquery-1.2.6.js" 		type="text/javascript"></script>
-	<script src="yahoo/yahoo/yahoo.js" 			type="text/javascript"></script>
-	<script src="yahoo/event/event.js" 			type="text/javascript"></script>
 
-	<script src="jqGrid/jquery.jqGrid.js" 		type="text/javascript"></script>
-	<script src="jqGrid/js/jquery.jqGrid.js" 	type="text/javascript"></script> 
-	<script src="jqGrid/js/jquery.jqModal.js" 	type="text/javascript"></script> 
-	<script src="jqGrid/js/jquery.jqDnR.js" 	type="text/javascript"></script>
-	
+	<link rel="stylesheet" type="text/css" href="chrome://AliwalGeocoder/skin/BrowserData.css" />
+
+	<link rel="stylesheet" type="text/css" href="yahoo/fonts/fonts.css" />
+	<link rel="stylesheet" type="text/css" href="yahoo/datatable/assets/skins/sam/datatable.css" />
+
+	<script src="jquery/jquery-1.2.6.js" 		           type="text/javascript"></script>
+
+	<script src="yahoo/yahoo/yahoo.js" 			           type="text/javascript"></script>
+	<script src="yahoo/event/event.js" 			           type="text/javascript"></script>
+	<script src="yahoo/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
+	<script src="yahoo/dragdrop/dragdrop.js"               type="text/javascript"></script>
+	<script src="yahoo/element/element-beta.js"            type="text/javascript"></script>
+	<script src="yahoo/datasource/datasource.js"           type="text/javascript"></script>
+	<script src="yahoo/datatable/datatable.js"             type="text/javascript"></script>
+
 	<script src="AliwalMVC.js" 					type="text/javascript"></script>
 	<script src="AliwalModel.js" 				type="text/javascript"></script>
 	<script src="AliwalController.js" 			type="text/javascript"></script>
-	<script src="AliwalViewGrid.js" 			type="text/javascript"></script>
+	<script src="AliwalViewDataTable.js"        type="text/javascript"></script>
 	<script src="AliwalXscopeNS.js" 			type="text/javascript"></script>
-	
+	<script src="lib.CacheManager.js" 			type="text/javascript"></script>
+
 	<script src="BrowserData.js" 				type="text/javascript"></script>
-		
+
 	<style>
 .gridview{
 	height: 100%;
 }
+/*margin and padding on body element
+  can introduce errors in determining
+  element position and are not recommended;
+  we turn them off as a foundation for YUI
+  CSS treatments. */
+body {
+	margin:0;
+	padding:0;
+}
 	</style>
-</head> 
-<body> 
-		
-	<!-- HTML Map element - the size must be specified here, or in the CSS -->
-	<table id="gridview" class="scroll"></table>  
-	<div id="gridpager" class="scroll" style="text-align:center;"></div> 
-		
+</head>
+<body class="yui-skin-sam">
+
+	<div id="divDataTable"></div>
+
 </body>
 </html>

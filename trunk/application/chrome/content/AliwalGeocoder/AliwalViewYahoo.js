@@ -44,7 +44,9 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	
 	var _errPlacemarks = []; // Type: AliwalPlacemark. Special case for markers not yet geocoded.  
 	
-	var _filterTagsets = {}; // Type AliwalTagset 	
+	var _filterTagsets = {}; // Type AliwalTagset
+	var _popupColourMap;
+	var _pinColourMap;
 
 	// Events
 	this.events = $({
@@ -111,6 +113,61 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 		//jsdump('Checking '+uneval(pFilterSets) +'\n against marker with tagdata: ' + uneval(pPlacemark.on1map_tagdata) + '\nreturning: ' + foundOuter );
 		return foundOuter;
 	}
+	
+	// Private method
+	_tagsetColourMap = function(){
+		var colours = ['orange', 'blue', 'lightblue', 'brown', 'green', 'lightgreen', 'grey', 'black', 'maroon', 'ocre', 'purple'];
+		var tsc = _dataModel.tagsetCensus();
+		if( $(tsc).length > 0){
+			// Re-purpose the census results, replace the counts with a colour
+			$.each( tsc, function(key_tagset, val_tags){
+				var x = 0;
+				$.each(val_tags, function(key_tag, val_count){
+					tsc[key_tagset][key_tag] = colours[x];
+					if(x<colours.length){
+						x++;
+					} else {
+						x = 0;
+					}
+				});
+			});
+		};
+		return tsc;
+	}
+	
+	
+	// Private method
+	_getPopupColour = function(pPlacemark){
+		/**
+		 * Based on the tags of a placemark return what colour a map pin should be.
+		 */
+		var ret = 'orange'; 
+		var _pts = pPlacemark.getTagsets()
+		
+		if( $(_popupColourMap).length > 0 ){
+			$.each(_popupColourMap, function(key_tagset, val_tags){
+				$.each(val_tags, function(key_tag, val_colour){
+					if( typeof (_pts[key_tagset][0] ) != 'undefined'){
+						var firstTag = _pts[key_tagset][0];
+						ret = _popupColourMap[key_tagset][firstTag];
+					};
+					return false; //break
+				});
+				return false; //break
+			});
+		}
+		
+		return ret;
+	};
+	
+	// Private method
+	_getPinImage = function(pPlacemark){
+		/**
+		 * Based on the tags of a placemark return what image the map pin should be.
+		 */
+		return new YImage('icons/pin_' + _getPopupColour(pPlacemark) + '.png');
+	}
+	
 
 	// Private method
 	_drawMarkers = function( pBounds ){
@@ -206,7 +263,12 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 			nm = new YMarker( geopoint );
 			nm.placemark = pPlacemark;
 			
+			var pmcol =  _getPopupColour( pPlacemark );
+			nm.setSmartWindowColor( pmcol);			
 			nm.smartWindowHtml = _buildPopupContents( pPlacemark );
+			
+			var pmImage = _getPinImage(pPlacemark);
+			nm.changeImage( pmImage );
 			_hidMarkers[nm.id] = nm;
 
 			// Sort out the marker popup window 				
@@ -286,6 +348,8 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	// It's important to center the map [some|any]where before adding any markers.
 	var homeloc = new YGeoPoint(51.496439,-0.244269); //Goldhawk Road, London
 	_map.drawZoomAndCenter( homeloc, 7);
+	
+	_popupColourMap = _tagsetColourMap();
 	
 	// Prime _hidMarkers from _dataModel ready for _drawMarkers
 	$.each( _dataModel.getGeocodedPlacemarks(), function(idx, val_pm){
