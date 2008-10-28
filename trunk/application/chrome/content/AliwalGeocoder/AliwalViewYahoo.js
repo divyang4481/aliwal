@@ -306,8 +306,8 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 			nm.changeImage( pmImage );
 			_hidMarkers.push(nm);
 
-			// Sort out the marker popup window 				
-			YEvent.Capture( _hidMarkers[_hidMarkers.length], EventsList.MouseClick, function(){
+			// Sort out the marker popup window
+			YEvent.Capture( nm, EventsList.MouseClick, function(){
 				/* Scope of "this" will have changed to the YMarker object by the time this gets invoked. */ 
 				this.openSmartWindow('<blink>Loading...</blink>');
 				this.updateSmartWindow( this.smartWindowHtml );
