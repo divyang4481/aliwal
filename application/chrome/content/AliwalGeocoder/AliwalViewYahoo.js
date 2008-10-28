@@ -39,8 +39,8 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 						  // Hashes of YMarker objects with an additional member "placemark" of
 						  // type AliwalPlacemark pointing back to the placemark the Marker represents.
 						  // Addressed by the API assigned Marker.id 	
-	var _hidMarkers = {}; // Markers not in bounds or filtered off of map.
-	var _visMarkers = {}; // Markers that are currently visible, i.e. Not filtered and in map bounds.
+	var _hidMarkers = []; // YMarkers not in bounds or filtered off of map.
+	var _visMarkers = []; // YMarkers that are currently visible, i.e. Not filtered and in map bounds.
 	
 	var _errPlacemarks = []; // Type: AliwalPlacemark. Special case for markers not yet geocoded.  
 	
@@ -175,40 +175,43 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 		var errcount = 0;
 		var totcount = 0;
 		
-		for( var idx in _errPlacemarks ){
+		for( var idx = 0; idx < _errPlacemarks.length; idx++ ){ // The length of _errPlacemarks could be changed in-loop
 			totcount++;
 			// Run through _errPlacemarks to see if any are ready for promotion to Markers.
 			if( _errPlacemarks[idx].isGeocoded() ){
 				// Move them to _hidMarkers
 				addPlacemark( _errPlacemarks[idx] );
 				_errPlacemarks.splice(idx, 1); 
+				idx--; //End of array has moved closer so loop's idx should miss an increment
 			}
 		}
 		
-		for( var key in _visMarkers ){	
-			if( _visMarkers[key].placemark.inBounds(pBounds)  
-			  && _isMarkerUnfiltered(_visMarkers[key].placemark, _filterTagsets) ){
+		for( var idx = 0; idx < _visMarkers.length; idx++ ){	// The length of _visMakers could be changed in-loop
+			if( _visMarkers[idx].placemark.inBounds(pBounds)  
+			  && _isMarkerUnfiltered(_visMarkers[idx].placemark, _filterTagsets) ){
 				// leave already visible,inBounds&unfiltered alone
 				visicount++;
 			} else {
 				// Remove visible&(filtered or out of bounds ) to hidden
 				//jsdump('Moving from visible to hidden: ' + _visMarkers[key].id );
-				_hidMarkers[key] = _visMarkers[key];
-				_map.removeOverlay(_visMarkers[key]);
-				delete _visMarkers[key];
+				_hidMarkers.push(_visMarkers[idx]);
+				_map.removeOverlay(_visMarkers[idx]);
+				_visMarkers.splice(idx,1);
+				idx--; //End of array has moved closer so loop's idx should miss an increment
 			}
 		}
 		try{	
-			for( var key in _hidMarkers){
-				if(    _hidMarkers[key].placemark.isGeocoded()  
-			  		&& _hidMarkers[key].placemark.inBounds(pBounds) ){
-					if( _isMarkerUnfiltered(_hidMarkers[key].placemark, _filterTagsets) ){
+			for( var idx = 0; idx < _hidMarkers.length; idx++){ // length of _hidMarkers could change in-loop
+				if( _hidMarkers[idx].placemark.isGeocoded()  
+			  		&& _hidMarkers[idx].placemark.inBounds(pBounds) ){
+					if( _isMarkerUnfiltered(_hidMarkers[idx].placemark, _filterTagsets) ){
 						if ( visicount < 200 ){
 							//jsdump('Moving from hidden to visible: ' + _hidMarkers[key].id );
 							visicount++;
-							_visMarkers[key] = _hidMarkers[key];
-							_map.addOverlay(_visMarkers[key]);
-							delete _hidMarkers[key];	
+							_visMarkers.push(_hidMarkers[idx]);
+							_map.addOverlay(_visMarkers[_visMarkers.length - 1]);
+							_hidMarkers.splice(idx,1);	
+							idx--; //End of array has moved closer so loop's idx should miss an increment
 						} else {
 							throw 'Map density ceiling';
 					 	}
@@ -243,10 +246,10 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 		 */
 		_labelSel = pLabelAttrib;
 		 
-		$.each(_hidMarkers, function(key_id, val_marker){
+		$.each(_hidMarkers, function(idx, val_marker){
 			_setPinLabel(val_marker);
 		});
-		$.each(_visMarkers, function(key_id, val_marker){
+		$.each(_visMarkers, function(idx, val_marker){
 			_setPinLabel(val_marker);
 		});
 	}
@@ -269,10 +272,10 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 			
 			var pmImage = _getPinImage(pPlacemark);
 			nm.changeImage( pmImage );
-			_hidMarkers[nm.id] = nm;
+			_hidMarkers.push(nm);
 
 			// Sort out the marker popup window 				
-			YEvent.Capture( _hidMarkers[nm.id], EventsList.MouseClick, function(){
+			YEvent.Capture( _hidMarkers[_hidMarkers.length], EventsList.MouseClick, function(){
 				/* Scope of "this" will have changed to the YMarker object by the time this gets invoked. */ 
 				this.openSmartWindow('<blink>Loading...</blink>');
 				this.updateSmartWindow( this.smartWindowHtml );
@@ -290,22 +293,14 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	
 	// Privileged method
 	this.getCountVisiblePins = function(){
-		 var ret = 0;
-		 for(var m in _visMarkers){
-		 	ret++;
-		 }
-		 return ret;
+		return _visMarkers.length;
 	}
 	// Privileged method
 	this.getCountHiddenPins = function(){
 		/**
 		 * Returns the number of Yahoo Markers not shown on the map, i.e out of bounds or filtered
 		 */
-		 var ret = 0;
-		 for(var m in _hidMarkers){
-		 	ret++;
-		 }
-		 return ret;
+		 return _hidMarkers.length;
 	}
 	// Privileged method
 	this.getCountErrorPins = function(){
