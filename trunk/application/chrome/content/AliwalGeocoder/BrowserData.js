@@ -20,10 +20,36 @@
 // No point creating av* views until the model is populated
 var avd; // AliwalViewDataTable
 
-xscopeNS.acontroller.events.bind('ControllerDataLoaded', function( event, eventArgs ){
-	avd = new AliwalViewDataTable( xscopeNS.amodel, 'divDataTable' );
-});
-$(document).ready(function(){
-	avd = new AliwalViewDataTable( xscopeNS.amodel, 'divDataTable' );
-});
 
+$(document).ready(function(){
+	// The model may be loaded with some geocoded placemarks at this point & they'll automatically go onto the map.
+	// Uncoded placemarks in the model need to be dealt with manually
+	avd = new AliwalViewDataTable( xscopeNS.amodel, 'divDataTable' );
+	
+	xscopeNS.amodel.events.bind('ModelPlacemarkAdded', function( event, eventArgs ){
+		avd.redraw();
+	});
+	
+	xscopeNS.amodel.events.bind('ModelPlacemarkDeleted', function( event, eventArgs ){
+		avd.redraw();
+	});
+		
+	xscopeNS.amodel.events.bind('ModelPlacemarkGeocoded', function( event, eventArgs ){
+		avd.redraw();
+	});
+		
+	xscopeNS.amodel.events.bind('ModelPlacemarkMoved', function( event, eventArgs ){
+		avd.redraw();
+	});
+	xscopeNS.acontroller.events.bind('ControllerDataLoaded', function( event, eventArgs ){
+		avd.redraw();
+	});
+	
+	// For in-browser testing
+	// ToDo: create xscopeNS.inbrowser = true; so that this can be conditional.
+	// Get the controller to geocode placemarks that need looking up. 
+	$.each( xscopeNS.amodel.getUncodedPlacemarks(), function(idx, val_pm){
+		xscopeNS.acontroller.geocodePlacemark( val_pm, function(pm2){} );
+	});
+		
+});

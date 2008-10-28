@@ -16,7 +16,6 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 	var _domGrid 	= pDomGrid;
 	var _rowcnt     = 0;
 	var _gridData   = [];
-	var _yuiDataSource;
         var _yuiDataTable;
 
 	// Events
@@ -70,9 +69,9 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 			};
 		});
 		
-		retModel.push( {key: 'geocodeAddress', sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
-		retModel.push( {key: 'latitude',       sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
-		retModel.push( {key: 'longitude',      sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
+		retModel.push( {key: 'geocodeAddress', sortable: true, resizeable: true });//, editor:new YAHOO.widget.BaseCellEditor() } );
+		retModel.push( {key: 'latitude',       sortable: true, resizeable: true });//, editor:new YAHOO.widget.BaseCellEditor() } );
+		retModel.push( {key: 'longitude',      sortable: true, resizeable: true });//, editor:new YAHOO.widget.BaseCellEditor() } );
 		
 		return retModel;
 	};
@@ -105,9 +104,9 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 			};
 		});
 		
-		retGeo.push( {key: 'geocodeAddress', sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
-		retGeo.push( {key: 'latitude',       sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
-		retGeo.push( {key: 'longitude',      sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
+		retGeo.push( {key: 'geocodeAddress', sortable: true, resizeable: true }); //, editor:new YAHOO.widget.BaseCellEditor() } );
+		retGeo.push( {key: 'latitude',       sortable: true, resizeable: true }); //, editor:new YAHOO.widget.BaseCellEditor() } );
+		retGeo.push( {key: 'longitude',      sortable: true, resizeable: true }); //, editor:new YAHOO.widget.BaseCellEditor() } );
 		
 		retModel = [
 			//{ key: 'Select',  label:'Select: <a id="grid_select_all"href="#">All</a> <a id="grid_select_none" href="#">None</a>', resizeable:true, formatter:"checkbox"}, 
@@ -161,20 +160,43 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 	
 	// Privileged method
 	this.redraw = function(){
-		/** ToDo.
-		 * A way for the controller to ask for a redraw
+		/** 
+		 * A way for controller events to trigger a redraw
 		 */
-	}
+		var _yuiDataSource;
+		var _gridModel = _buildGridModel();
+		var _sourceModel = _buildSourceModel();
 
+		_yuiDataSource = new YAHOO.util.DataSource( _gridData );
+		_yuiDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		_yuiDataSource.responseSchema = { fields: _sourceModel };
+		
+		if( _yuiDataTable ){
+			_yuiDataTable.destroy();
+		}
+
+		_yuiDataTable = new YAHOO.widget.DataTable( _domGrid, _gridModel, _yuiDataSource, {
+			caption:"Aliwal Geocoder"
+			//selectionMode:"cellblock"
+		});
+
+		// Subscribe to events for cell selection
+		_yuiDataTable.subscribe("rowMouseoverEvent", _yuiDataTable.onEventHighlightRow  );
+		_yuiDataTable.subscribe("rowMouseoutEvent",  _yuiDataTable.onEventUnhighlightRow);
+		_yuiDataTable.subscribe("cellSelectEvent",   _yuiDataTable.clearTextSelection   );
+
+	};
+	
+	/** @constructor 
+	 */
+	
 	// Listen for model ( jQuery ) events
 	_dataModel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
 		// console.log('ModelPlacemarkAdded received');
 		that.addPlacemark( eventArg );
-		that.redraw();  
 	});
 	_dataModel.events.bind( 'ModelPlacemarkGeocoded', function(event, eventArg ){
 		// console.log('ModelPlacemarkGeocoded received');
-		that.addPlacemark( eventArg );
 		that.redraw();  
 	});
 	_dataModel.events.bind( 'ModelPlacemarkMoved', function(event, eventArg ){
@@ -182,13 +204,7 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 		that.redraw(); 
 	});
 	
-	
-	/** @constructor 
-	 */
-	
-        var _gridModel = _buildGridModel();
-        var _sourceModel = _buildSourceModel();
-                
+	// Draw the placemarks                
 	$.each( _dataModel.getGeocodedPlacemarks(), function(idx, val_pm){
 		that.addPlacemark( val_pm );
 	});
@@ -197,20 +213,7 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 		that.addPlacemark( val_pm );
 	});
 
-	_yuiDataSource = new YAHOO.util.DataSource( _gridData );
-	_yuiDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-	_yuiDataSource.responseSchema = { fields: _sourceModel };
-	
-	_yuiDataTable = new YAHOO.widget.DataTable( _domGrid, _gridModel, _yuiDataSource, {
-		caption:"Aliwal Geocoder",
-//		selectionMode:"cellblock"
-	});
-	
-        // Subscribe to events for cell selection
-        _yuiDataTable.subscribe("rowMouseoverEvent", _yuiDataTable.onEventHighlightRow  );
-        _yuiDataTable.subscribe("rowMouseoutEvent",  _yuiDataTable.onEventUnhighlightRow);
-        _yuiDataTable.subscribe("cellSelectEvent",   _yuiDataTable.clearTextSelection   );
-
+	that.redraw();
 //
 // Disabled for readonly release
 //	_yuiDataTable.subscribe("cellClickEvent", function (oArgs) {
@@ -227,19 +230,17 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 //		}
 //		
 //	});
+//	
+//	_yuiDataTable.subscribe("editorSaveEvent", function(oArgs){
+//	/*
+//	
+//	Parameters:
+//	    oArgs.editor <YAHOO.widget.CellEditor> The CellEditor instance. 
+//	    oArgs.newData <Object> New data value from form input field. 
+//	    oArgs.oldData <Object> Old data value.
+//	    
+//	*/
+//		var x = 99;
+//	}); 
 	
-	
-	_yuiDataTable.subscribe("editorSaveEvent", function(oArgs){
-	/*
-	
-	Parameters:
-	    oArgs.editor <YAHOO.widget.CellEditor> The CellEditor instance. 
-	    oArgs.newData <Object> New data value from form input field. 
-	    oArgs.oldData <Object> Old data value.
-	    
-	*/
-		var x = 99;
-	}); 
-
-	return _yuiDataTable;
 }
