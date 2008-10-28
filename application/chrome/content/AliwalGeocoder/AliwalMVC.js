@@ -44,18 +44,19 @@ function AliwalLabelledData(){
 function AliwalPlacemark(){
 	
 	// Private members
-	var that            = this;
+	var that            	= this;
 	var _labels 		= {};  	// type defn is AliwalLabelledData 
 	var _tagsets 		= {}; 	// type defn is AliwalTagset
 	var _latitude 		= null;  	
 	var _longitude 		= null;
-	var _geocodeAddress = null; // The address used for geocoding if lat & long not available
+	var _geocodeAddress 	= null; // The address used for geocoding if lat & long not available
+	var _geoHash; 			// Undefined
 	
 	// Events
 	this.events = $({
 	//  eventID:  'eventName' // Should match
 		AliwalPlacemarkGeocoded : 'AliwalPlacemarkGeocoded',
-		AliwalPlacemarkMoved : 'AliwalPlacemarkMoved'
+		AliwalPlacemarkMoved    : 'AliwalPlacemarkMoved'
     });
     
 	// Privileged method
@@ -141,8 +142,57 @@ function AliwalPlacemark(){
 	}
 
 	// Privileged method
-	this.geoHash = function(){
-		// ToDo:
+	// geohash.js
+	// Geohash library for Javascript
+	// (c) 2008 David Troy
+	// Distributed under the MIT License
+	this.geoHash = function( pRegenerate ){
+		var BITS   = [16, 8, 4, 2, 1];
+		var BASE32 = "0123456789bcdefghjkmnpqrstuvwxyz";
+		if(that.isGeocoded() ){
+			if(pRegenerate || typeof _geoHash == 'undefined' ){
+				var is_even=1;
+				var i=0;
+				var lat = []; var lon = [];
+				var bit=0;
+				var ch=0;
+				var precision = 12;
+				_geohash = "";
+
+				lat[0] = -90.0; lat[1] = 90.0;
+				lon[0] = -180.0; lon[1] = 180.0;
+
+				while (_geohash.length < precision) {
+					if (is_even) {
+						mid = (lon[0] + lon[1]) / 2;
+						if (that._longitude > mid) {
+							ch |= BITS[bit];
+							lon[0] = mid;
+						} else
+							lon[1] = mid;
+					} else {
+					mid = (lat[0] + lat[1]) / 2;
+					if (that._latitude > mid) {
+						ch |= BITS[bit];
+						lat[0] = mid;
+					} else
+						lat[1] = mid;
+					}
+
+					is_even = !is_even;
+					if (bit < 4)
+						bit++;
+					else {
+						_geohash += BASE32[ch];
+						bit = 0;
+						ch = 0;
+					}
+				}
+			}
+			return _geohash;
+		} else {
+			throw 'geoHash() called on uncoded placemark';
+		}
 	}
 }
 
