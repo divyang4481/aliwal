@@ -200,6 +200,7 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 				idx--; //End of array has moved closer so loop's idx should miss an increment
 			}
 		}
+		_scatterHidMarkers(); // So that the map shows a good distibution of markers
 		try{	
 			for( var idx = 0; idx < _hidMarkers.length; idx++){ // length of _hidMarkers could change in-loop
 				if( _hidMarkers[idx].placemark.isGeocoded()  
@@ -236,6 +237,37 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 		};
 		var labelstr = '<div class="marker_label">' + pMarker.placemark.getLabelledData(_labelSel) + '</div>';
 		pMarker.addAutoExpand(labelstr);
+	}
+	_scatterHidMarkers = function(){
+		/**
+		 * Shuffle _hidMarkers so that _hidMarkers[x] is geograhically distant from _hidMarkers[x+1].
+		 * Sorts the array to get them geographically close and then interleaves the 1st half with second half of the array.
+		 */
+		this._clusterHidMarkers();
+		
+		var _backwards = _hidMarkers.length;
+		var _halfway = parseInt(_backwards/2);
+		var popped;
+		
+		for(var _forwards = 1; _forwards < _halfway; _forwards+=2 ){
+			popped = _hidMarkers.pop();
+			_hidMarkers.splice( _forwards, 0, popped);
+		}
+	}
+	_clusterHidMarkers = function(){
+		/**
+		 * Shuffle _hidMarkers so that _hidMarkers[x] is geograhically close to _hidMarkers[x+1]
+		 */
+		
+		_hidMarkers.sort( function( pLeft, pRight){
+		
+			if ( pLeft.placemark.geoHash() <  pRight.placemark.geoHash() )
+				return -1;
+			else if (pLeft.placemark.geoHash() >  pRight.placemark.geoHash())
+				return 1;
+			else 
+				return 0;
+		});
 	}
 	
 	// Privileged method
