@@ -42,14 +42,15 @@ $(document).ready(function(){
 		avd.redraw();
 	});
 	xscopeNS.acontroller.events.bind('ControllerDataLoaded', function( event, eventArgs ){
+		// For in-browser testing
+		// ToDo: create xscopeNS.inbrowser = true; so that this can be conditional.
+		// Get the controller to geocode placemarks that need looking up. 
+		$.each( xscopeNS.amodel.getUncodedPlacemarks(), function(idx, val_pm){
+			xscopeNS.acontroller.geocodePlacemark( val_pm, function(pm2){} );
+		});
+		
+
 		avd.redraw();
 	});
-	
-	// For in-browser testing
-	// ToDo: create xscopeNS.inbrowser = true; so that this can be conditional.
-	// Get the controller to geocode placemarks that need looking up. 
-	$.each( xscopeNS.amodel.getUncodedPlacemarks(), function(idx, val_pm){
-		xscopeNS.acontroller.geocodePlacemark( val_pm, function(pm2){} );
-	});
-		
+
 });

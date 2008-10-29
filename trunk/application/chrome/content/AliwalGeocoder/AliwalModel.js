@@ -82,6 +82,9 @@ function AliwalModel(){
 	}
 	
 	// Privileged method
+	/**
+	 * Returns an array of _pmark hash keys.
+	 */
 	this.getPlacemarkIDs = function(){
 		var retIDs = [];
 		$.each(_pmarks, function(key_id, placemark){

@@ -150,6 +150,18 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 		return retRowData;
 		
 	};
+	
+	//Private method
+	_buildGridData = function(){
+		var tsCounts = _dataModel.tagsetMaxTagCounts();
+		_gridData = new Array();
+		$.each( _dataModel.getGeocodedPlacemarks(), function(idx, val){
+			_gridData.push( _buildGridRow(val, tsCounts));
+		});
+		$.each( _dataModel.getUncodedPlacemarks(), function(idx, val){
+			_gridData.push( _buildGridRow(val, tsCounts));
+		});
+	}
 
 	//Privileged method
 	this.addPlacemark = function( pPlacemark ){
@@ -197,10 +209,12 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 	});
 	_dataModel.events.bind( 'ModelPlacemarkGeocoded', function(event, eventArg ){
 		// console.log('ModelPlacemarkGeocoded received');
+		_buildGridData();
 		that.redraw();  
 	});
 	_dataModel.events.bind( 'ModelPlacemarkMoved', function(event, eventArg ){
 		// console.log('ModelPlacemarkMoved received here 001');
+		_buildGridData();
 		that.redraw(); 
 	});
 	
