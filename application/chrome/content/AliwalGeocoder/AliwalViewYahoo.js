@@ -287,22 +287,23 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	}
 	
 	//Privileged method
-	this.addPlacemark = function( pPlacemark ){
+	this.addPlacemark = function( pPlacemarkID ){
 		/** 
 		 * Put an AliwalPlacemark into _hidMarkers.
 		 * If it's missing coordinates, stick it into _errPlacemarks
 		 */
+		var placeMark = _dataModel.getPlacemark( pPlacemarkID )
 		var geopoint;
-		if( pPlacemark.isGeocoded() ) { 
-			geopoint = new YGeoPoint( pPlacemark.getLatitude(), pPlacemark.getLongitude() );
+		if( placeMark.isGeocoded() ) { 
+			geopoint = new YGeoPoint( placeMark.getLatitude(), placeMark.getLongitude() );
 			nm = new YMarker( geopoint );
-			nm.placemark = pPlacemark;
+			nm.placemark = placeMark;
 			
-			var pmcol =  _getPopupColour( pPlacemark );
+			var pmcol =  _getPopupColour( placeMark );
 			nm.setSmartWindowColor( pmcol);			
-			nm.smartWindowHtml = _buildPopupContents( pPlacemark );
+			nm.smartWindowHtml = _buildPopupContents( placeMark );
 			
-			var pmImage = _getPinImage(pPlacemark);
+			var pmImage = _getPinImage(placeMark);
 			nm.changeImage( pmImage );
 			_hidMarkers.push(nm);
 
@@ -319,7 +320,7 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 			  		
 				
 		} else {
-			_errPlacemarks.push( pPlacemark );
+			_errPlacemarks.push( placeMark );
 		}
 	}
 	
@@ -379,9 +380,9 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	_popupColourMap = _tagsetColourMap();
 	
 	// Prime _hidMarkers from _dataModel ready for _drawMarkers
-	$.each( _dataModel.getGeocodedPlacemarks(), function(idx, val_pm){
+	$.each( _dataModel.getGeocodedIDs(), function(idx, val_pmid){
 		try{
-			that.addPlacemark( val_pm );
+			that.addPlacemark( val_pmid );
 		} catch(e){
 			throw e; 
 			// ToDo:
@@ -410,17 +411,14 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	
 	// Listen for model ( jQuery ) events
 	_dataModel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
-		// console.log('ModelPlacemarkAdded received');
 		that.addPlacemark( eventArg );
 		that.redraw();  
 	});
 	_dataModel.events.bind( 'ModelPlacemarkGeocoded', function(event, eventArg ){
-		// console.log('ModelPlacemarkGeocoded received');
 		that.addPlacemark( eventArg );
 		that.redraw();  
 	});
 	_dataModel.events.bind( 'ModelPlacemarkMoved', function(event, eventArg ){
-		// console.log('ModelPlacemarkMoved received here 001');
 		that.redraw(); 
 	});
 	

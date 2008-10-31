@@ -9,14 +9,12 @@
 
 function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 
-
 	// Private members
 	var that = this;
 	var _dataModel 	= pAliwalModel;
 	var _domGrid 	= pDomGrid;
-	var _rowcnt     = 0;
-	var _gridData   = [];
-        var _yuiDataTable;
+    var _yuiDataTable;
+    var _IDMap = {}; 			// A hash to map AliwalModel IDs to YUI record IDs 
 
 	// Events
 	this.events = $({
@@ -24,7 +22,7 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 		ViewDrawn             : 'ViewDrawn'
 	});
 
-	// Private member
+	// Private method
 	_makeLabelName = function( pLabel ){
 		/** 
 		 * Turns a label name into consistent value suitable for the grid col names
@@ -32,7 +30,7 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 		return pLabel;
 	}
 	
-	// Private member
+	// Private method
 	_makeTagsetName = function( pTagset, pTagIdx, pTagsetMaxTagCounts ){
 		/** 
 		 * Since a tagset can have several tags, this decides when numbered suffixes are appropriate.
@@ -45,41 +43,10 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 		
 	}
 	
-	// Private member
-	_buildSourceModel = function(){
-		/** 
-		 * It's important that _buildGridModel and _buildGridRow and _buildSourceModel are in sync with each other.
-		 */
-		var retModel = [];
-		
-		var labelCensus = _dataModel.labelCensus()
-		var tagsetMaxTagCounts = _dataModel.tagsetMaxTagCounts();
-	
-		$.each( labelCensus, function( key_label, val_count ){
-			retModel.push( {key: _makeLabelName(key_label), sortable: true, resizeable: true, editor:new YAHOO.widget.BaseCellEditor() } );
-		});
-		
-		$.each( tagsetMaxTagCounts, function(key_tagset, val_numtags){
-			for( var tagIdx = 0 ;tagIdx < val_numtags; tagIdx++ ){
-				retModel.push({ key        : _makeTagsetName( key_tagset, tagIdx, tagsetMaxTagCounts), 
-						sortable   : true, 
-						resizeable : true, 
-						editor 	   : new YAHOO.widget.BaseCellEditor() 
-				});
-			};
-		});
-		
-		retModel.push( {key: 'geocodeAddress', sortable: true, resizeable: true });//, editor:new YAHOO.widget.BaseCellEditor() } );
-		retModel.push( {key: 'latitude',       sortable: true, resizeable: true });//, editor:new YAHOO.widget.BaseCellEditor() } );
-		retModel.push( {key: 'longitude',      sortable: true, resizeable: true });//, editor:new YAHOO.widget.BaseCellEditor() } );
-		
-		return retModel;
-	};
-	
-	// Private member
+	// Private method
 	_buildGridModel = function(){
 		/** 
-		 * It's important that _buildGridModel and _buildGridRow and _buildSourceModel are in sync with each other.
+		 * It's important that _buildGridModel and _buildGridRow and _buildSourceSchema are in sync with each other.
 		 */
 		
 		var retModel   = [];
@@ -127,76 +94,58 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 	};
 		
 	//Private method
-	_buildGridRow = function( pPlacemark, pTagsetMaxTagCounts ){
+	_buildRecordObject = function( pPlacemark, pTagsetMaxTagCounts ){
 		/** 
-		 * It's important that _buildGridModel and _buildGridRow and _buildSourceModel are in sync with each other.
+		 * It's important that _buildGridModel and _buildGridRow and _buildSourceSchema are in sync with each other.
 		 */
-		var retRowData = new Object();
+		var retRecordObj = new Object({
+			'geocodeAddress': pPlacemark.getGeocodeAddress(),
+			'longitude'     : pPlacemark.getLongitude(),
+			'latitude'      : pPlacemark.getLatitude()
+		});
 		
 		$.each(pPlacemark.getLabelledSet(), function( key_labelname, val_labelval){
-			retRowData[_makeLabelName(key_labelname)] = val_labelval;
+			retRecordObj[ _makeLabelName(key_labelname) ] = val_labelval;
 		});
 		
 		$.each(pPlacemark.getTagsets(), function( key_tagset, val_tags){
 			$.each(val_tags, function(idx, tag){
-				retRowData[ _makeTagsetName(key_tagset, idx, pTagsetMaxTagCounts)] = tag;
+				retRecordObj[ _makeTagsetName(key_tagset, idx, pTagsetMaxTagCounts) ] = tag;
 			});
 		});
-
-		retRowData[ 'geocodeAddress' ] = pPlacemark.getGeocodeAddress();
-		retRowData[ 'longitude'      ] = pPlacemark.getLongitude();
-		retRowData[ 'latitude'       ] = pPlacemark.getLatitude();
-		
-		return retRowData;
-		
+		return retRecordObj;
 	};
 	
-	//Private method
-	_buildGridData = function(){
-		var tsCounts = _dataModel.tagsetMaxTagCounts();
-		_gridData = new Array();
-		$.each( _dataModel.getGeocodedPlacemarks(), function(idx, val){
-			_gridData.push( _buildGridRow(val, tsCounts));
-		});
-		$.each( _dataModel.getUncodedPlacemarks(), function(idx, val){
-			_gridData.push( _buildGridRow(val, tsCounts));
-		});
-	}
-
+	// Private method
+	_buildEmptyDataSource = function(){
+		var schemaFields = _buildGridModel();
+		var yuiDataSource = new YAHOO.util.DataSource( [] );
+		yuiDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		
+		yuiDataSource.responseSchema = { fields: schemaFields };
+		return yuiDataSource;
+	};
+	
+	// Private method
+	_updateDataTableGeo = function( pPlacemarkID ){
+		var modelPM = _dataModel.getPlacemark(pPlacemarkID);
+		_yuiDataTable.getRecordSet().updateRecordValue( _IDMap[pPlacemarkID], 'geocodeAddress', modelPM.getGeocodeAddress() );
+		_yuiDataTable.getRecordSet().updateRecordValue( _IDMap[pPlacemarkID], 'longitude',      modelPM.getLongitude() );
+		_yuiDataTable.getRecordSet().updateRecordValue( _IDMap[pPlacemarkID], 'latitude',       modelPM.getLatitude() );		
+	};
+	
 	//Privileged method
-	this.addPlacemark = function( pPlacemark ){
+	this.addPlacemark = function( pPlacemarkID ){
 		var tagsetMaxCounts = _dataModel.tagsetMaxTagCounts()
-		_gridData.push( _buildGridRow(pPlacemark, tagsetMaxCounts) );
-		_rowcnt++;
+		var placeMark = _dataModel.getPlacemark( pPlacemarkID );
+		var recordSet = _yuiDataTable.getRecordSet();
+		_IDMap[pPlacemarkID] = recordSet.addRecord( _buildRecordObject(placeMark, tagsetMaxCounts) );
+
 	};
 	
 	// Privileged method
 	this.redraw = function(){
-		/** 
-		 * A way for controller events to trigger a redraw
-		 */
-		var _yuiDataSource;
-		var _gridModel = _buildGridModel();
-		var _sourceModel = _buildSourceModel();
-
-		_yuiDataSource = new YAHOO.util.DataSource( _gridData );
-		_yuiDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-		_yuiDataSource.responseSchema = { fields: _sourceModel };
-		
-		if( _yuiDataTable ){
-			_yuiDataTable.destroy();
-		}
-
-		_yuiDataTable = new YAHOO.widget.DataTable( _domGrid, _gridModel, _yuiDataSource, {
-			caption:"Aliwal Geocoder"
-			//selectionMode:"cellblock"
-		});
-
-		// Subscribe to events for cell selection
-		_yuiDataTable.subscribe("rowMouseoverEvent", _yuiDataTable.onEventHighlightRow  );
-		_yuiDataTable.subscribe("rowMouseoutEvent",  _yuiDataTable.onEventUnhighlightRow);
-		_yuiDataTable.subscribe("cellSelectEvent",   _yuiDataTable.clearTextSelection   );
-
+		_yuiDataTable.render();
 	};
 	
 	/** @constructor 
@@ -204,30 +153,42 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 	
 	// Listen for model ( jQuery ) events
 	_dataModel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
-		// console.log('ModelPlacemarkAdded received');
 		that.addPlacemark( eventArg );
 	});
 	_dataModel.events.bind( 'ModelPlacemarkGeocoded', function(event, eventArg ){
-		// console.log('ModelPlacemarkGeocoded received');
-		_buildGridData();
-		that.redraw();  
+		_updateDataTableGeo( eventArg );
+		_yuiDataTable.render(); 
 	});
 	_dataModel.events.bind( 'ModelPlacemarkMoved', function(event, eventArg ){
-		// console.log('ModelPlacemarkMoved received here 001');
-		_buildGridData();
-		that.redraw(); 
+		_updateDataTableGeo( eventArg );
+		_yuiDataTable.render(); 
 	});
 	
-	// Draw the placemarks                
-	$.each( _dataModel.getGeocodedPlacemarks(), function(idx, val_pm){
-		that.addPlacemark( val_pm );
+	var placemarkIDs = _dataModel.getPlacemarkIDs();
+	
+	_yuiDataTable = new YAHOO.widget.DataTable( _domGrid, _buildGridModel(), _buildEmptyDataSource(), {
+		caption:"Aliwal Geocoder",
+		//selectionMode:"cellblock"
+		paginator       : new YAHOO.widget.Paginator({ 
+			rowsPerPage : 20,
+			totalRecords: placemarkIDs.length 
+		}) 
+	});
+	_yuiDataTable.subscribe("rowMouseoverEvent", _yuiDataTable.onEventHighlightRow  );
+	_yuiDataTable.subscribe("rowMouseoutEvent",  _yuiDataTable.onEventUnhighlightRow);
+	_yuiDataTable.subscribe("cellSelectEvent",   _yuiDataTable.clearTextSelection   );
+	_yuiDataTable.subscribe("renderEvent",   	function(){
+		var paginator = _yuiDataTable.get('paginator');
+		paginator.set('totalRecords', _yuiDataTable.getRecordSet().getLength() );
 	});
 	
-	$.each( _dataModel.getUncodedPlacemarks(), function(idx, val_pm){
-		that.addPlacemark( val_pm );
+	
+	$.each( placemarkIDs, function(idx, val_pmid){
+		that.addPlacemark( val_pmid );
 	});
-
-	that.redraw();
+		
+	_yuiDataTable.render();
+	
 //
 // Disabled for readonly release
 //	_yuiDataTable.subscribe("cellClickEvent", function (oArgs) {
@@ -256,5 +217,5 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 //	*/
 //		var x = 99;
 //	}); 
-	
+
 }

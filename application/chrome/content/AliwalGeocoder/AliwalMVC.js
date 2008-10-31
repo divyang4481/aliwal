@@ -142,10 +142,12 @@ function AliwalPlacemark(){
 	}
 
 	// Privileged method
-	// geohash.js
-	// Geohash library for Javascript
-	// (c) 2008 David Troy
-	// Distributed under the MIT License
+	/** 
+	 * geohash.js
+	 * Geohash library for Javascript
+	 * (c) 2008 David Troy
+	 * Distributed under the MIT License
+	 */
 	this.geoHash = function( pRegenerate ){
 		var BITS   = [16, 8, 4, 2, 1];
 		var BASE32 = "0123456789bcdefghjkmnpqrstuvwxyz";
