@@ -181,8 +181,7 @@ function goMap(){
 	var dataBrowser = document.getElementById("BrowserTabData");
 	
 	mapBrowser.loadURI("chrome://AliwalGeocoder/content/BrowserMap.html"  , null, null);
-	// Performance regression
-	// dataBrowser.loadURI("chrome://AliwalGeocoder/content/BrowserData.html", null, null);
+	dataBrowser.loadURI("chrome://AliwalGeocoder/content/BrowserData.html", null, null);
 }
 function goPreferences(){
 	window.openDialog("chrome://AliwalGeocoder/content/app.preferences.xul", "AliwalGeocoder Preferences", "chrome,titlebar,toolbar,centerscreen,modal");

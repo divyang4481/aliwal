@@ -66,8 +66,8 @@ $(document).ready(function(){
 	});
 	
 	// Get the controller to geocode placemarks that need looking up. 
-	$.each( xscopeNS.amodel.getUncodedPlacemarks(), function(idx, val_pm){
-		xscopeNS.acontroller.geocodePlacemark( val_pm, function(pm2){} );
+	$.each( xscopeNS.amodel.getUncodedIDs(), function(idx, val_pmid){
+		xscopeNS.acontroller.geocodePlacemark( xscopeNS.amodel.getPlacemark(val_pmid), function(pm2){} );
 	});
 	
 	// Attach an event handler to hideshow

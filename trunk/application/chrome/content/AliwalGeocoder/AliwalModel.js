@@ -61,13 +61,13 @@ function AliwalModel(){
 		_pmarks[ _modelID ] =  pPlacemark ;
 		
 		pPlacemark.events.bind( 'AliwalPlacemarkGeocoded', function( event, eventArg ){
-			that.events.triggerHandler( that.events.attr('ModelPlacemarkGeocoded'), eventArg );
+			that.events.triggerHandler( that.events.attr('ModelPlacemarkGeocoded'), _modelID );
 		});
 		pPlacemark.events.bind( 'AliwalPlacemarkMoved', function( event, eventArg ){
-			that.events.triggerHandler( that.events.attr('ModelPlacemarkMoved'), eventArg );
+			that.events.triggerHandler( that.events.attr('ModelPlacemarkMoved'), _modelID );
 		});
 		
-		that.events.triggerHandler( that.events.attr('ModelPlacemarkAdded'), pPlacemark );
+		that.events.triggerHandler( that.events.attr('ModelPlacemarkAdded'), _modelID );
 		
 		var undef;
 		_lc_cache = undef;
@@ -172,7 +172,7 @@ function AliwalModel(){
 
 	
 	//Privileged method
-	this.getGeocodedPlacemarks = function(){
+	this.getGeocodedIDs = function(){
 		/**
 		 * Map views can only handle geocoded placemarks
 		 * This method returns an array of AliwalPlacemarks that DON'T need geocoding
@@ -180,13 +180,13 @@ function AliwalModel(){
 		var ret = new Array();
 		$.each(_pmarks, function(key_id, val_pm){
 			if( val_pm.isGeocoded() ){
-				ret.push(val_pm);
+				ret.push(key_id);
 			}
 		});
 		return ret;
 	}
 		//Privileged method
-	this.getUncodedPlacemarks = function(){
+	this.getUncodedIDs = function(){
 		/**
 		 * Map views can only handle geocoded placemarks. 
 		 * This mehtod returns and array of AliwalPlacemarks that need geocoding
@@ -194,7 +194,7 @@ function AliwalModel(){
 		var ret = new Array();
 		$.each(_pmarks, function(key_id, val_pm){
 			if( !(val_pm.isGeocoded()) ){
-				ret.push(val_pm);
+				ret.push(key_id);
 			}
 		});
 		return ret;
