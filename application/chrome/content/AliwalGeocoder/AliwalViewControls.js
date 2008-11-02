@@ -67,6 +67,8 @@ AliwalViewControls = function(    pAliwalModel
 	_drawPinLabelSelector = function(){
 		/** Args: The string id of the div to draw the label selector in.
 		 */
+		return; 
+		// Removign pinLabels as they break pin smartWindows
 		var labelCensus = _dataModel.labelCensus();
 		_domPinLabel.empty();
 		var empty = true;
