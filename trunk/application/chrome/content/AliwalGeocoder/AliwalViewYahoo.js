@@ -228,6 +228,8 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 	
 	// Private method
 	_setPinLabel = function( pMarker){
+		return; 
+		// Popups are breaking smartWindows
 		if(!( _labelSel)){
 			// Just use the 1st label for now
 			var pml = _dataModel.labelCensus();
