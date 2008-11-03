@@ -36,6 +36,18 @@
 			<entry key="VERSION.PATCH" type="int" operation="+" default="1" />
 		</propertyfile>
 	</target>
+	
+	<target name="app_ini_version" description="Update version # and build in application.ini">
+		<tstamp/>
+		<replaceregexp file="${SRC.DIR}/application.ini"
+			match="^(Version)=(.*)"
+		    replace="Version=${VERSION.MAJOR}.${VERSION.MINOR}.${VERSION.PATCH}"
+		    byline="true" />
+		<replaceregexp file="${SRC.DIR}/application.ini"
+			match="^BuildID=(.*)"
+		    replace="BuildID=${DSTAMP}"
+		    byline="true" />
+	</target>
 		
 	<target name="clean_common" description="Reset for target compile_common.">
 		<delete includeEmptyDirs="true" verbose="true">
@@ -43,7 +55,7 @@
 		</delete>
 	</target>
 	
-	<target name="init_common" depends="" description="Init for target compile_common.">
+	<target name="init_common" depends="app_ini_version" description="Init for target compile_common.">
 		<mkdir dir="${COMMON.TARGET}" />
 	</target>
 	
