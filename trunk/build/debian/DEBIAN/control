@@ -3,7 +3,9 @@ Section: net
 Priority: optional
 Maintainer: Baudmap <baudmap@googlemail.com>
 Homepage: http://aliwal.googlecode.com
-Build-Depends: debhelper (>= 5.0.51~), quilt
+Build-Depends: debhelper (>= 5.0.51~), 
+	quilt,
+	mozilla-devscripts (>= 0.09~),
 	xulrunner-1.9
 Standards-Version: 3.7.3
 
