@@ -245,7 +245,6 @@
 <!-- ******************** DEBIAN BUILD ************************************************************** -->
 	<target name="clean_debian">
 		<delete dir="${DEBIAN.ORIG.TAR}" verbose="true" />
-		<rmdir dir="${DEBIAN.BASE.DIR}/debian" />
 	</target>
 	
 	<target name="init_debian">
@@ -263,8 +262,12 @@
 			<arg value="--exclude=.DS_Store" />
 			<arg value="${SRC.DIR}" />			
 		</exec>
-		<mkdir dir="${DEBIAN.BASE.DIR}/debian" />
+		<exec executable="dpkg-buildpackage" dir="${DEBIAN.BASE.DIR}" >
+			<arg value="-rfakeroot -d" />
+			<arg value="-d" />
+		</exec>
 	</target>
+
 <!-- ******************** DOCS BUILD **************************************************************** -->
 	
 	<target name="clean_docs">

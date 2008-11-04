@@ -1,4 +1,4 @@
-Source: aliwal
+Source: aliwal-geocoder
 Section: net
 Priority: optional
 Maintainer: Baudmap <baudmap@googlemail.com>
@@ -9,12 +9,9 @@ Build-Depends: debhelper (>= 5.0.51~),
 	xulrunner-1.9
 Standards-Version: 3.7.3
 
-Package: aliwal
+Package: aliwal-geocoder
 Section: net
 Architecture: all
 Depends: xulrunner-1.9 (>= 1.9~b1)
 Description: This tool pins your data onto a map, helping you visualize the where factor.
   Start with global satellite image and then zoom in to street level details. Each map pin has a label and a popup balloon filled with the information you choose. Tags provide filtering, to help you break it down. 
-Install new aliwal-geocoder.desktop
-Install new aliwal-geocoder.install
-Install new aliwal-geocoder.links
