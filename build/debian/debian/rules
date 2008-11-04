@@ -1,10 +1,11 @@
+#!/usr/bin/make -f 
 # These are used for cross-compiling and for saving the configure script
 # from having to guess our platform (since we know it already)
 DEB_HOST_GNU_TYPE       ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE      ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 DEB_BUILD_ARCH          ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 
-DEBIAN_APP_NAME := aliwal
+DEBIAN_APP_NAME := aliwal-geocoder
 DEBIAN_XUL_VER  := $(shell xulrunner-1.9 --gre-version)
 DEBIAN_XUL_DEV  := /usr/lib/xulrunner-devel-$(DEBIAN_XUL_VER)
 
@@ -13,11 +14,14 @@ DEB_AUTO_UPDATE_AUTOCONF=2.13
 include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
-include /usr/share/mozilla-devscripts/xulapp.mk
+include /usr/share/mozilla-devscripts/xulrunner-1.9.mk
 
 DEB_CONFIGURE_USER_FLAGS= \
         --with-libxul-sdk=$(DEBIAN_XUL_DEV) \
-        --enable-application=aliwal \
+        --enable-application=aliwal-geocoder \
         --disable-debug \
         --disable-crashreporter \
         --with-distribution-id=com.ubuntu
+
+clean::
+	rm -f debian/prism-*.png 

@@ -4,7 +4,7 @@
 # Fabien Tassin <fta@sofaraway.org> in Sept 2007.
 
 XULRUNNER=/usr/bin/xulrunner-1.9
-WEBRUNNER=/usr/share/aliwalgeocoder
+WEBRUNNER=/usr/share/aliwal-geocoder
 
 if [ "$1" = "-d" ] ; then
   DEBUG="-console -jsconsole"
