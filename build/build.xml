@@ -184,7 +184,7 @@
 		</target>
 		
 		<target name="dist_osx" depends="clean_dist_osx,compile_osx"
-			description="generate the distribution" >
+			description="generate the OSX distribution" >
 			<copy file="${OSX.DIST.TEMPLATE_DMG}" tofile="${OSX.DIST.TMP_DMG}" />
 
 			<exec executable="hdiutil" failonerror="true" >
@@ -213,6 +213,7 @@
 				<arg value="-cf" />
 				<arg value="${java.io.tmpdir}/xxx_osxdist_321.tar" />
 				<arg value="--exclude=.svn" />
+				<arg value="--exclude=.DS_Store" />
 				<arg value="${OSX.TARGET}" />			
 			</exec>
 			<exec executable="tar" dir="${OSX.DIST.MOUNT}">
@@ -241,6 +242,29 @@
 
 		</target>
 
+<!-- ******************** DEBIAN BUILD ************************************************************** -->
+	<target name="clean_debian">
+		<delete dir="${DEBIAN.ORIG.TAR}" verbose="true" />
+		<rmdir dir="${DEBIAN.BASE.DIR}/debian" />
+	</target>
+	
+	<target name="init_debian">
+	</target>
+	
+	<target name="compile_debian">
+	</target>
+	
+	<target name="dist_debian">
+		<exec executable="tar" dir="${DEBIAN.BASE.DIR}" >
+			<!-- Ant copy not aware of symbolic links so tar up -->
+			<arg value="-czvf" />
+			<arg value="${DEBIAN.ORIG.TAR}" />
+			<arg value="--exclude=.svn" />
+			<arg value="--exclude=.DS_Store" />
+			<arg value="${SRC.DIR}" />			
+		</exec>
+		<mkdir dir="${DEBIAN.BASE.DIR}/debian" />
+	</target>
 <!-- ******************** DOCS BUILD **************************************************************** -->
 	
 	<target name="clean_docs">
