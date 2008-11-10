@@ -268,7 +268,7 @@
 	<target name="init_debian" description="Dummy task">
 	</target>
 	
-	<target name="compile_debian" description="Dummy task">
+	<target name="compile_debian" depends="compile_common" description="Compile debian">
 	</target>
 
 	<target name="compile_debian_bak" depends="compile_common" description="build a tar for debian packaging">
@@ -283,14 +283,20 @@
 		</exec>
 	</target>
 	
-	<target name="dist_debian">
+	<target name="dist_debian" depends="compile_debian" description="Build a debian package">
+		<echo file="${DEBIAN.BASE.DIR}/${DEBIAN.TARGET}">
+#!/bin/sh
+XULRUNNER=${DEBIAN.XULRUNNER}
+APPPATH=${DEBIAN.DIST.DIR}
+exec $XULRUNNER $APPPATH/application.ini 
+		</echo>
 		<desktopEntry
 			toFile="${DEBIAN.DESKTOP}"
 			name="${NAME.FULL}"
 			comment="Your data, on a map."
-			exec="${DEBIAN.TARGET}"
+			exec="${DEBIAN.DIST.DIR}/${DEBIAN.TARGET}"
 			icon="${DEBIAN.DESKTOP.ICON}"
-			categories="Network;Office"
+			categories="Office"
         />
         <deb todir="${DEBIAN.BASE.DIR}"
 			package="aliwal-geocoder"
@@ -303,9 +309,11 @@
 This tool pins your data onto a map, helping you visualize the where factor.
 Start with global satellite image and then zoom in to street level details. Each map pin has a label and a popup balloon filled with the information you choose. Tags provide filtering, to help you break it down.
 			</description>
-			<tarfileset dir="${COMMON.BUILD.DIR}" prefix="/usr/share">
+			<tarfileset dir="${COMMON.TARGET}" prefix="${DEBIAN.DIST.DIR}">
 				<include name="**" />
 			</tarfileset>
+			<tarfileset file="${DEBIAN.BASE.DIR}/${DEBIAN.TARGET}" prefix="${DEBIAN.DIST.DIR}" filemode="775" />
+			<tarfileset file="${DEBIAN.DESKTOP}" prefix="usr/share/applications"/>
         </deb>
 	</target>
 <!-- ******************** DOCS BUILD **************************************************************** -->
