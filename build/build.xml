@@ -74,18 +74,27 @@
 	</target>
 	
 	<target name="dist_common" description="Dist target for common arch">
+		<echo>DIST_* Targets have to be kicked off individually</echo>
+		<echo>...</echo>
 		<echo>ToDo: http://aliwal.googlecode.com/ uploads</echo>
 		<echo>ToDo: Freshmeat announcement</echo>
 	</target>
 	
+	<target name="dist_googlecode" description="Upload to googlecode">
+		<echo>ToDo: http://aliwal.googlecode.com/ uploads</echo>
+	</target>
+	<target name="dist_freshmeat" description="Make release announcement on freshmeat">
+		<echo>ToDo: Freshmeat announcement</echo>
+	</target>
+	
 	<target name="docs"    depends="docs_system,docs_user"        			  description="Docs for all arches" />
-	<target name="clean"   depends="clean_common,clean_osx,clean_win32,clean_docs"       description="Clean for all arches" />
+	<target name="clean"   depends="clean_common,clean_osx,clean_win32,clean_debian,clean_docs"       description="Clean for all arches" />
 	<target name="init"    depends=""                                         description="This target is here just for completeness"/>
-	<target name="compile" depends="compile_common,compile_osx,compile_win32" description="Compile for all arches. Doesn't do dist targets" />
-	<target name="dist"    depends="patch_number,dist_common,dist_osx"        description="Dist for all arches. Does version.patch number too" >	
+	<target name="compile" depends="compile_common,compile_osx,compile_win32,compile_debian" description="Compile for all arches. Doesn't do dist targets" />
+	<target name="dist"    depends="patch_number,dist_common"        description="Dist for all arches. Does version.patch number too" >	
 		<echo>
 			*********************************************************
-			Todo: commit build/version.properties and do a dist_win32 build on suitable machine
+			After building: commit build/version.properties and do dist_win32 %amp; dist_debian builds on suitable machine
 			*********************************************************
 		</echo>
 	</target>
@@ -243,31 +252,62 @@
 		</target>
 
 <!-- ******************** DEBIAN BUILD ************************************************************** -->
+	<path id="ant-deb.classpath">
+		<fileset dir="${BUILD.BASE.DIR}" includes="ant-deb-0.0.1.jar"/>
+	</path>
+	<taskdef name="deb" classname="com.googlecode.ant_deb_task.Deb" classpathref="ant-deb.classpath"/>
+	<taskdef name="desktopEntry" classname="com.googlecode.ant_deb_task.DesktopEntry" classpathref="ant-deb.classpath"/>
+
 	<target name="clean_debian">
-		<delete dir="${DEBIAN.ORIG.TAR}" verbose="true" />
+		<delete includeEmptyDirs="true" verbose="true">
+			<fileset dir="${DEBIAN.BASE.DIR}" includes="**/*" />
+		</delete>
+	</target>
+
+	
+	<target name="init_debian" description="Dummy task">
 	</target>
 	
-	<target name="init_debian">
+	<target name="compile_debian" description="Dummy task">
 	</target>
-	
-	<target name="compile_debian">
-	</target>
-	
-	<target name="dist_debian">
-		<exec executable="tar" dir="${DEBIAN.BASE.DIR}" >
-			<!-- Ant copy not aware of symbolic links so tar up -->
+
+	<target name="compile_debian_bak" depends="compile_common" description="build a tar for debian packaging">
+		<exec executable="tar" dir="${COMMON.TARGET}" >
 			<arg value="-czvf" />
 			<arg value="${DEBIAN.ORIG.TAR}" />
 			<arg value="--exclude=.svn" />
 			<arg value="--exclude=.DS_Store" />
-			<arg value="${SRC.DIR}" />			
-		</exec>
-		<exec executable="dpkg-buildpackage" dir="${DEBIAN.BASE.DIR}" >
-			<arg value="-rfakeroot -d" />
-			<arg value="-d" />
+			<arg line="--transform='s,^\./,/usr/share/${NAME.NOSPACES}/,'" />
+			<arg value="--show-transformed-names" />
+			<arg value="./" />
 		</exec>
 	</target>
-
+	
+	<target name="dist_debian">
+		<desktopEntry
+			toFile="${DEBIAN.DESKTOP}"
+			name="${NAME.FULL}"
+			comment="Your data, on a map."
+			exec="${DEBIAN.TARGET}"
+			icon="${DEBIAN.DESKTOP.ICON}"
+			categories="Network;Office"
+        />
+        <deb todir="${DEBIAN.BASE.DIR}"
+			package="aliwal-geocoder"
+			section="net"
+			priority="optional"
+			depends="xulrunner-1.9 (>= 1.9~b1)" >
+            <version upstream="${VERSION.FULL}"/>
+            <maintainer email="Baudmap" name="baudmap@gmail.com"/>
+            <description synopsis="Your data, on a map">
+This tool pins your data onto a map, helping you visualize the where factor.
+Start with global satellite image and then zoom in to street level details. Each map pin has a label and a popup balloon filled with the information you choose. Tags provide filtering, to help you break it down.
+			</description>
+			<tarfileset dir="${COMMON.BUILD.DIR}" prefix="/usr/share">
+				<include name="**" />
+			</tarfileset>
+        </deb>
+	</target>
 <!-- ******************** DOCS BUILD **************************************************************** -->
 	
 	<target name="clean_docs">
