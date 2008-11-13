@@ -295,7 +295,7 @@ exec $XULRUNNER $APPPATH/application.ini
 			name="${NAME.FULL}"
 			comment="Your data, on a map."
 			exec="${DEBIAN.DIST.DIR}/${DEBIAN.TARGET}"
-			icon="${DEBIAN.DESKTOP.ICON}"
+			icon="${DEBIAN.DESKTOP.ICONPATH}/${DEBIAN.DESKTOP.ICON}"
 			categories="Office"
         />
         <deb todir="${DEBIAN.BASE.DIR}"
@@ -313,7 +313,8 @@ Start with global satellite image and then zoom in to street level details. Each
 				<include name="**" />
 			</tarfileset>
 			<tarfileset file="${DEBIAN.BASE.DIR}/${DEBIAN.TARGET}" prefix="${DEBIAN.DIST.DIR}" filemode="775" />
-			<tarfileset file="${DEBIAN.DESKTOP}" prefix="usr/share/applications"/>
+			<tarfileset file="${SRC.APPLICATION.ICON}" fullpath="${DEBIAN.DESKTOP.ICONPATH}/${DEBIAN.DESKTOP.ICON}" />
+			<tarfileset file="${DEBIAN.DESKTOP}" prefix="/usr/share/applications"/>
         </deb>
 	</target>
 <!-- ******************** DOCS BUILD **************************************************************** -->
