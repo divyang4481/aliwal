@@ -32,6 +32,7 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 
 	// Private members
 	var _dataModel = pAliwalModel;
+	var _maxPinDensityCeiling = 200;
 	var _map;
 	var _lastBounds;
 	var _labelSel;
@@ -206,7 +207,7 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 				if( _hidMarkers[idx].placemark.isGeocoded()  
 			  		&& _hidMarkers[idx].placemark.inBounds(pBounds) ){
 					if( _isMarkerUnfiltered(_hidMarkers[idx].placemark, _filterTagsets) ){
-						if ( visicount < 200 ){
+						if ( visicount < _maxPinDensityCeiling ){
 							//jsdump('Moving from hidden to visible: ' + _hidMarkers[key].id );
 							visicount++;
 							_visMarkers.push(_hidMarkers[idx]);

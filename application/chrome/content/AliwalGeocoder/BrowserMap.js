@@ -25,6 +25,10 @@ var avc; // AliwalViewControls
 
 
 $(document).ready(function(){
+	var _hidPins = 0;
+	var _visPins = 0;
+	var _geocodingErrors = 0;
+	var _pinCeiling = false;
 
 	// The model may be loaded with some geocoded placemarks at this point & they'll automatically go onto the map.
 	// Uncoded placemarks in the model need to be dealt with manually
@@ -39,32 +43,42 @@ $(document).ready(function(){
 	avc = new AliwalViewControls( 	xscopeNS.amodel, 
 									'div_filters', 
 									'pin_label_selector',
-									'feedback_pincounts',
-									'feedback_pin_ceiling',
-									'feedback_geocoding_err' );
+									'feedback_pincounts'  
+								);
 	
 	avy.events.bind( 'ViewDrawn', function( event, eventArg ){
-		var hidPins = avy.getCountHiddenPins();
-		var visPins = avy.getCountVisiblePins();
-		avc.drawPinCounts( visPins, hidPins + visPins );
+		_hidPins = avy.getCountHiddenPins();
+		_visPins = avy.getCountVisiblePins();
+		avc.drawPinCounts( _visPins, _hidPins + _visPins, _pinCeiling, _geocodingErrors );
+	});
+	avy.events.bind( 'ViewPinDensityCeiling', function( event, eventArg ){
+		_pinCeiling = true;
+		_hidPins = avy.getCountHiddenPins();
+		_visPins = avy.getCountVisiblePins();
+		avc.drawPinCounts( _visPins, _hidPins + _visPins, _pinCeiling, _geocodingErrors );
+
 	});
 		
 	avc.events.bind( 'ViewFilterChange', function( event, eventArg ){
-		var hidPins = avy.getCountHiddenPins();
-		var visPins = avy.getCountVisiblePins();
-		avc.drawPinCounts( visPins, hidPins + visPins );
+		_hidPins = avy.getCountHiddenPins();
+		_visPins = avy.getCountVisiblePins();
+		avc.drawPinCounts( _visPins, _hidPins + _visPins, _pinCeiling, _geocodingErrors );
 		 
 		avy.setFilterTagset( avc.getFilterTagset() );
 		avy.redraw();
 	});	
+
 	avc.events.bind( 'ViewLabelChange', function( event, eventArg ){
 		avy.setPinLabels( avc.getPinLabel() );
 	});
 	
 	xscopeNS.acontroller.events.bind( 'ControllerGeocodeFail', function(event, eventArg ){ 
-		avc.warningGeocodingError( true, eventArg.getGeocodeAddress() );
+		_geocodingErrors++;
+		_hidPins = avy.getCountHiddenPins();
+		_visPins = avy.getCountVisiblePins();
+		avc.drawPinCounts( _visPins, _hidPins + _visPins, _pinCeiling, _geocodingErrors );
 	});
-	
+
 	// Get the controller to geocode placemarks that need looking up. 
 	$.each( xscopeNS.amodel.getUncodedIDs(), function(idx, val_pmid){
 		xscopeNS.acontroller.geocodePlacemark( xscopeNS.amodel.getPlacemark(val_pmid), function(pm2){} );
@@ -88,9 +102,9 @@ $(document).ready(function(){
 	
 	// The very first ViewDrawn from avy sometimes gets missed, so 
 	// just do it's stuff here to be sure.
-	var hidPins = avy.getCountHiddenPins();
-	var visPins = avy.getCountVisiblePins();
-	avc.drawPinCounts( visPins, hidPins + visPins );
+	_hidPins = avy.getCountHiddenPins();
+	_visPins = avy.getCountVisiblePins();
+	avc.drawPinCounts( _visPins, _hidPins + _visPins, _pinCeiling, _geocodingErrors );
 	avy.setPinLabels( avc.getPinLabel() );
 
 }); 
