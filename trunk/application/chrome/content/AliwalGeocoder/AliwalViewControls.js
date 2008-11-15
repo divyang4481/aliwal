@@ -22,9 +22,7 @@
 AliwalViewControls = function(    pAliwalModel
 								, pDivFilters
 								, pDivPinLabel
-								, pDivPinCounts
-								, pDivPinCeiling
-								, pDivGeocodingErr ){
+								, pDivPinCounts ){
 	
 	// Events
 	this.events = $({
@@ -39,29 +37,11 @@ AliwalViewControls = function(    pAliwalModel
 	var _domFilters      = $( '#' + pDivFilters );
 	var _domPinLabel     = $( '#' + pDivPinLabel );
 	var _domPinCounts    = $( '#' + pDivPinCounts );
-	var _domPinCeiling   = $( '#' + pDivPinCeiling );
-	var _domGeocodingErr = $( '#' + pDivGeocodingErr );
 	var tagsetnum = 0;
 	var _feedbackPinCeiling;
 	var _feedbackGeocodingErr;
 	
-	var that = this;
-	
-	// Private method
-	_drawGeocodingErr = function(){
-		_domGeocodingErr.empty();
-		_domGeocodingErr.append( '<img id="img_feedback_geocoding_err" src="icons/geocoding_ok.png" />' );
-		_feedbackGeocodingErr = $('#img_feedback_geocoding_err');
-	};
-	
-	// Private method
-	_drawPinCeiling = function(){
-		_domPinCeiling.empty();
-		_domPinCeiling.append( '<img id="img_feedback_pin_ceiling"   src="icons/pin_ceiling_ok.png" />' );
-		_feedbackPinCeiling = $('#img_feedback_pin_ceiling');
-	};
-	
-	
+	var that = this;	
 		 
 	// Private method
 	_drawPinLabelSelector = function(){
@@ -136,9 +116,25 @@ AliwalViewControls = function(    pAliwalModel
 	};
 	
 	//Privileged method
-	this.drawPinCounts = function( pVisCount, pTotCount ){
+	this.drawPinCounts = function( pVisCount, pTotCount, pVisCeiling, pGeocodingErr ){
+		var viscountslabel;
+		var geocountslabel;
 		_domPinCounts.empty();
-		_domPinCounts.append( '<label id="label_feedback_pincounts">' + pVisCount + ' / ' + pTotCount +'</label>' );
+		viscountslabel = '<label id="label_feedback_viscounts">Visible : ' + pVisCount;
+		if ( pVisCeiling ){
+			viscountslabel += '<super>*</super>';
+		}
+		viscountslabel += '</label>';
+		
+		geocountslabel = '<label id="label_feedback_totcounts">Geocoded: ' + pTotCount;
+		if ( pGeocodingErr ){
+			geocountslabel += '<super>**</super>';
+		}
+		geocountslabel += '</label>';
+		
+		_domPinCounts.append( viscountslabel );
+		_domPinCounts.append('<HR/>');
+		_domPinCounts.append( geocountslabel );
 	};
 	
 	//Privileged method
@@ -185,44 +181,10 @@ AliwalViewControls = function(    pAliwalModel
 		
 	}
 	
-	// Privileged method
-	this.warningPinCeiling = function( pSet ){
-		if(pSet){
-			_feedbackPinCeiling.fadeOut('fast');
-			_feedbackPinCeiling.attr('src','icons/pin_ceiling_warn.png');
-			_feedbackPinCeiling.attr('title','Too many pins');
-			_feedbackPinCeiling.fadeIn('slow');
-			
-			
-		} else if ( _feedbackPinCeiling.attr('src') !== 'icons/pin_ceiling_ok.png' ){
-			_feedbackPinCeiling.fadeOut('fast');
-			_feedbackPinCeiling.attr('src','icons/pin_ceiling_ok.png');
-			_feedbackPinCeiling.attr('title','Number of pins OK');
-			_feedbackPinCeiling.fadeIn('slow');
-		}
-	}
-	
-	// Privileged method
-	this.warningGeocodingError = function( pSet, pAddress ){
-		if(pSet){
-			_feedbackGeocodingErr.fadeOut('fast');
-			_feedbackGeocodingErr.attr('src','icons/geocoding_warn.png');
-			_feedbackGeocodingErr.attr('title','Geocoding errors');
-			_feedbackGeocodingErr.fadeIn('slow');
-		} else if ( _feedbackGeocodingErr.attr('src') !== 'icons/geocoding_ok.png' ){
-			_feedbackGeocodingErr.fadeOut('fast');
-			_feedbackGeocodingErr.attr('src','icons/geocoding_ok.png');
-			_feedbackGeocodingErr.attr('title','Geocoding OK');
-			_feedbackGeocodingErr.fadeIn('slow');
-		}
-	}
-
 	/** @constructor
 	 * No point triggering events here because nothing could be listening 
 	 */
 	
-	_drawPinCeiling();
-	_drawGeocodingErr();
 	_drawPinLabelSelector();
 	_drawTagsetFilters();
 	
