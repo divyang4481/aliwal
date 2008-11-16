@@ -167,8 +167,8 @@ function AliwalViewDataTable( pAliwalModel, pDomGrid ){
 	var placemarkIDs = _dataModel.getPlacemarkIDs();
 	
 	_yuiDataTable = new YAHOO.widget.DataTable( _domGrid, _buildGridModel(), _buildEmptyDataSource(), {
-		caption:"Aliwal Geocoder",
-		//selectionMode:"cellblock"
+		//caption:"Aliwal Geocoder",
+		selectionMode:"singlecell",
 		paginator       : new YAHOO.widget.Paginator({ 
 			rowsPerPage : 20,
 			totalRecords: placemarkIDs.length 
