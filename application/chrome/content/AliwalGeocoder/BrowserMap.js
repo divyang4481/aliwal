@@ -49,13 +49,11 @@ $(document).ready(function(){
 		_hidPins = avy.getCountHiddenPins();
 		_visPins = avy.getCountVisiblePins();
 		avc.drawPinCounts( _visPins, _hidPins + _visPins, _pinCeiling, _geocodingErrors );
+		// reset for next drawing
+		_pinCeiling = false;
 	});
 	avy.events.bind( 'ViewPinDensityCeiling', function( event, eventArg ){
 		_pinCeiling = true;
-		_hidPins = avy.getCountHiddenPins();
-		_visPins = avy.getCountVisiblePins();
-		avc.drawPinCounts( _visPins, _hidPins + _visPins, _pinCeiling, _geocodingErrors );
-
 	});
 	
 	avc.events.bind( 'ViewDrawn', function( event, eventArg ){
@@ -64,10 +62,6 @@ $(document).ready(function(){
 	});
 		
 	avc.events.bind( 'ViewFilterChange', function( event, eventArg ){
-		_hidPins = avy.getCountHiddenPins();
-		_visPins = avy.getCountVisiblePins();
-		avc.drawPinCounts( _visPins, _hidPins + _visPins, _pinCeiling, _geocodingErrors );
-		 
 		avy.setFilterTagset( avc.getFilterTagset() );
 		avy.redraw();
 	});	
