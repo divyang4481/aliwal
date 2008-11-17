@@ -29,13 +29,12 @@ $(document).ready(function(){
 	var _visPins = 0;
 	var _geocodingErrors = 0;
 	var _pinCeiling = false;
-
+	
 	// The model may be loaded with some geocoded placemarks at this point & they'll automatically go onto the map.
 	// Uncoded placemarks in the model need to be dealt with manually
 	avy = new AliwalViewYahoo( xscopeNS.amodel, 'map');
 		
-	xscopeNS.amodel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
-		//console.log('ModelPlacemarkAdded received'); 
+	xscopeNS.amodel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){ 
 		avy.addPlacemark( eventArg );
 	});
 
@@ -57,6 +56,11 @@ $(document).ready(function(){
 		_visPins = avy.getCountVisiblePins();
 		avc.drawPinCounts( _visPins, _hidPins + _visPins, _pinCeiling, _geocodingErrors );
 
+	});
+	
+	avc.events.bind( 'ViewDrawn', function( event, eventArg ){
+		// 26 = 2*13 = 2 * map.margin
+		$('#map').css('min-height', $('#navigation').height() -26 +'px' );
 	});
 		
 	avc.events.bind( 'ViewFilterChange', function( event, eventArg ){
@@ -85,26 +89,31 @@ $(document).ready(function(){
 	});
 	
 	// Attach an event handler to hideshow
+	var origWidth = $('.hideshowoptions').width();
 	$('.hideshowoptions').bind( 'click', function(){
 		var ctl = $(this);
 		var victims = ctl.siblings();
 	
 		if( ctl.attr('state') === 'HIDDEN'){
-			victims.slideDown(20);
+			victims.slideDown(50);
 			ctl.attr('state','SHOWN');
-			ctl.find('#hideshowicon').attr('src','icons/maximize_option.png');
-		} else{ 
-			victims.slideUp(20);
-			ctl.attr('state','HIDDEN');
 			ctl.find('#hideshowicon').attr('src','icons/minimize_option.png');
+			ctl.parent().parent().width( origWidth );
+		} else{ 
+			victims.slideUp(50);
+			ctl.attr('state','HIDDEN');
+			ctl.find('#hideshowicon').attr('src','icons/maximize_option.png');
+			ctl.parent().parent().width('13px');
 		}
 	});
 	
-	// The very first ViewDrawn from avy sometimes gets missed, so 
+	// The very first ViewDrawn from avy & avc are sometimes gets missed, so 
 	// just do it's stuff here to be sure.
 	_hidPins = avy.getCountHiddenPins();
 	_visPins = avy.getCountVisiblePins();
 	avc.drawPinCounts( _visPins, _hidPins + _visPins, _pinCeiling, _geocodingErrors );
 	avy.setPinLabels( avc.getPinLabel() );
-
+	
+	// 26 = 2*13 = 2 * map.margin
+	$('#map').css( 'min-height' ,$('#navigation').height() );
 }); 

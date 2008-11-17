@@ -224,6 +224,8 @@ function drawFileProgress(e){
 function onload() {
 	var listener = new WebProgressListener();
 	var mapBrowser = document.getElementById("BrowserTabMap");
+//$('#BrowserTabMap').css('min-height',444);
+//$('#BrowserTabMap').css('min-width', 666);
 	mapBrowser.addProgressListener(listener, Components.interfaces.nsIWebProgress.NOTIFY_ALL);
 	goWelcome();
 }
@@ -240,6 +242,7 @@ function viewVenkman(){
 }
 
 addEventListener("load", onload, false);
+
 
 
 
