@@ -117,20 +117,22 @@ AliwalViewControls = function(    pAliwalModel
 	
 	//Privileged method
 	this.drawPinCounts = function( pVisCount, pTotCount, pVisCeiling, pGeocodingErr ){
-		var viscountslabel;
-		var geocountslabel;
+		var viscountslabel = '';
+		var geocountslabel = '';
 		_domPinCounts.empty();
-		viscountslabel = '<label id="label_feedback_viscounts">Visible : ' + pVisCount;
 		if ( pVisCeiling ){
-			viscountslabel += '<super>*</super>';
+			viscountslabel = '<label id="label_feedback_viscounts" title="Too many pins">Visible : ' + 
+				pVisCount + '<super>*</super></label>';
+		} else {
+			viscountslabel = '<label id="label_feedback_viscounts" >Visible : ' + pVisCount + '</label>';
 		}
-		viscountslabel += '</label>';
 		
-		geocountslabel = '<label id="label_feedback_totcounts">Geocoded: ' + pTotCount;
 		if ( pGeocodingErr ){
-			geocountslabel += '<super>**</super>';
+			geocountslabel = '<label id="label_feedback_totcounts" title="Geocoding error(s)" >Geocoded: ' + 
+			pTotCount + '<super>**</super></label>';
+		} else {
+			geocountslabel = '<label id="label_feedback_totcounts" >Geocoded: ' + pTotCount + '</label>';
 		}
-		geocountslabel += '</label>';
 		
 		_domPinCounts.append( viscountslabel );
 		_domPinCounts.append('<div class="float_clear" />');

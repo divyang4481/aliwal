@@ -222,7 +222,6 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 			}
 		} catch(e){
 			that.events.triggerHandler( that.events.attr('ViewPinDensityCeiling') );
-			that.events.triggerHandler( that.events.attr('ViewDrawn') );
 		}
 		that.events.triggerHandler( that.events.attr('ViewDrawn') );
 	}
