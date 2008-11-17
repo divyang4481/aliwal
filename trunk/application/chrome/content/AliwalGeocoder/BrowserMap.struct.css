@@ -1,43 +1,22 @@
 /* Layout #24
    Thanks http://blog.html.it/layoutgala/ 
-   Only contains layout of the page. Styling goes in on1map.css
+   Only contains layout of the page. Styling goes in BrowserMap.css
 */
 
+div#container{
+	min-width : 600px; 
+	min-height: 400px;
+}
 
-div#header{
- position: relative
-}
-div#header a{
- position:absolute;
- right:0;
- top:23px
-}
 div#wrapper{
- float:right;
+ float:left;
  width:100%;
- margin-left:-220px
 }
 div#content{
- min-height: 400px;
- min-width:  600px;
- margin-left:220px;
+ margin-right:210px;
 }
 div#navigation{
  float:left;
  width:200px;
- margin:10px;
-}
-div#extra{
- float:left;
- clear:left;
- width:220px;
-}
-div#footer{
- padding: 13px;
- clear: both;
- width: 100%;
-}
-
-#map{
- height: 95%;
+ margin-left:-200px;
 }

@@ -23,7 +23,7 @@
 <window
 	id     = "AliwalGeocoder"
 	title  = "Aliwal Geocoder. Your data, on a map."
-	style  = "width: 700px; height: 500px;"
+	flex   = "1"
 	persist= "screenX screenY width height sizemode"
 	xmlns  = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
   
@@ -115,20 +115,19 @@
 		</hbox>
 	</vbox>
 -->
-	<vbox>
-		<tabbox id="tabBrowser" flex="1">
+
+<!-- 	Thanks http://www.cmiss.org/cmgui/zinc/ScrollingXulWindows
+		Thanks XUL: 10 hours for scrollbars :( 
+-->
+	<vbox id="vboxMain" flex="1" style="overflow:auto;">
+		<tabbox id="tabBrowser" flex="1" >
 			<tabs>
 				<tab label="Map"/>
 				<tab label="Data"/>
 			</tabs>
-			<tabpanels>
-<!--
-				<browser height="800" id="BrowserTabMap"  src="chrome://AliwalGeocoder/content/BrowserMap.html" />
-				<browser height="800" id="BrowserTabData" src="chrome://AliwalGeocoder/content/BrowserData.html"/>
--->
-				<browser height="800" id="BrowserTabMap"   />
-				<browser height="800" id="BrowserTabData"  />
-				
+			<tabpanels id="tabPanels1" flex="1">
+				<browser id="BrowserTabMap"  flex="1"  />
+				<browser id="BrowserTabData" flex="1"  />
 			</tabpanels>
 		</tabbox>
 	</vbox>

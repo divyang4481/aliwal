@@ -133,7 +133,7 @@ AliwalViewControls = function(    pAliwalModel
 		geocountslabel += '</label>';
 		
 		_domPinCounts.append( viscountslabel );
-		_domPinCounts.append('<HR/>');
+		_domPinCounts.append('<div class="float_clear" />');
 		_domPinCounts.append( geocountslabel );
 	};
 	
@@ -187,6 +187,7 @@ AliwalViewControls = function(    pAliwalModel
 	
 	_drawPinLabelSelector();
 	_drawTagsetFilters();
+	that.events.triggerHandler( that.events.attr('ViewDrawn') );
 	
 	// Listen for model ( jQuery ) events
 	_dataModel.events.bind( 'ModelPlacemarkAdded', function(event, eventArg ){
