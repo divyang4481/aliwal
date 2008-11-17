@@ -311,6 +311,7 @@ function AliwalController( pAliwalModel ){
 			x01.addTag("Country", "England");
 			x01.addTag("Pool Size", "Olympic");
 			x01.addTag("Lane", "10 Lane");
+			x01.addTag("Visted", "June");
 			x01.setGeocodeAddress( "John Charles centre for sport, Middleton Grove, Leeds, LS11 5DJ" );
 			_model.addPlacemark(x01);
 			
@@ -322,6 +323,8 @@ function AliwalController( pAliwalModel ){
 			x02.addTag("Country", "England");
 			x02.addTag("Pool Size", "Olympic");
 			x02.addTag("Lane", "10 Lane");
+			x02.addTag("Visted", "June");
+			x02.addTag("Visted", "July");
 			x02.setGeocodeAddress( "Ponds Forge International Sports Centre, Sheaf Street, Sheffield, S1 2BP" );
 			_model.addPlacemark(x02);
 			
@@ -333,6 +336,8 @@ function AliwalController( pAliwalModel ){
 			x03.addTag("Country", "England");
 			x03.addTag("Pool Size", "Olympic");
 			x03.addTag("Lane", "10 Lane");
+			x03.addTag("Visted", "July");
+			x03.addTag("Visted", "August");
 			x03.setGeocodeAddress( "Sunderland City Council, Civic Centre, Burdon Road, Sunderland, SR2 7DN" );
 			_model.addPlacemark(x03);
 			
@@ -442,6 +447,10 @@ function AliwalController( pAliwalModel ){
 			x13.addTag("Country", "England");
 			x13.addTag("Pool Size", "Regular");
 			x13.addTag("Lane", "8 Lane");
+			x13.addTag("Visted", "March");
+			x13.addTag("Visted", "June");
+			x13.addTag("Visted", "August");
+			
 			x13.setGeocodeAddress( "UEA Sportspark, University of East Anglia, Norwich, Norfolk, NR4 7TJ" );
 			_model.addPlacemark(x13);
 			
@@ -507,11 +516,9 @@ function AliwalController( pAliwalModel ){
 			x19.addTag("Country", "Scotland");
 			x19.addTag("Pool Size", "Regular");
 			x19.addTag("Lane", "8 Lane");
-			
-			x19.addTag("Combi Tagset", "1st Tag");
-			x19.addTag("Combi Tagset", "2nd Tag");
-			x19.addTag("Combi Tagset", "3rd Tag");
-						
+			x19.addTag("Visted", "January");
+			x19.addTag("Visted", "February");
+			x19.addTag("Visted", "March");
 			x19.setGeocodeAddress( "University of Stirling, Stirling , Scotland , FK9 4LA, UK" );
 			_model.addPlacemark(x19);
 			
@@ -522,12 +529,10 @@ function AliwalController( pAliwalModel ){
 			x20.addLabelledData("Town", "Swansea");
 			x20.addTag("Country", "Wales");
 			x20.addTag("Pool Size", "Regular");
-			
-			x20.addTag("Combi Tagset", "1st Tag");
-			x20.addTag("Combi Tagset", "2nd Tag");
-			x20.addTag("Combi Tagset", "3rd Tag");
-			
 			x20.addTag("Lane", "8 Lane");
+			x20.addTag("Visted", "April");
+			x20.addTag("Visted", "May");
+			x20.addTag("Visted", "June");
 			x20.setGeocodeAddress( "Wales National Pool Swansea, Sketty Lane, Swansea, SA2 8QG" );
 			_model.addPlacemark(x20);
 			
