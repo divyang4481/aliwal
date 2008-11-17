@@ -1158,10 +1158,10 @@ pref("font.name-list.sans-serif.ko", "Gulim, 굴림");
 pref("font.name-list.monospace.ko", "GulimChe, 굴림체"); 
 pref("font.name-list.cursive.ko", "Gungseo, 궁서"); 
 
-pref("font.name.serif.th", "Times New Roman");
-pref("font.name.sans-serif.th", "Arial");
-pref("font.name.monospace.th", "Courier New");
-pref("font.name.cursive.th", "Comic Sans MS");
+pref("font.name.serif.th", "Tahoma");
+pref("font.name.sans-serif.th", "Tahoma");
+pref("font.name.monospace.th", "Tahoma");
+pref("font.name.cursive.th", "Tahoma");
 
 pref("font.name.serif.tr", "Times New Roman");
 pref("font.name.sans-serif.tr", "Arial");
@@ -1340,6 +1340,7 @@ pref("font.size.fixed.ko", 16);
 pref("font.default.th", "serif");
 pref("font.size.variable.th", 16);
 pref("font.size.fixed.th", 13);
+pref("font.minimum-size.th", 10);
 
 pref("font.default.tr", "serif");
 pref("font.size.variable.tr", 16);
@@ -1498,23 +1499,23 @@ pref("intl.jis0208.map", "CP932");
 // Switch the keyboard layout per window
 pref("intl.keyboard.per_window_layout", false);
 
-//@line 1514 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 1515 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 1930 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 1932 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2127 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2129 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2218 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2220 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2477 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2485 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2545 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2553 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
-//@line 2571 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
-
-//@line 2591 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+//@line 2579 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
 //@line 2599 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
+
+//@line 2607 "e:\xr19rel\WINNT_5.2_Depend\mozilla\modules\libpref\src\init\all.js"
 
 // Login Manager prefs
 pref("signon.rememberSignons",              true);
