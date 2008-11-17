@@ -125,7 +125,7 @@ function AliwalViewYahoo( pAliwalModel, pDomMap ){
 				var x = 0;
 				$.each(val_tags, function(key_tag, val_count){
 					tsc[key_tagset][key_tag] = colours[x];
-					if(x<colours.length){
+					if(x+1<colours.length){
 						x++;
 					} else {
 						x = 0;
