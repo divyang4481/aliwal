@@ -137,6 +137,9 @@ var gCheckCompatibility   = true;
 var gCheckUpdateSecurity  = true;
 var gLocale               = "en-US";
 var gFirstRun             = false;
+var gAllowFlush           = true;
+var gDSNeedsFlush         = false;
+var gManifestNeedsFlush   = false;
 
 /**
  * Valid GUIDs fit this pattern.
@@ -210,7 +213,7 @@ BadCertHandler.prototype = {
     return this;
   }
 };
-//@line 188 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 191 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 
 /**
  * Creates a Version Checker object.
@@ -1373,7 +1376,7 @@ DirectoryInstallLocation.prototype = {
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIInstallLocation])
 };
 
-//@line 1351 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 1354 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 
 const nsIWindowsRegKey = Ci.nsIWindowsRegKey;
 
@@ -1431,7 +1434,7 @@ WinRegInstallLocation.prototype = {
     var appVendor = gApp.vendor;
     var appName = gApp.name;
 
-//@line 1413 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 1416 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 
     // XULRunner-based apps may intentionally not specify a vendor:
     if (appVendor != "")
@@ -1514,7 +1517,7 @@ WinRegInstallLocation.prototype = {
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIInstallLocation])
 };
 
-//@line 1496 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 1499 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 
 /**
  * An object which handles the installation of an Extension.
@@ -2503,7 +2506,7 @@ function ExtensionManager() {
     InstallLocations.put(systemLocation);
   }
 
-//@line 2485 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 2488 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
   // Register HKEY_LOCAL_MACHINE Install Location
   InstallLocations.put(
       new WinRegInstallLocation("winreg-app-global",
@@ -2517,7 +2520,7 @@ function ExtensionManager() {
                                 nsIWindowsRegKey.ROOT_KEY_CURRENT_USER,
                                 false,
                                 Ci.nsIInstallLocation.PRIORITY_APP_SYSTEM_USER + 10));
-//@line 2499 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 2502 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
 
   // Register Additional Install Locations
   var categoryManager = Cc["@mozilla.org/categorymanager;1"].
@@ -2683,6 +2686,25 @@ ExtensionManager.prototype = {
    * Clean up on application shutdown to avoid leaks.
    */
   _shutdown: function() {
+    if (!gAllowFlush) {
+      // Something went wrong and there are potentially flushes pending.
+      ERROR("Reached _shutdown and without clearing any pending flushes");
+      try {
+        gAllowFlush = true;
+        if (gManifestNeedsFlush) {
+          gManifestNeedsFlush = false;
+          this._updateManifests(false);
+        }
+        if (gDSNeedsFlush) {
+          gDSNeedsFlush = false;
+          this.datasource.Flush();
+        }
+      }
+      catch (e) {
+        ERROR("Error flushing caches: " + e);
+      }
+    }
+
     gOS.removeObserver(this, "xpcom-shutdown");
 
     // Release strongly held services.
@@ -2755,6 +2777,9 @@ ExtensionManager.prototype = {
     if (this._ensureDatasetIntegrity())
       isDirty = true;
 
+    // Block attempts to flush for the entire startup
+    gAllowFlush = false;
+
     // Configure any items that are being installed, uninstalled or upgraded
     // by being added, removed or modified by another process. We must do this
     // on every startup since there is no way we can tell if this has happened
@@ -2767,20 +2792,37 @@ ExtensionManager.prototype = {
     if (PendingOperations.size != 0)
       isDirty = true;
 
+    var needsRestart = false;
     // Extension Changes
     if (isDirty) {
-      var needsRestart = this._finishOperations();
+      needsRestart = this._finishOperations();
 
       if (forceAutoReg) {
         this._extensionListChanged = true;
         needsRestart = true;
       }
-      return needsRestart;
     }
 
-    this._startTimers();
+    // Resume flushing and perform a flush for anything that was deferred
+    try {
+      gAllowFlush = true;
+      if (gManifestNeedsFlush) {
+        gManifestNeedsFlush = false;
+        this._updateManifests(false);
+      }
+      if (gDSNeedsFlush) {
+        gDSNeedsFlush = false;
+        this.datasource.Flush();
+      }
+    }
+    catch (e) {
+      ERROR("Error flushing caches: " + e);
+    }
 
-    return false;
+    if (!needsRestart)
+      this._startTimers();
+
+    return needsRestart;
   },
 
   /**
@@ -2842,12 +2884,12 @@ ExtensionManager.prototype = {
   _installGlobalItem: function(file) {
     if (!file || !file.exists())
       throw new Error("Unable to find the file specified on the command line!");
-//@line 2824 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 2866 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
     // make sure the file is local on Windows
     file.normalize();
     if (file.path[1] != ':')
       throw new Error("Can't install global chrome from non-local file "+file.path);
-//@line 2829 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 2871 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
     var installManifestFile = extractRDFFileToTempDir(file, FILE_INSTALL_MANIFEST, true);
     if (!installManifestFile.exists())
       throw new Error("The package is missing an install manifest!");
@@ -3590,6 +3632,9 @@ ExtensionManager.prototype = {
       return false;
     }
 
+    // Block attempts to flush for the entire startup
+    gAllowFlush = false;
+
     // Version mismatch, we have to load the extensions datasource and do
     // version checking. Time hit here doesn't matter since this doesn't happen
     // all that often.
@@ -3652,6 +3697,11 @@ ExtensionManager.prototype = {
       else if (allAppManaged)
         allAppManaged = false;
 
+      var properties = {
+        availableUpdateURL: null,
+        availableUpdateVersion: null
+      };
+
       if (ds.getItemProperty(id, "providesUpdatesSecurely") == "false") {
         /* It's possible the previous version did not understand updateKeys so
          * check if we can import one for this addon from it's manifest. */
@@ -3668,13 +3718,13 @@ ExtensionManager.prototype = {
       // updates, satisfying its dependencies, and not being blocklisted
       if (this._isUsableItem(id)) {
         if (ds.getItemProperty(id, "appDisabled"))
-          ds.setItemProperty(id, EM_R("appDisabled"), null);
+          properties.appDisabled = null;
       }
-      else if (!ds.getItemProperty(id, "appDisabled"))
-        ds.setItemProperty(id, EM_R("appDisabled"), EM_L("true"));
+      else if (!ds.getItemProperty(id, "appDisabled")) {
+        properties.appDisabled = EM_L("true");
+      }
 
-      ds.setItemProperty(id, EM_R("availableUpdateURL"), null);
-      ds.setItemProperty(id, EM_R("availableUpdateVersion"), null);
+      ds.setItemProperties(id, properties);
     }
 
     // Must clean up outside of the loop. Modifying the container while
@@ -3724,6 +3774,23 @@ ExtensionManager.prototype = {
 
     // Prevent extension update dialog from showing
     gPref.setBoolPref(PREF_UPDATE_NOTIFYUSER, false);
+
+    // Re-enable flushing and flush anything that was deferred
+    try {
+      gAllowFlush = true;
+      if (gManifestNeedsFlush) {
+        gManifestNeedsFlush = false;
+        this._updateManifests(false);
+      }
+      if (gDSNeedsFlush) {
+        gDSNeedsFlush = false;
+        this.datasource.Flush();
+      }
+    }
+    catch (e) {
+      ERROR("Error flushing caches: " + e);
+    }
+
     return true;
   },
 
@@ -3936,10 +4003,20 @@ ExtensionManager.prototype = {
    *          true if the application needs to restart again, false otherwise.
    */
   _updateManifests: function(needsRestart) {
-    // Write the Startup Cache (All Items, visible or not)
-    StartupCache.write();
-    // Write the Extensions Locations Manifest (Visible, enabled items)
-    this._updateExtensionsManifest(needsRestart);
+    // During startup we block flushing until the startup operations are all
+    // complete to reduce file accesses that can trigger bug 431065
+    if (gAllowFlush) {
+      // Write the Startup Cache (All Items, visible or not)
+      StartupCache.write();
+      // Write the Extensions Locations Manifest (Visible, enabled items)
+      this._updateExtensionsManifest();
+    }
+    else {
+      gManifestNeedsFlush = true;
+    }
+
+    // Notify nsAppRunner to update the compatibility manifest on next startup
+    this._extensionListChanged = needsRestart;
   },
 
   /**
@@ -3981,10 +4058,8 @@ ExtensionManager.prototype = {
 
   /**
    * Write the Extensions List
-   * @param   needsRestart
-   *          true if the application needs to restart again, false otherwise.
    */
-  _updateExtensionsManifest: function(needsRestart) {
+  _updateExtensionsManifest: function() {
     // When an operation is performed that requires a component re-registration
     // (extension enabled/disabled, installed, uninstalled), we must write the
     // set of paths where extensions live so that the startup system can determine
@@ -4026,9 +4101,6 @@ ExtensionManager.prototype = {
 
     // Cache the enabled list for annotating the crash report subsequently
     gPref.setCharPref(PREF_EM_ENABLED_ITEMS, enabledItems.join(","));
-
-    // Now refresh the compatibility manifest.
-    this._extensionListChanged = needsRestart;
   },
 
   /**
@@ -4787,8 +4859,7 @@ ExtensionManager.prototype = {
                   availableUpdateHash   : null,
                   availableUpdateVersion: null,
                   availableUpdateInfo   : null };
-    for (var p in props)
-      ds.setItemProperty(id, EM_R(p), props[p]);
+    ds.setItemProperties(id, props);
     ds.updateProperty(id, "availableUpdateURL");
 
     this._setOp(id, OP_NEEDS_INSTALL);
@@ -4828,8 +4899,7 @@ ExtensionManager.prototype = {
                   availableUpdateHash     : null,
                   availableUpdateVersion  : null,
                   availableUpdateInfo     : null };
-    for (var p in props)
-      ds.setItemProperty(id, EM_R(p), props[p]);
+    ds.setItemProperties(id, props);
     ds.updateProperty(id, "availableUpdateURL");
 
     this._setOp(id, OP_NEEDS_UPGRADE);
@@ -5577,13 +5647,13 @@ ExtensionManager.prototype = {
       // count to 0 to prevent this dialog from being displayed again.
       this._downloadCount = 0;
       var result;
-//@line 5559 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 5629 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
       result = this._confirmCancelDownloads(this._downloadCount,
                                             "quitCancelDownloadsAlertTitle",
                                             "quitCancelDownloadsAlertMsgMultiple",
                                             "quitCancelDownloadsAlertMsg",
                                             "dontQuitButtonWin");
-//@line 5571 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 5641 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
       if (subject instanceof Ci.nsISupportsPRBool)
         subject.data = result;
     }
@@ -5686,10 +5756,12 @@ ExtensionManager.prototype = {
       // being updated during an install.
       if (!manager) {
         var id = currItem.id
-        ds.setItemProperty(id, EM_R("availableUpdateURL"), null);
-        ds.setItemProperty(id, EM_R("availableUpdateHash"), null);
-        ds.setItemProperty(id, EM_R("availableUpdateVersion"), null);
-        ds.setItemProperty(id, EM_R("availableUpdateInfo"), null);
+        ds.setItemProperties(id, {
+          availableUpdateURL: null,
+          availableUpdateHash: null,
+          availableUpdateVersion: null,
+          availableUpdateInfo: null
+        });
         ds.updateProperty(id, "availableUpdateURL");
         ds.updateProperty(id, "updateable");
       }
@@ -6095,7 +6167,7 @@ ExtensionItemUpdater.prototype = {
   _listener           : null,
 
   /* ExtensionItemUpdater
-//@line 6108 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 6180 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
   */
   checkForUpdates: function(aItems, aItemCount, aUpdateCheckType,
                             aListener) {
@@ -6453,7 +6525,7 @@ RDFItemUpdater.prototype = {
 
   onDatasourceLoaded: function(aDatasource, aLocalItem) {
     /*
-//@line 6506 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
+//@line 6578 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\extensions\src\nsExtensionManager.js.in"
     */
     if (!aDatasource.GetAllResources().hasMoreElements()) {
       LOG("RDFItemUpdater:onDatasourceLoaded: Datasource empty.\r\n" +
@@ -7499,6 +7571,20 @@ ExtensionsDataSource.prototype = {
   },
 
   /**
+   * Sets one or more properties for an item.
+   * @param   id
+   *          The ID of the item
+   * @param   properties
+   *          A JS object which maps properties to values.
+   */
+  setItemProperties: function (id, properties) {
+    var item = getResourceForID(id);
+    for (var key in properties)
+      this._setProperty(this._inner, item, EM_R(key), properties[key]);
+    this.Flush();
+  },
+
+  /**
    * Inserts the RDF resource for an item into a container.
    * @param   id
    *          The GUID of the item
@@ -8094,9 +8180,11 @@ ExtensionsDataSource.prototype = {
         hash = EM_L(addon.xpiHash);
       version = EM_L(addon.version);
     }
-    this.setItemProperty(addon.id, EM_R("availableUpdateURL"), url);
-    this.setItemProperty(addon.id, EM_R("availableUpdateHash"), hash);
-    this.setItemProperty(addon.id, EM_R("availableUpdateVersion"), version);
+    this.setItemProperties(addon.id, {
+      availableUpdateURL: url,
+      availableUpdateHash: hash,
+      availableUpdateVersion: version
+    });
     this.updateProperty(addon.id, "availableUpdateURL");
   },
 
@@ -8661,6 +8749,12 @@ ExtensionsDataSource.prototype = {
   },
 
   Flush: function() {
+    // For some operations we block repeated flushing until all operations
+    // are complete to reduce file accesses that can trigger bug 431065
+    if (!gAllowFlush) {
+      gDSNeedsFlush = true;
+      return;
+    }
     if (this._inner instanceof Ci.nsIRDFRemoteDataSource)
       this._inner.Flush();
   },

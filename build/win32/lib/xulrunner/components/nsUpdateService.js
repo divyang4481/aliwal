@@ -28,11 +28,12 @@ const URI_BRAND_PROPERTIES      = "chrome://branding/locale/brand.properties";
 const URI_UPDATES_PROPERTIES    = "chrome://mozapps/locale/update/updates.properties";
 const URI_UPDATE_NS             = "http://www.mozilla.org/2005/app-update";
 
+const KEY_GREDIR          = "GreD";
 const KEY_APPDIR          = "XCurProcD";
-//@line 75 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 76 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 const KEY_UPDROOT         = "UpdRootD";
 const KEY_UAPPDATA        = "UAppData";
-//@line 78 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 79 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
 const DIR_UPDATES         = "updates";
 const FILE_UPDATE_STATUS  = "update.status";
@@ -42,6 +43,7 @@ const FILE_UPDATES_DB     = "updates.xml";
 const FILE_UPDATE_ACTIVE  = "active-update.xml";
 const FILE_PERMS_TEST     = "update.test";
 const FILE_LAST_LOG       = "last-update.log";
+const FILE_UPDATER_INI    = "updater.ini";
 
 const MODE_RDONLY   = 0x01;
 const MODE_WRONLY   = 0x02;
@@ -80,6 +82,7 @@ const nsIIncrementalDownload  = Components.interfaces.nsIIncrementalDownload;
 const nsIFileInputStream      = Components.interfaces.nsIFileInputStream;
 const nsIFileOutputStream     = Components.interfaces.nsIFileOutputStream;
 const nsICryptoHash           = Components.interfaces.nsICryptoHash;
+const nsIINIParserFactory     = Components.interfaces.nsIINIParserFactory;
 
 const Node = Components.interfaces.nsIDOMNode;
 
@@ -87,6 +90,7 @@ var gApp        = null;
 var gPref       = null;
 var gABI        = null;
 var gOSVersion  = null;
+var gLocale     = null;
 var gConsole    = null;
 var gLogEnabled = { };
 
@@ -157,7 +161,7 @@ BadCertHandler.prototype = {
     return this;
   }
 };
-//@line 137 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 141 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
 /**
  * Logs a string to the error console.
@@ -265,14 +269,14 @@ function getDirInternal(key, pathArray, shouldCreate, update) {
   var fileLocator = Components.classes["@mozilla.org/file/directory_service;1"]
                               .getService(Components.interfaces.nsIProperties);
   var dir = fileLocator.get(key, Components.interfaces.nsIFile);
-//@line 245 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 249 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
   if (update) {
     try {
       dir = fileLocator.get(KEY_UPDROOT, Components.interfaces.nsIFile);
     } catch (e) {
     }
   }
-//@line 252 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 256 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
   for (var i = 0; i < pathArray.length; ++i) {
     dir.append(pathArray[i]);
     if (shouldCreate && !dir.exists())
@@ -378,12 +382,12 @@ function getUpdatesDir(key) {
     appDir = fileLocator.get(key, Components.interfaces.nsIFile);
   else {
     appDir = fileLocator.get(KEY_APPDIR, Components.interfaces.nsIFile);
-//@line 358 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 362 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     try {
       appDir = fileLocator.get(KEY_UPDROOT, Components.interfaces.nsIFile);
     } catch (e) {
     }
-//@line 363 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 367 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
   }
   appDir.append(DIR_UPDATES);
   appDir.append("0");
@@ -514,20 +518,38 @@ function getPref(func, preference, defaultValue) {
 }
 
 /**
- * Gets the current value of the locale.  It's possible for this preference to
- * be localized, so we have to do a little extra work here.  Similar code
+ * Gets the locale specified by the 'Locale' key in the 'Installation' section
+ * of updater.ini if it is available. Otherwise the general.useragent.locale
+ * preference is used to get the locale. It's possible for this preference to
+ * be localized, so we have to do a little extra work here. Similar code
  * exists in nsHttpHandler.cpp when building the UA string.
  */
 function getLocale() {
+  if (gLocale)
+    return gLocale;
+
   try {
-      // Get the default branch
-      var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-          .getService(Components.interfaces.nsIPrefService);
-      var defaultPrefs = prefs.getDefaultBranch(null);
-      return defaultPrefs.getCharPref(PREF_GENERAL_USERAGENT_LOCALE);
+//@line 512 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+    var updaterIni = getFile(KEY_GREDIR, [FILE_UPDATER_INI]);
+//@line 514 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+    var iniParser = Components.classes["@mozilla.org/xpcom/ini-parser-factory;1"]
+                              .getService(nsIINIParserFactory).createINIParser(updaterIni);
+    gLocale = iniParser.getString("Installation", "Locale");
+    LOG("General", "Getting Locale from File: " + updaterIni.path + " Locale: " + gLocale);
+    return gLocale;
   } catch (e) {}
 
-  return gPref.getCharPref(PREF_GENERAL_USERAGENT_LOCALE);
+  try {
+    // Get the default branch
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+        .getService(Components.interfaces.nsIPrefService);
+    var defaultPrefs = prefs.getDefaultBranch(null);
+    gLocale = defaultPrefs.getCharPref(PREF_GENERAL_USERAGENT_LOCALE);
+  } catch (e) {
+    gLocale = gPref.getCharPref(PREF_GENERAL_USERAGENT_LOCALE);
+  }
+
+  return gLocale;
 }
 
 /**
@@ -1066,7 +1088,7 @@ function UpdateService() {
     gOSVersion = encodeURIComponent(osVersion);
   }
 
-//@line 1054 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1079 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
   // Start the update timer only after a profile has been selected so that the
   // appropriate values for the update check are read from the user's profile.
@@ -1162,7 +1184,7 @@ UpdateService.prototype = {
       status = null;
 
     var updRootKey = null;
-//@line 1150 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1175 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     function findPreviousUpdate(key) {
       var updateDir = getUpdatesDir(key);
       if (updateDir.exists()) {
@@ -1183,7 +1205,7 @@ UpdateService.prototype = {
     // required to migrate from older versions.
     if (status == null)
       findPreviousUpdate(KEY_APPDIR);
-//@line 1171 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1196 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
     if (status == STATE_DOWNLOADING) {
       LOG("UpdateService", "_postUpdateProcessing: Downloading patch, resuming...");
@@ -1227,13 +1249,13 @@ UpdateService.prototype = {
 
         LOG("UpdateService", "_postUpdateProcessing: Install Succeeded, Showing UI");
         prompter.showUpdateInstalled(update);
-//@line 1218 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1243 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
         // Perform platform-specific post-update processing.
         if (POST_UPDATE_CONTRACTID in Components.classes) {
           Components.classes[POST_UPDATE_CONTRACTID].
               createInstance(Components.interfaces.nsIRunnable).run();
         }
-//@line 1224 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1249 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
         // Done with this update. Clean it up.
         cleanupActiveUpdate(updRootKey);
@@ -1536,7 +1558,7 @@ UpdateService.prototype = {
         upDirFile.create(nsILocalFile.NORMAL_FILE_TYPE, PERMS_FILE);
         upDirFile.remove(false);
       }
-//@line 1527 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1552 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
       var sysInfo =
         Components.classes["@mozilla.org/system-info;1"]
                   .getService(Components.interfaces.nsIPropertyBag2);
@@ -1614,7 +1636,7 @@ UpdateService.prototype = {
           actualAppDirFile.remove(false);
         }
       }
-//@line 1605 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 1630 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     }
     catch (e) {
        LOG("UpdateService", "can't update, no privileges: " + e);
@@ -2801,7 +2823,7 @@ TimerManager.prototype = {
   }
 };
 
-//@line 2792 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 2817 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 /**
  * UpdatePrompt
  * An object which can prompt the user with information about updates, request
@@ -3079,7 +3101,7 @@ UpdatePrompt.prototype = {
     return this;
   }
 };
-//@line 3070 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3095 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 
 var gModule = {
   registerSelf: function(componentManager, fileSpec, location, type) {
@@ -3122,13 +3144,13 @@ var gModule = {
                className  : "Update Checker",
                factory    : makeFactory(Checker)
              },
-//@line 3113 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3138 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     prompt:  { CID        : Components.ID("{27ABA825-35B5-4018-9FDD-F99250A0E722}"),
                contractID : "@mozilla.org/updates/update-prompt;1",
                className  : "Update Prompt",
                factory    : makeFactory(UpdatePrompt)
              },
-//@line 3119 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3144 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     timers:  { CID        : Components.ID("{B322A5C0-A419-484E-96BA-D7182163899F}"),
                contractID : "@mozilla.org/updates/timer-manager;1",
                className  : "Timer Manager",
@@ -3172,14 +3194,14 @@ function NSGetModule(compMgr, fileSpec) {
  *          the specified update, false otherwise.
  */
 function isCompatible(update) {
-//@line 3163 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3188 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
   var em =
       Components.classes["@mozilla.org/extensions/manager;1"].
       getService(nsIExtensionManager);
   var items = em.getIncompatibleItemList("", update.extensionVersion,
     update.platformVersion, nsIUpdateItem.TYPE_ANY, false, { });
   return items.length == 0;
-//@line 3172 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3197 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
 }
 
 /**
@@ -3198,7 +3220,7 @@ function showPromptIfNoIncompatibilities(update) {
     prompter.showUpdateAvailable(update);
   }
 
-//@line 3191 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3216 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
   /**
    * Determines if an addon is compatible with a particular update.
    * @param   addon
@@ -3307,6 +3329,6 @@ function showPromptIfNoIncompatibilities(update) {
     em.update([], 0, mode, listener);
   }
   else
-//@line 3300 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
+//@line 3325 "e:\xr19rel\WINNT_5.2_Depend\mozilla\toolkit\mozapps\update\src\nsUpdateService.js.in"
     showPrompt(update);
 }
