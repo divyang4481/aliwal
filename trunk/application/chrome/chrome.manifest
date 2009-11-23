@@ -2,6 +2,6 @@ content AliwalGeocoder 				file:content/AliwalGeocoder/
 locale  AliwalGeocoder 	en-US 		file:locale/en-US/
 skin    AliwalGeocoder  classic/1.0 file:skin/
 
-content venkman 					jar:venkman.jar!/content/venkman/
+content venkman 					jar:venkman.jar!/content/venkman/ contentaccessible=yes
 locale 	venkman 		en-US 		jar:venkman.jar!/locale/en-US/venkman/
 skin   	venkman 		modern/1.0 	jar:venkman.jar!/skin/modern/venkman/

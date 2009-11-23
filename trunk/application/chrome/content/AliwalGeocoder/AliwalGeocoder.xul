@@ -91,8 +91,8 @@
 			<menupopup id="view-popup">  
 				<menuitem 						label="&viewStop.label;" 		command="cmd_viewstop" 	id="menu_viewstop" />
 				<menuitem 						label="&viewReload.label;" 		command="cmd_viewreload" 	/>
-<!--			<menuitem 						label="Venkman" 				command="cmd_viewvenkman" 	/>
--->				
+			<menuitem 						label="Venkman" 				command="cmd_viewvenkman" 	/>
+				
 				<menuseparator/>
 				
 				<menuitem 						label="&viewPreferences.label;" command="cmd_preferences" id="menu_preferences" />
