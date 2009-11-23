@@ -202,14 +202,12 @@ function AliwalController( pAliwalModel ){
 					// ToDo
 				}
 				
-				if( placemark.isGeocoded() ){
-					// Coordinates reasonable so use them
-					_model.addPlacemark(placemark);
-				} else {
+				if( !placemark.isGeocoded() ){
 					// Coordinates are no good so geocode and then add to _model
 					// ToDo: Geocoding failures ???
 					this.geocodePlacemark( placemark );
 				};
+				_model.addPlacemark(placemark);
 			};
 			
 			istream.close();		
@@ -227,7 +225,6 @@ function AliwalController( pAliwalModel ){
 	/** 
 	 * Loads a KML File, creating AliwalPlacemark objects and adding them to the model.
 	 */
-	 	var that = this;
 		var geocoder = new XMLHttpRequest();			
 		geocoder.overrideMimeType('application/xml');	
 		geocoder.onprogress = pProgressHandler;

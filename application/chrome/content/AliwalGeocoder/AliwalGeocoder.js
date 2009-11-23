@@ -84,7 +84,7 @@ function fileImportFlat(){
 										pDataCols,pTagCols,pGeocodeAddressCols,pLonLatCols){
 				
 				xscopeNS.amodel = new AliwalModel();
-				xscopeNS.acontroller = new AliwalController();
+				xscopeNS.acontroller = new AliwalController(xscopeNS.amodel);
 				if( pLayout === 'delimited'){						
 					xscopeNS.acontroller.loadDelimitedFile( pFilename, 
 															pDelimiters, 
