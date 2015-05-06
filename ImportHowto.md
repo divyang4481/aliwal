@@ -1,0 +1,27 @@
+# Aliwal Geocoder Import #
+
+A walkthrough showing how to get your data from an Excel spreadsheet into Aliwal Geocoder.
+
+# Step by Step Guide #
+
+> ## Step 1 ##
+> Start with a spreadsheet, 1 row per map pin, whatever columns you'd like plus one column for addresses. For best results, the parts of the address should be comma separated and on 1 line, like _123 Streetname, Townname, Country_. Save that spreadsheet as a text file (Tab delimited)(**.txt)
+> ![http://aliwal.googlecode.com/svn/wiki/images/ImportHowto01.png](http://aliwal.googlecode.com/svn/wiki/images/ImportHowto01.png)**
+
+> ## Step 2 ##
+> From the Aliwal Geocoder main menu, choose _Import Text File_ and select the text file created in the previous step.
+
+> ## Step 3 ##
+> The wizard will prompt for details of the file being imported. Step through the wizard and choose:
+    1. Delimited columns
+    1. Tab
+    1. _Nothing_. This bit only applies if your data already has coordinate columns
+    1. Move _Country_ and _Town_ out of the right column by selecting them and then clicking the _<<_ button.
+> ![http://aliwal.googlecode.com/svn/wiki/images/ImportHowto02.png](http://aliwal.googlecode.com/svn/wiki/images/ImportHowto02.png)
+    1. Leave the _Pin Label & Popup_ details as suggested
+    1. Move _Type, Lane_ and _Country_ to the right using the _>>_ button and then click the _Finish_ button
+
+> ## Step 4 ##
+> Click OK to clear the _Geocoding Errors_ warning. This warning means that some records couldn't be converted from addresses into coordinates. This will be covered later.
+> ![http://aliwal.googlecode.com/svn/wiki/images/ImportHowto06.png](http://aliwal.googlecode.com/svn/wiki/images/ImportHowto06.png)
+

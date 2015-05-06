@@ -1,0 +1,12 @@
+# How to build Aliwal Geocoder on Windows #
+
+  * Install the Subversion command line client. I grabbed: [Slik SVN 1.5.3, 32 bit (Windows 2000/XP/2003/Vista)](http://www.sliksvn.com/en/download)
+  * Install Java. I installed [Java SE Development Kit (JDK) 6 Update 10](http://java.sun.com/javase/downloads/?intcmp=1281)
+  * Install Ant. I grabbed [apache-ant-1.7.1-bin.zip](http://ant.apache.org/bindownload.cgi), ran through the wizard and fiddled with the environment as detailed in the install instructions
+  * Install NSIS, the Nullsoft Scriptable Install system. I grabbed [2.4.0](http://nsis.sourceforge.net/Download) and ran through the install wizard.
+  * Check out the Aliwal Geocoder source code by opening a command prompt and running:
+> `svn checkout http://aliwal.googlecode.com/svn/trunk/ aliwal-read-only`
+  * Still at the command prompt, change down to the build directory and run
+> `ant dist_win32`
+  * If all goes well you'll see "BUILD SUCCESSFUL" and there will be an installer file called something like "Aliwal Geocoder 0.0.8 Installer.exe" in the .\build\win32\ directory.
+  * Any problems, drop me an email and I'll do my best to help.
